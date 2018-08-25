@@ -1,4 +1,4 @@
-package model.service;
+package model.mock.service;
 
 public class RegistrationService {
     // todo ask about builder

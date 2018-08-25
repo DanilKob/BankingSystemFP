@@ -1,4 +1,4 @@
-package model.entity;
+package model.mock.entity;
 
 import controller.utility.Languages;
 

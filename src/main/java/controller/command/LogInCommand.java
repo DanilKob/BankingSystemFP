@@ -2,16 +2,18 @@ package controller.command;
 
 import controller.PagesName;
 import controller.Parameters;
+import controller.dto.LoginDto;
 import controller.utility.IOHandler;
 import controller.utility.Languages;
 import controller.utility.RegexKeys;
 import controller.utility.RolesUtility;
-import model.entity.User;
-import model.exception.LoginException;
-import model.service.GuestService;
 
-import javax.servlet.ServletOutputStream;
+import model.entity.User;
+import model.mock.exception.LoginException;
+import model.mock.service.GuestService;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class LogInCommand implements Command {
     // todo best place to keep this class
@@ -44,22 +46,45 @@ public class LogInCommand implements Command {
         // todo remove to filter
         if(RolesUtility.isUserAlreadyLogged(request,login)){
             // todo block postman
-            //CommandManager.getInstance().getCommand(CommandConstants.LOGOUT_COMMAND).execute(request);
+            CommandManager.getInstance().getCommand(CommandConstants.LOGOUT_COMMAND).execute(request);
             return PagesName.LOGIN_PAGE;
         }
 
+        LoginDto loginDto = new LoginDto(login,password);
+
+        Optional<User> optionalUser = model.service.UserService.login(loginDto);
+
+        if(optionalUser.isPresent()){
+            RolesUtility.addLoginInServletContext(request,login);
+            RolesUtility.addRoleAndLoginInSession(request,optionalUser.get().getRole(),login);
+            return CommandConstants.REDIRECT+ getHomePageByRole(optionalUser.get().getRole());
+        }else{
+            System.out.println("LOGIN ISNT EXIST");
+            return PagesName.LOGIN_PAGE;
+        }
+        /*
         try {
             // todo return object User. not just role
-            User.ROLE role = guestService.login(new User(login,password));
+            //User.ROLE role = guestService.login(new User());
 
-            RolesUtility.addLoginInServletContext(request,login);
-            RolesUtility.addRoleAndLoginInSession(request,role,login);
+            LoginDto loginDto = new LoginDto(login,password);
+
+            Optional<User> optionalUser = model.service.UserService.login(loginDto);
+
+            if(optionalUser.isPresent()){
+                RolesUtility.addLoginInServletContext(request,login);
+                RolesUtility.addRoleAndLoginInSession(request,optionalUser.get().getRole(),login);
+            }else{
+                return PagesName.LOGIN_PAGE;
+            }
+
 
             // todo if statement has not already accepted, catch exception
-            return CommandConstants.REDIRECT+ getHomePageByRole(role);
-        } catch (LoginException e) {
+            return CommandConstants.REDIRECT+ getHomePageByRole(optionalUser.get().getRole());
+        } /*catch (LoginException e) {
             return PagesName.LOGIN_PAGE;
         }
+        */
     }
 
     private boolean isInputDataUncorrect(boolean isLoginCorrect, boolean isPasswordCorrect){

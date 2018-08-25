@@ -2,14 +2,16 @@ package controller.command;
 
 import controller.PagesName;
 import controller.Parameters;
+import controller.dto.RegistrationFormDto;
 import controller.utility.IOHandler;
 import controller.utility.Languages;
 import controller.utility.RegexKeys;
 import controller.utility.RolesUtility;
-import model.UserService;
-import model.entity.RegistrationForm;
+
+
 import model.entity.User;
-import model.exception.LoginIsAlreadyExistException;
+import model.exception.NotUniqueException;
+import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,16 +57,23 @@ public class RegistrationCommand implements Command{
             return PagesName.REGISTRATION;
         }
         // todo change to User entity
-        RegistrationForm registrationForm = new RegistrationForm(firstName,lastName,middleName,login,password,language);
-        try {
-            UserService.registerUser(registrationForm);
+        //RegistrationFormDto registrationForm = new RegistrationFormDto(firstName,lastName,middleName,login,password,language);
+        RegistrationFormDto registrationFormDto = new RegistrationFormDto(firstName,lastName,middleName,login,password);
 
+        try {
+            //UserService.registerUser(registrationForm);
+
+            model.service.UserService.registerUser(registrationFormDto);
+            /*
             RolesUtility.addRoleAndLoginInSession(request,User.ROLE.USER,login);
             RolesUtility.addLoginInServletContext(request,login);
-
+            */
             System.out.println("WAS REGISTERED");
-            return CommandConstants.REDIRECT+PagesName.USER_HOME_PAGE;
-        } catch (LoginIsAlreadyExistException e) {
+            //return CommandConstants.REDIRECT+PagesName.USER_HOME_PAGE;
+            //return CommandConstants.REDIRECT+PagesName.LOGIN_PAGE;
+            return PagesName.LOGIN_PAGE;
+        } catch (NotUniqueException e) {
+            System.out.println("Not Unique login");
             IOHandler.setLoginAlreadyExistMessageToRequest(request,language);
             return PagesName.REGISTRATION;
         }

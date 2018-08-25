@@ -1,6 +1,4 @@
-package model.service;
-
-import model.entity.RegistrationForm;
+package model.mock.service;
 
 public class RegistrationFormBuilder {
     /*
@@ -33,10 +31,10 @@ public class RegistrationFormBuilder {
         return this;
     }
 
-    public RegistrationForm built(){
-        if(isNativeSetted) return new RegistrationForm(this.firstName,this.firstNameNative,
+    public RegistrationFormDto built(){
+        if(isNativeSetted) return new RegistrationFormDto(this.firstName,this.firstNameNative,
                 this.lastName,this.lastNameNative,this.middleName,this.middleNameNative);
-        return new RegistrationForm(firstName,firstName,lastName,lastName,middleName,middleName);
+        return new RegistrationFormDto(firstName,firstName,lastName,lastName,middleName,middleName);
     }
     */
 }

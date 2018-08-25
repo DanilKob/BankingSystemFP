@@ -37,7 +37,7 @@
     </c:if>
     <p><input type="text" name="login" value="${param.login}" size="30%"/></p>
 
-    <p> <fmt:message key="login.password"/> </p>
+    <p> <fmt:message key="login.login"/> </p>
     <c:if test="${not empty requestScope.passwordError}">
         <p><c:out value="${requestScope.passwordError}"/></p>
     </c:if>
