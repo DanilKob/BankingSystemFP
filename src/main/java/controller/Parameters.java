@@ -7,13 +7,17 @@ public interface Parameters {
     String LOGGED_USERS = "loggedUsers";
     String ERROR_MESSAGE = "error";
 
+    String USER = "user";
+
     // Registration form
     // todo Fill fields
     String LAST_NAME = "lastName";
     String FIRST_NAME = "firstName";
     String MIDDLE_NAME = "middleName";
     String LOGIN = "login";
-
+    // Login form
+    String PASSWORD = "password";
+    // Login form
 
     String LAST_NAME_ERROR = "lastNameError";
     String FIRST_NAME_ERROR = "firstNameError";
@@ -22,8 +26,8 @@ public interface Parameters {
     String PASSWORD_ERROR = "passwordError";
     // Registration form
 
-    // Login form
-    String PASSWORD = "password";
-    // Login form
+    String CREDITS = "credits";
+
+
 
 }

@@ -6,4 +6,5 @@ public interface CommandConstants {
     String REGISTRATION_COMMAND = "register";
     String DEFAULT_COMMAND = "default";
     String REDIRECT = "redirect/";
+    String CREDITS_COMMAND = "credits";
 }

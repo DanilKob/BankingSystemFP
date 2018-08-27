@@ -1,6 +1,7 @@
 package model.dao.statement;
 
 import model.dao.statement.tables.*;
+import model.entity.User;
 
 public interface Statements {
     String AND = " AND ";
@@ -37,7 +38,13 @@ public interface Statements {
     */
 
 
-    String LOGIN_BY_LOGIN_PASSWORD = "SELECT * FROM " + UserTable.USER_TABLE
+    String LOGIN_BY_LOGIN_PASSWORD = "SELECT "
+            + UserTable.USER_TABLE + "." + UserTable.USER_ID + ","
+            + UserTable.USER_FIRST_NAME + ","
+            + UserTable.USER_MIDDLE_NAME + ","
+            + UserTable.USER_LAST_NAME + ","
+            + RoleTable.ROLE_NAME
+            + " FROM " + UserTable.USER_TABLE
             + " INNER JOIN " + RoleTable.ROLE_TABLE
             + " ON "
                 + RoleTable.ROLE_TABLE + "." + RoleTable.ROLE_ID

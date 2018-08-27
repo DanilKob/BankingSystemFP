@@ -9,7 +9,6 @@ import controller.utility.RegexKeys;
 import controller.utility.RolesUtility;
 
 import model.entity.User;
-import model.mock.exception.LoginException;
 import model.mock.service.GuestService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +45,8 @@ public class LogInCommand implements Command {
         // todo remove to filter
         if(RolesUtility.isUserAlreadyLogged(request,login)){
             // todo block postman
-            CommandManager.getInstance().getCommand(CommandConstants.LOGOUT_COMMAND).execute(request);
+            RolesUtility.logoutUser(request);
+            System.out.println("USER HAS ALREADY REGISTERED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return PagesName.LOGIN_PAGE;
         }
 
@@ -55,11 +55,12 @@ public class LogInCommand implements Command {
         Optional<User> optionalUser = model.service.UserService.login(loginDto);
 
         if(optionalUser.isPresent()){
+            optionalUser.get().setLogin(login);
             RolesUtility.addLoginInServletContext(request,login);
-            RolesUtility.addRoleAndLoginInSession(request,optionalUser.get().getRole(),login);
+            RolesUtility.addRoleAndLoginInSession(request,optionalUser.get());
             return CommandConstants.REDIRECT+ getHomePageByRole(optionalUser.get().getRole());
         }else{
-            System.out.println("LOGIN ISNT EXIST");
+            System.out.println("LOGIN ISN'T EXIST");
             return PagesName.LOGIN_PAGE;
         }
         /*

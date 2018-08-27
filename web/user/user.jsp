@@ -18,6 +18,11 @@
     <title> <fmt:message key="user.welcome.page"/> </title>
 </head>
 <body>
+<c:set var="user" value="${sessionScope.user}"/>
+<c:out value="${user.middleName}"/>
+<c:out value="${user.firstName}"/>
+<c:out value="${user.lastName}"/>
+<c:out value="${sessionScope.role}"/>
 <form action="user.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
@@ -31,5 +36,18 @@
 
     <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
 </form>
+
+<form action="${pageContext.request.contextPath}/servlet/user" method="get">
+    <input type="hidden" name="command" value="credits">
+    <p><input type="submit" value="<fmt:message key="user.credits"/>"/></p>
+</form>
+
+<c:if test="${not empty requestScope.credits}">
+    <c:forEach items="${requestScope.credits}" var="credit">
+        <c:out value="${credit.id} "/><br>
+        <c:out value="${credit.balance}"/><br>
+    </c:forEach>
+</c:if>
+<a href="credits.jsp"> Credits </a>
 </body>
 </html>

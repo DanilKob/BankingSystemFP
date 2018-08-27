@@ -39,5 +39,6 @@ public class CommandManager {
         commandMap.put(CommandConstants.LOGOUT_COMMAND,new LogOutCommand());
         commandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
         commandMap.put(CommandConstants.DEFAULT_COMMAND,new DefaultCommand());
+        commandMap.put(CommandConstants.CREDITS_COMMAND, new CreditsCommand());
     }
 }

@@ -65,6 +65,7 @@ public class RegistrationCommand implements Command{
 
             model.service.UserService.registerUser(registrationFormDto);
             /*
+            // user will be forward to login page
             RolesUtility.addRoleAndLoginInSession(request,User.ROLE.USER,login);
             RolesUtility.addLoginInServletContext(request,login);
             */

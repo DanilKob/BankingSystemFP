@@ -11,15 +11,15 @@ import java.util.HashSet;
 
 public class RolesUtility {
     public static void addRoleAndLoginInSession(HttpServletRequest request,
-                                                User.ROLE role, String login) {
+                                                User user) {
         HttpSession session = request.getSession();
-        session.setAttribute(Parameters.ROLE, role);
         // todo add User. NOT JUST LOGIN
-        session.setAttribute(Parameters.LOGIN,login);
         // todo add first name to session scope
-        System.out.println("LOGIN HAS BEEN ADDED TO SESSION. LOGIN :: " + login);
+        session.setAttribute(Parameters.ROLE, user.getRole());
+        session.setAttribute(Parameters.USER,user);
+        System.out.println("USER HAS BEEN ADDED TO SESSION. LOGIN :: " + user.getLogin());
     }
-
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public static boolean isUserAlreadyLogged(HttpServletRequest request, String login){
         HashSet<String> loggedUsers = (HashSet<String>) request.getServletContext().getAttribute(Parameters.LOGGED_USERS);
         return loggedUsers.stream().anyMatch(login::equals);
@@ -31,20 +31,27 @@ public class RolesUtility {
         System.out.println("LOGIN HAS BEEN ADDED TO CONTEXT. LOGIN :: " + login);
         //request.getServletContext().setAttribute(Parameters.LOGGED_USERS,loggedUsers);
     }
-
-    public static void removeRoleAndLogin(HttpServletRequest request){
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public static void logoutUser(HttpServletRequest request){
         HttpSession session = request.getSession();
-        String login = (String)session.getAttribute(Parameters.LOGIN);
 
-        HashSet<String> loggedUsers = (HashSet<String>) request.getServletContext().getAttribute(Parameters.LOGGED_USERS);
-        loggedUsers.remove(login);
+        User user = (User)session.getAttribute(Parameters.USER);
+        if(user != null){
+            String login = user.getLogin();
+
+            HashSet<String> loggedUsers = (HashSet<String>) request.getServletContext().getAttribute(Parameters.LOGGED_USERS);
+            loggedUsers.remove(login);
+            session.removeAttribute(Parameters.USER);
+            System.out.println("REMOVE FROM CONTEXT");
+        }
+
         // todo try to remove this string with setAttribute method
         //request.getServletContext().setAttribute(Parameters.LOGGED_USERS,loggedUsers);
 
-
-        session.setAttribute(Parameters.ROLE, User.ROLE.GUEST);
-        session.removeAttribute(Parameters.LOGIN);
+        request.getSession().setAttribute(Parameters.ROLE, User.ROLE.GUEST);
     }
+
+
     // todo refactor isUserAlreadyLogged
     /*
     public boolean isUserAlreadyLogged(HttpServletRequest request, String login){

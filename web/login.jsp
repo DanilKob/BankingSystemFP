@@ -18,6 +18,7 @@
     <title>  <fmt:message key="login.page"/>Login </title>
 </head>
 <body>
+<c:out value="${sessionScope.role}"/>
 <form action="login.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
@@ -37,7 +38,7 @@
     </c:if>
     <p><input type="text" name="login" value="${param.login}" size="30%"/></p>
 
-    <p> <fmt:message key="login.login"/> </p>
+    <p> <fmt:message key="login.password"/> </p>
     <c:if test="${not empty requestScope.passwordError}">
         <p><c:out value="${requestScope.passwordError}"/></p>
     </c:if>

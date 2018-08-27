@@ -34,6 +34,13 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             preparedStatement.setString(5, entity.getPassword());
             preparedStatement.setInt(6, entity.getRole().roleId);
 
+            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getFirstName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getMiddleName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getLastName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getLogin());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getPassword());
+
+
             System.out.println("In dao method");
 
             preparedStatement.execute();
