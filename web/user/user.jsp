@@ -43,6 +43,11 @@
     <p><input type="submit" value="<fmt:message key="user.credits"/>"/></p>
 </form>
 
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="deposits">
+    <p><input type="submit" value="<fmt:message key="user.deposits"/>"/></p>
+</form>
+
 
 <c:if test="${not empty requestScope.credits}">
     <table>
@@ -112,6 +117,6 @@
         </c:forEach>
     </table>
 </c:if>
-<a href="credits.jsp"> Credits </a>
+<a href="credit.jsp"> Credits </a>
 </body>
 </html>

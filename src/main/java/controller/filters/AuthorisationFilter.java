@@ -31,6 +31,7 @@ public class AuthorisationFilter implements Filter {
         userCommands.add(CommandConstants.LOGOUT_COMMAND);
         userCommands.add(CommandConstants.CREDITS_COMMAND);
         userCommands.add(CommandConstants.CREDIT_PAGE_COMMAND);
+        userCommands.add(CommandConstants.DEPOSITS_COMMAND);
         userCommands.add(CommandConstants.DEPOSIT_PAGE_COMMAND);
 
         commandMap.put(User.ROLE.GUEST,guestCommands);

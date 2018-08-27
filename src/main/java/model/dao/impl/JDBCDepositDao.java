@@ -46,8 +46,10 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             System.out.println("Search deposit");
+            System.out.println(Statements.SELECT_DEPOSIT_BY_BANK_ACCOUNT_ID);
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
             if(resultSet.next()){
+                System.out.println("Result is not empty !!!");
                 depositAccount = depositExtracter.extractFromResultSet(resultSet,new DepositAccount());
             }
             /*

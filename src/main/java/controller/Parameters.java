@@ -34,6 +34,7 @@ public interface Parameters {
 
     String DEPOSITS = "deposits";
     String DEPOSIT_ID = "depositId";
+    String DEPOSIT_ACCOUNT = "depositAccount";
 
     String DEPOSIT_COMPLIANCE_TABLE  = "depositComplianceTable";
 

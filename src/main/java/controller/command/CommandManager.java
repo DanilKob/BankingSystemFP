@@ -45,6 +45,7 @@ public class CommandManager {
         commandMap.put(CommandConstants.DEFAULT_COMMAND,new DefaultCommand());
         commandMap.put(CommandConstants.CREDITS_COMMAND, new CreditsCommand());
         commandMap.put(CommandConstants.CREDIT_PAGE_COMMAND, new CreditPageCommand());
-        commandMap.put(CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositPage());
+        commandMap.put(CommandConstants.DEPOSITS_COMMAND,new DepositsCommand());
+        commandMap.put(CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositPageCommand());
     }
 }

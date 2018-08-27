@@ -18,7 +18,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="credits.jsp">
+<form action="credit.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
