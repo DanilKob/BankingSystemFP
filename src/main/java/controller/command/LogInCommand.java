@@ -58,7 +58,7 @@ public class LogInCommand implements Command {
             optionalUser.get().setLogin(login);
             RolesUtility.addLoginInServletContext(request,login);
             RolesUtility.addRoleAndLoginInSession(request,optionalUser.get());
-            return CommandConstants.REDIRECT+ getHomePageByRole(optionalUser.get().getRole());
+            return CommandConstants.REDIRECT + RolesUtility.defineHomePageByRole(optionalUser.get().getRole());
         }else{
             System.out.println("LOGIN ISN'T EXIST");
             return PagesName.LOGIN_PAGE;

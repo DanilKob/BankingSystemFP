@@ -27,7 +27,14 @@ public interface Parameters {
     // Registration form
 
     String CREDITS = "credits";
+    String CREDIT_ID = "creditId";
+    String CREDIT_ACCOUNT = "creditAccount";
 
+    String CREDIT_COMPLIANCE_TABLE  = "creditComplianceTable";
 
+    String DEPOSITS = "deposits";
+    String DEPOSIT_ID = "depositId";
+
+    String DEPOSIT_COMPLIANCE_TABLE  = "depositComplianceTable";
 
 }

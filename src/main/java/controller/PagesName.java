@@ -11,6 +11,7 @@ public interface PagesName {
     String ADMIN_DIRECTORY = "/admin";
     String USER_HOME_PAGE = USER_DIRECTORY + "/" + "user.jsp";
     String ADMIN_HOME_PAGE = ADMIN_DIRECTORY + "/" + "admin.jsp";
+    String CREDIT_PAGE = USER_DIRECTORY + "/" + "credits.jsp";
 
     String CREDITS = USER_DIRECTORY + "/" + "credits.jsp";
 }

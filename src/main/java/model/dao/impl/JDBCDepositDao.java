@@ -3,12 +3,14 @@ package model.dao.impl;
 import model.dao.DepositDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
+import model.entity.CreditAccount;
 import model.entity.DepositAccount;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> implements DepositDao {
@@ -77,6 +79,29 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
     @Override
     public List<DepositAccount> findAll() {
         return null;
+    }
+
+    @Override
+    public List<DepositAccount> findAllByUserId(int userId) {
+        List<DepositAccount> depositAccounts = null;
+        try{
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.SELECT_ALL_DEPOSIT_BY_BANK_USER_ID);
+            preparedStatement.setInt(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Extracter<DepositAccount> depositExtracter = new Extracter<>();
+            depositAccounts = new LinkedList<>();
+            while(resultSet.next()){
+                depositAccounts.add(depositExtracter.extractFromResultSet(resultSet,new DepositAccount()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        // todo
+
+        return depositAccounts;
     }
 
     @Override

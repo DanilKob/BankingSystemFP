@@ -98,6 +98,13 @@ public interface Statements {
             + CreditTable.CREDIT_TABLE + "." + CreditTable.CREDIT_ID
             + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
 
+    String SELECT_ALL_DEPOSIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " INNER JOIN " + DepositTable.DEPOSIT_TABLE
+            + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_DEPOSIT_ID
+            + " = "
+            + DepositTable.DEPOSIT_TABLE+ "." + DepositTable.DEPOSIT_ID
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
+
 
 
 

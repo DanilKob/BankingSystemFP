@@ -10,6 +10,10 @@ public class CommandManager {
     private static CommandManager instance = new CommandManager();
     private Map<String,Command> commandMap = new HashMap<>();
 
+    private Map<String,Command> guestCommandMap = new HashMap<>();
+    private Map<String,Command> userCommandMap = new HashMap<>();
+    private Map<String,Command> adminCommandMap = new HashMap<>();
+
     {
         init();
     }
@@ -40,5 +44,7 @@ public class CommandManager {
         commandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
         commandMap.put(CommandConstants.DEFAULT_COMMAND,new DefaultCommand());
         commandMap.put(CommandConstants.CREDITS_COMMAND, new CreditsCommand());
+        commandMap.put(CommandConstants.CREDIT_PAGE_COMMAND, new CreditPageCommand());
+        commandMap.put(CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositPage());
     }
 }

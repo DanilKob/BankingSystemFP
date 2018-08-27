@@ -66,7 +66,7 @@ public class RolesUtility {
     }
      */
 
-    public String defineHomePageByRole(User.ROLE role){
+    public static String defineHomePageByRole(User.ROLE role){
         String page;
         switch (role){
             case ADMIN: page = PagesName.ADMIN_HOME_PAGE;

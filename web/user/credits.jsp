@@ -30,6 +30,38 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<a href="user.jsp"> User </a>
+
+<table>
+    <tr>
+        <td>
+            id
+        </td>
+        <td>
+            Balance
+        </td>
+        <td>
+            Credit Name
+        </td>
+        <td>
+            Type
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <c:out value="${requestScope.creditAccount.id}"/><br>
+        </td>
+        <td>
+            <c:out value="${requestScope.creditAccount.balance}"/><br>
+        </td>
+        <td>
+            <c:out value="${requestScope.creditAccount.name}"/><br>
+        </td>
+        <td>
+            Credit
+        </td>
+    </tr>
+</table>
+
+<a href="/user/user.jsp"> User </a>
 </body>
 </html>

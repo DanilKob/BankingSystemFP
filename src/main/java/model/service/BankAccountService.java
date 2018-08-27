@@ -60,6 +60,13 @@ public class BankAccountService {
         }
     }
 
+    public static List<DepositAccount> getAllDepositAccountsByUserId(int id){
+        try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
+            return depositDao.findAllByUserId(id);
+        }
+    }
+
+
     //public static void payFromDepositAccount()
     // todo Refactor convert method
     public static CreditAccount convertCreditDtoToEntity(CreditAccountDto creditAccountDto){
