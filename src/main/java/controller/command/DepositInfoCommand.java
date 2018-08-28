@@ -9,20 +9,13 @@ import model.service.BankAccountService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class DepositInfoCommand implements Command {
+public class DepositInfoCommand extends AbstractBankAccountInfo {
     @Override
     public String execute(HttpServletRequest request) {
         // todo ClassCastException
 
-
-        Map<Integer,Integer> complianceTable = (Map<Integer, Integer>) request.getSession()
-                .getAttribute(Parameters.COMPLIANCE_TABLE);
-        if(complianceTable==null) {
-            return CommandConstants.REDIRECT + PagesName.ERROR;
-        }
-
         int depositIdFromPage = Integer.parseInt(request.getParameter(Parameters.SERIAL_ID_FROM_PAGE));
-        int realCreditId = complianceTable.get(depositIdFromPage);
+        int realCreditId = super.unCryptBankAccountId(request,depositIdFromPage);
 
         System.out.println("Deposit id " + depositIdFromPage);
         System.out.println("Real deposit id " + realCreditId);

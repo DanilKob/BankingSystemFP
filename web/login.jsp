@@ -42,7 +42,7 @@
     <c:if test="${not empty requestScope.passwordError}">
         <p><c:out value="${requestScope.passwordError}"/></p>
     </c:if>
-    <p><input type="text" name="password" value="${param.password}" size="30%"/></p>
+    <p><input type="password" name="password" value="${param.password}" size="30%"/></p>
 
     <p><input type="submit" value="LogIn"/></p>
 </form>

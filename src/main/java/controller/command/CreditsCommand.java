@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-public class CreditsCommand implements Command{
+public class CreditsCommand extends AbstractBankAccountInfo{
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -19,15 +19,8 @@ public class CreditsCommand implements Command{
 
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
         List<CreditAccount> creditAccounts = BankAccountService.getAllCreditAccountsByUserId(userId);
-        /*
-        Crypter<CreditAccount> creditAccountCrypter = new Crypter<>();
-        creditAccounts = creditAccountCrypter.cryptEntityId(creditAccounts);
-        Map<Integer,Integer> complianceTable = creditAccountCrypter.getComplianceTable();
-        */
 
-        Crypter<CreditAccount> creditAccountCrypter = new Crypter<>();
-        Map<Integer,Integer> complianceTable = creditAccountCrypter.getComplianceTable(creditAccounts);
-        request.getSession().setAttribute(Parameters.COMPLIANCE_TABLE,complianceTable);
+        super.createComplianceTableInSession(request,creditAccounts);
 
         request.setAttribute(Parameters.CREDITS,creditAccounts);
         System.out.println("IN CREDIT COMMAND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
