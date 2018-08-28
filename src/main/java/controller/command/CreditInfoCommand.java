@@ -9,19 +9,19 @@ import model.service.BankAccountService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class CreditPageCommand implements Command{
+public class CreditInfoCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
         // todo ClassCastException
 
 
         Map<Integer,Integer> complianceTable = (Map<Integer, Integer>) request.getSession()
-                .getAttribute(Parameters.CREDIT_COMPLIANCE_TABLE);
+                .getAttribute(Parameters.COMPLIANCE_TABLE);
         if(complianceTable==null) {
             return CommandConstants.REDIRECT + PagesName.ERROR;
         }
 
-        int creditIdFromPage = Integer.parseInt(request.getParameter(Parameters.CREDIT_ID));
+        int creditIdFromPage = Integer.parseInt(request.getParameter(Parameters.SERIAL_ID_FROM_PAGE));
         int realCreditId = complianceTable.get(creditIdFromPage);
 
         System.out.println("Credit id" + creditIdFromPage);
