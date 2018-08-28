@@ -18,18 +18,25 @@
     <title>Title</title>
 </head>
 <body>
-<form action="credit.jsp">
+<form action="/user/credit.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
     </select>
 </form>
 <c:set var="user" value="${sessionScope.user}"/>
-<c:out value="${user.middleName}"/>
 <c:out value="${user.firstName}"/>
+<c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
+<form action="/servlet" method="get">
+    <input type="hidden" name="command" value="history">
+    <input type="hidden" name="serialNumberFromPage" value="${param.serialNumberFromPage}">
+    <p><input type="submit" value="Account history"/></p>
+</form>
+
+<br>
 
 <table>
     <tr>

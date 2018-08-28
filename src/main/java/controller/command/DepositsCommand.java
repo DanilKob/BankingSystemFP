@@ -20,10 +20,14 @@ public class DepositsCommand implements Command{
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
         List<DepositAccount> depositAccountList = BankAccountService.getAllDepositAccountsByUserId(userId);
 
+        /*
         Crypter<DepositAccount> depositAccountCrypter = new Crypter<>();
         depositAccountList = depositAccountCrypter.cryptEntityId(depositAccountList);
         Map<Integer,Integer> complianceTable = depositAccountCrypter.getComplianceTable();
-        request.getSession().setAttribute(Parameters.DEPOSIT_COMPLIANCE_TABLE,complianceTable);
+        */
+        Crypter<DepositAccount> depositAccountCrypter = new Crypter<>();
+        Map<Integer,Integer> complianceTable = depositAccountCrypter.getComplianceTable(depositAccountList);
+        request.getSession().setAttribute(Parameters.COMPLIANCE_TABLE,complianceTable);
 
         request.setAttribute(Parameters.DEPOSITS,depositAccountList);
         System.out.println("IN DEPOSIT COMMAND !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

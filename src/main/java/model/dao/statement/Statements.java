@@ -174,4 +174,33 @@ public interface Statements {
 
     String SELECT_UNCONFIRMED_CREDIT_BY_ACCOUNT_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             +" WHERE " + BankAccountTable.BANK_ACCOUNT_TYPE_ID + " = " + TableConstants.ACCOUNT_TYPE_UNCONFIRMED;
+
+    /*
+   SELECT BANK_ACCOUNT_FROM,BANK_ACCOUNT_TO,PRICE,DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME FROM PAYMENT_HISTORY
+   INNER JOIN USER_HAS_PAYMENT_HISTORY ON USER_HAS_PAYMENT_HISTORY.PAYMENT_HISTORY_ID = PAYMENT_HISTORY.HISTORY_ID
+   INNER JOIN USER ON USER.ID = USER_HAS_PAYMENT_HISTORY.USER_ID
+   WHERE (PAYMENT_HISTORY.BANK_ACCOUNT_TO = 10 OR PAYMENT_HISTORY.BANK_ACCOUNT_FROM = 10) AND USER.ID<>8;
+    */
+    String SELECT_HISTORY_BY_ACCOUNT_ID_AND_USER_ID = "SELECT "
+            + HistoryTable.ACCOUNT_FROM +","
+            + HistoryTable.ACCOUNT_TO +","
+            + HistoryTable.PRICE +","
+            + HistoryTable.DATE +","
+            + UserTable.USER_ID +","
+            + UserTable.USER_FIRST_NAME +","
+            + UserTable.USER_MIDDLE_NAME+","
+            + UserTable.USER_LAST_NAME
+            + " FROM " + HistoryTable.HISTORY_TABLE
+            + " INNER JOIN "
+            + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + " ON "
+            + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + "." +UserHasPaymentHistoryTable.PAYMENT_HISTORY_ID
+            + " = " + HistoryTable.HISTORY_TABLE + "." +HistoryTable.ID
+            + " INNER JOIN "
+            + UserTable.USER_TABLE +" ON "
+            + UserTable.USER_ID + " = " + UserHasPaymentHistoryTable.USER_ID
+            + " WHERE ( "
+            + HistoryTable.ACCOUNT_FROM + " = ? OR " + HistoryTable.ACCOUNT_TO + " = ? "
+            + " ) "
+            + " AND "
+            + UserTable.USER_ID + "<>?";
 }

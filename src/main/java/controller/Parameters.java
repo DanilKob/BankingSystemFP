@@ -26,6 +26,10 @@ public interface Parameters {
     String PASSWORD_ERROR = "passwordError";
     // Registration form
 
+
+    String SERIAL_ID_FROM_PAGE = "serialNumberFromPage";
+    String COMPLIANCE_TABLE = "complianceTable";
+
     String CREDITS = "credits";
     String CREDIT_ID = "creditId";
     String CREDIT_ACCOUNT = "creditAccount";

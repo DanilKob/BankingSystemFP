@@ -13,10 +13,16 @@ public class Crypter <T extends Entity>{
         int fakeId = 0;
         for (T entity : entityList) {
             complianceTable.put(++fakeId, entity.getId());
-            entity.setId(fakeId);
+            //entity.setId(fakeId);
         }
         return entityList;
     }
+
+    public Map<Integer,Integer> getComplianceTable(List<T> entityList){
+        cryptEntityId(entityList);
+        return complianceTable;
+    }
+
 
     public Map<Integer,Integer> getComplianceTable(){
         return complianceTable;

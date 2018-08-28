@@ -10,4 +10,6 @@ public interface CommandConstants {
     String DEPOSITS_COMMAND = "deposits";
     String CREDIT_PAGE_COMMAND = "creditPage";
     String DEPOSIT_PAGE_COMMAND = "depositPage";
+
+    String HISTORY_COMMAND = "history";
 }

@@ -18,15 +18,15 @@
     <title>Title</title>
 </head>
 <body>
-<form action="credit.jsp">
+<form action="/user/deposit.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
     </select>
 </form>
 <c:set var="user" value="${sessionScope.user}"/>
-<c:out value="${user.middleName}"/>
 <c:out value="${user.firstName}"/>
+<c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 

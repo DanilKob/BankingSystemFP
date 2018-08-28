@@ -21,6 +21,11 @@ public class Mapper<V> {
         return null;
     }
 
+    public V makeUnique(V entity){
+        cache.putIfAbsent(getKey(entity),entity);
+        return cache.get(getKey(entity));
+    }
+
     public void addInCashe(V entity){
         cache.putIfAbsent(getKey(entity),entity);
     }

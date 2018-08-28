@@ -20,11 +20,12 @@
 </head>
 <body>
 <c:set var="user" value="${sessionScope.user}"/>
-<c:out value="${user.middleName}"/>
 <c:out value="${user.firstName}"/>
+<c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
-<form action="user.jsp">
+
+<form action="/user/user.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -49,22 +50,32 @@
 </form>
 
 
+
 <c:if test="${not empty requestScope.credits}">
     <table>
         <caption>Credits</caption>
         <tr>
             <td>
-                id
+                #
+            </td>
+            <td>
+                Account ID
             </td>
             <td>
                 Balance
             </td>
+
             <td>
                 Type
             </td>
         </tr>
+        <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.credits}" var="credit">
+            <c:set var="count" value="${count + 1}" scope="page"/>
             <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
                 <td>
                     <c:out value="${credit.id} "/><br>
                 </td>
@@ -74,7 +85,7 @@
                 <td>
                     <form action="/servlet" method="get">
                         <input type="hidden" name="command" value="creditPage">
-                        <input type="hidden" name="creditId" value="${credit.id}">
+                        <input type="hidden" name="serialNumberFromPage" value="${count}">
                         <p><input type="submit" value="Credit Page"/></p>
                     </form>
                 </td>
@@ -89,7 +100,10 @@
         <caption>Deposit</caption>
         <tr>
             <td>
-                id
+                #
+            </td>
+            <td>
+                Account ID
             </td>
             <td>
                 Balance
@@ -98,8 +112,13 @@
                 Type
             </td>
         </tr>
+        <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.deposits}" var="deposit">
+            <c:set var="count" value="${count + 1}" scope="page"/>
             <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
                 <td>
                     <c:out value="${deposit.id} "/><br>
                 </td>
@@ -109,7 +128,7 @@
                 <td>
                     <form action="/servlet" method="get">
                         <input type="hidden" name="command" value="depositPage">
-                        <input type="hidden" name="depositId" value="${deposit.id}">
+                        <input type="hidden" name="serialNumberFromPage" value="${count}">
                         <p><input type="submit" value="Deposit Page"/></p>
                     </form>
                 </td>
