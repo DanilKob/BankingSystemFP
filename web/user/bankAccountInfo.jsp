@@ -15,7 +15,7 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
-    <title>Title</title>
+    <title>Info</title>
 </head>
 <body>
 <form action="/user/bankAccountInfo.jsp">
@@ -50,7 +50,6 @@
 
 <br>
 
-
 <c:if test="${not empty requestScope.bankAccountHistory}">
     <c:forEach items="${requestScope.bankAccountHistory}" var="history">
         <table>
@@ -67,6 +66,9 @@
                 <td>
                     Price
                 </td>
+                <td>
+                    Date
+                </td>
             </tr>
             <tr>
                 <td>
@@ -82,6 +84,9 @@
                 </td>
                 <td>
                     <c:out value="${history.balance}"/><br>
+                </td>
+                <td>
+                    <c:out value="${history.date}"/><br>
                 </td>
             </tr>
         </table>

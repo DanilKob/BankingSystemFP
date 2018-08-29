@@ -1,6 +1,8 @@
 package controller.utility;
 
 public interface TextKeys {
+
+    String DATE_FORMAT = "date.format";
     String LAST_NAME = "LastName";
     String FIRST_NAME = "FirstName";
     String MIDDLE_NAME = "MiddleName";

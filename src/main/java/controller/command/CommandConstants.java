@@ -13,4 +13,5 @@ public interface CommandConstants {
     String DEPOSIT_PAGE_COMMAND = "DEPOSIT";
 
     String HISTORY_COMMAND = "history";
+    String PAY_COMMAND = "pay";
 }
