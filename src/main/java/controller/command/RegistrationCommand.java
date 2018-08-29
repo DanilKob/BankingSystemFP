@@ -40,8 +40,9 @@ public class RegistrationCommand implements Command{
         boolean isFirstNameCorrect = IOHandler.checkInputByRegex(firstName,RegexKeys.FIRST_NAME_REGEX,language);
         boolean isLastNameCorrect = IOHandler.checkInputByRegex(lastName,RegexKeys.LAST_NAME_REGEX,language);
         boolean isMiddleNameCorrect = IOHandler.checkInputByRegex(middleName,RegexKeys.MIDDLE_NAME_REGEX,language);
-        boolean isLoginCorrect = IOHandler.checkInputByRegex(login,RegexKeys.LOGIN_REGEX,language);
-        boolean isPasswordCorrect = IOHandler.checkInputByRegex(password,RegexKeys.PASSWORD_REGEX,language);
+
+        boolean isLoginCorrect = IOHandler.checkInputByRegex(login,RegexKeys.LOGIN_REGEX,Languages.ENG);
+        boolean isPasswordCorrect = IOHandler.checkInputByRegex(password,RegexKeys.PASSWORD_REGEX,Languages.ENG);
 
         System.out.println("isFirstNameCorrect = " + isFirstNameCorrect);
         System.out.println("isLastNameCorrect = " + isLastNameCorrect);

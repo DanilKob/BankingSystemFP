@@ -7,6 +7,7 @@ import model.dao.statement.tables.RoleTable;
 import model.dao.statement.tables.UserTable;
 
 import java.util.List;
+import java.util.Objects;
 
 public class User implements Entity{
     @MappingKey
@@ -160,6 +161,5 @@ public class User implements Entity{
     public void setBankAccountList(List<BankAccount> bankAccountList) {
         this.bankAccountList = bankAccountList;
     }
-
 
 }

@@ -39,15 +39,6 @@
     <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
 </form>
 
-<form action="${pageContext.request.contextPath}/servlet" method="get">
-    <input type="hidden" name="command" value="credits">
-    <p><input type="submit" value="<fmt:message key="user.credits"/>"/></p>
-</form>
-
-<form action="${pageContext.request.contextPath}/servlet" method="get">
-    <input type="hidden" name="command" value="deposits">
-    <p><input type="submit" value="<fmt:message key="user.deposits"/>"/></p>
-</form>
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="bankAccounts">
@@ -81,16 +72,16 @@
                     <c:out value="${count} "/><br>
                 </td>
                 <td>
-                    <c:out value="${bankAccount.id} "/><br>
+                    <c:out value="${bankAccount.entity.id} "/><br>
                 </td>
                 <td>
-                    <c:out value="${bankAccount.balance}"/><br>
+                    <c:out value="${bankAccount.entity.balance}"/><br>
                 </td>
                 <td>
                     <form action="/servlet" method="get">
-                        <input type="hidden" name="command" value="${bankAccount.accountType}">
-                        <input type="hidden" name="serialNumberFromPage" value="${count}">
-                        <p><input type="submit" value="${bankAccount.accountType}"/></p>
+                        <input type="hidden" name="command" value="${bankAccount.entity.accountType}">
+                        <input type="hidden" name="fakeId" value="${bankAccount.fakeId}">
+                        <p><input type="submit" value="${bankAccount.entity.accountType}"/></p>
                     </form>
                 </td>
             </tr>
@@ -98,91 +89,6 @@
     </table>
 </c:if>
 
-<c:if test="${not empty requestScope.credits}">
-    <table>
-        <caption>Credits</caption>
-        <tr>
-            <td>
-                #
-            </td>
-            <td>
-                Account ID
-            </td>
-            <td>
-                Balance
-            </td>
-
-            <td>
-                Type
-            </td>
-        </tr>
-        <c:set var="count" value="0" scope="page" />
-        <c:forEach items="${requestScope.credits}" var="credit">
-            <c:set var="count" value="${count + 1}" scope="page"/>
-            <tr>
-                <td>
-                    <c:out value="${count} "/><br>
-                </td>
-                <td>
-                    <c:out value="${credit.id} "/><br>
-                </td>
-                <td>
-                    <c:out value="${credit.balance}"/><br>
-                </td>
-                <td>
-                    <form action="/servlet" method="get">
-                        <input type="hidden" name="command" value="creditPage">
-                        <input type="hidden" name="serialNumberFromPage" value="${count}">
-                        <p><input type="submit" value="Credit Page"/></p>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
-
-<c:if test="${not empty requestScope.deposits}">
-    <table>
-        <caption>Deposit</caption>
-        <tr>
-            <td>
-                #
-            </td>
-            <td>
-                Account ID
-            </td>
-            <td>
-                Balance
-            </td>
-            <td>
-                Type
-            </td>
-        </tr>
-        <c:set var="count" value="0" scope="page" />
-        <c:forEach items="${requestScope.deposits}" var="deposit">
-            <c:set var="count" value="${count + 1}" scope="page"/>
-            <tr>
-                <td>
-                    <c:out value="${count} "/><br>
-                </td>
-                <td>
-                    <c:out value="${deposit.id} "/><br>
-                </td>
-                <td>
-                    <c:out value="${deposit.balance}"/><br>
-                </td>
-                <td>
-                    <form action="/servlet" method="get">
-                        <input type="hidden" name="command" value="depositPage">
-                        <input type="hidden" name="serialNumberFromPage" value="${count}">
-                        <p><input type="submit" value="Deposit Page"/></p>
-                    </form>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
 <a href="credit.jsp"> Credits </a>
 </body>
 </html>

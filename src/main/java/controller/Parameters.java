@@ -27,7 +27,7 @@ public interface Parameters {
     // Registration form
 
 
-    String SERIAL_ID_FROM_PAGE = "serialNumberFromPage";
+    String FAKE_ID_FROM_PAGE = "fakeId";
     String COMPLIANCE_TABLE = "complianceTable";
 
     String BANK_ACCOUNTS = "bankAccounts";

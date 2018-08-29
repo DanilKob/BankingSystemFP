@@ -30,8 +30,8 @@ public class LogInCommand implements Command {
         Languages language = IOHandler.getLanguageFromRequest(request);
 
 
-        boolean isLoginCorrect = IOHandler.checkInputByRegex(login,RegexKeys.LOGIN_REGEX,language);
-        boolean isPasswordCorrect = IOHandler.checkInputByRegex(password,RegexKeys.PASSWORD_REGEX,language);
+        boolean isLoginCorrect = IOHandler.checkInputByRegex(login,RegexKeys.LOGIN_REGEX,Languages.ENG);
+        boolean isPasswordCorrect = IOHandler.checkInputByRegex(password,RegexKeys.PASSWORD_REGEX,Languages.ENG);
 
         System.out.println("login" + login);
         System.out.println("isLoginCorrect = " + isLoginCorrect);

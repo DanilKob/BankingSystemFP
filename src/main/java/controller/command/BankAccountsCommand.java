@@ -2,6 +2,7 @@ package controller.command;
 
 import controller.PagesName;
 import controller.Parameters;
+import controller.crypter.SecurityEntity;
 import model.dao.statement.Statements;
 import model.entity.BankAccount;
 import model.entity.User;
@@ -16,13 +17,15 @@ public class BankAccountsCommand extends AbstractBankAccountInfo{
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
         System.out.println(Statements.SELECT_ALL_BANK_ACCOUNT_BY_USER_ID);
         List<BankAccount> bankAccountList = BankAccountService.getAllConfirmedBankAccount(userId);
-        
+
         for (BankAccount bankAccount : bankAccountList) {
             System.out.println(bankAccount.getAccountType());
         }
-        super.createComplianceTableInSession(request,bankAccountList);
+        //super.createComplianceTableInSession(request,bankAccountList);
 
-        request.setAttribute(Parameters.BANK_ACCOUNTS,bankAccountList);
+        List<SecurityEntity<BankAccount>> securityBankAccountList = super.cryptEntityList(request,bankAccountList);
+
+        request.setAttribute(Parameters.BANK_ACCOUNTS,securityBankAccountList);
         return PagesName.USER_HOME_PAGE;
     }
 }

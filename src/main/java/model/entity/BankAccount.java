@@ -6,6 +6,7 @@ import model.dao.statement.tables.BankAccountTypeTable;
 import model.entity.enums.Account;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class BankAccount implements Entity{
     @ExtractParam(columnName = BankAccountTable.BANK_ACCOUNT_ID)
@@ -83,4 +84,16 @@ public class BankAccount implements Entity{
         this.accountType = accountType;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BankAccount that = (BankAccount) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

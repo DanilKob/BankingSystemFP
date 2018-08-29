@@ -12,7 +12,7 @@ public class DepositInfoCommand extends AbstractBankAccountInfo {
     public String execute(HttpServletRequest request) {
         // todo ClassCastException
 
-        //int depositIdFromPage = Integer.parseInt(request.getParameter(Parameters.SERIAL_ID_FROM_PAGE));
+        //int depositIdFromPage = Integer.parseInt(request.getParameter(Parameters.FAKE_ID_FROM_PAGE));
         int realCreditId = super.decryptBankAccountIdFromRequest(request);
 
 

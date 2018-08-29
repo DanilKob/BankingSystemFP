@@ -29,17 +29,26 @@
 <c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
-
-<form action="/servlet" method="get">
-    <input type="hidden" name="command" value="history">
-    <c:if test="${not empty param.serialNumberFromPage}">
-        <input type="hidden" name="serialNumberFromPage" value="${param.serialNumberFromPage}">
-    </c:if>
-    <p><input type="submit" value="Account history"/></p>
+<br>
+<a href="/user/user.jsp"> User </a>
+<br>
+<form action="/servlet" method="post">
+    <input type="hidden" name="command" value="pay">
+    <p>Pay on bank account ... </p>
+    <p><input type="number" name="bankAccountTo"></p>
+    <p>Price </p>
+    <p><input type="number" name="price"></p>
+    <p><input type="submit" value="Pay"/></p>
 </form>
 
 <br>
 
+<form action="/servlet" method="get">
+    <input type="hidden" name="command" value="history">
+    <p><input type="submit" value="Account history"/></p>
+</form>
+
+<br>
 
 
 <c:if test="${not empty requestScope.bankAccountHistory}">
@@ -146,7 +155,7 @@
 </c:if>
 
 
-<a href="/user/user.jsp"> User </a>
+
 </body>
 </html>
 

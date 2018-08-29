@@ -1,9 +1,8 @@
 package controller.command;
 
-import controller.PagesName;
 import controller.Parameters;
 import controller.crypter.Crypter;
-import model.entity.DepositAccount;
+import controller.crypter.SecurityEntity;
 import model.entity.Entity;
 import model.entity.User;
 
@@ -25,15 +24,15 @@ public abstract class AbstractBankAccountInfo implements Command{
         */
         // todo check exception
         int accountIdFromPage;
-        if(request.getParameter(Parameters.SERIAL_ID_FROM_PAGE)==null
-                || request.getParameter(Parameters.SERIAL_ID_FROM_PAGE).isEmpty()){
+        if(request.getParameter(Parameters.FAKE_ID_FROM_PAGE)==null
+                || request.getParameter(Parameters.FAKE_ID_FROM_PAGE).isEmpty()){
 
             accountIdFromPage = Integer.parseInt(String.valueOf(request.getSession()
-                    .getAttribute(Parameters.SERIAL_ID_FROM_PAGE)));
+                    .getAttribute(Parameters.FAKE_ID_FROM_PAGE)));
 
         }else{
-            accountIdFromPage = Integer.parseInt(request.getParameter(Parameters.SERIAL_ID_FROM_PAGE));
-            request.getSession().setAttribute(Parameters.SERIAL_ID_FROM_PAGE,accountIdFromPage);
+            accountIdFromPage = Integer.parseInt(request.getParameter(Parameters.FAKE_ID_FROM_PAGE));
+            request.getSession().setAttribute(Parameters.FAKE_ID_FROM_PAGE,accountIdFromPage);
         }
 
         return complianceTable.get(accountIdFromPage);
@@ -47,5 +46,13 @@ public abstract class AbstractBankAccountInfo implements Command{
 
     public int getUserIdInSession(HttpServletRequest request){
         return ((User)request.getSession().getAttribute(Parameters.USER)).getId();
+    }
+
+    public <T extends Entity> List<SecurityEntity<T>> cryptEntityList(HttpServletRequest request, List<T> entityLsit){
+        Crypter<T> entityCrypter = new Crypter<>();
+        List<SecurityEntity<T>> securityEntityList = entityCrypter.cryptEntityId(entityLsit);
+        Map<Integer,Integer> complianceTable = entityCrypter.getComplianceTable();
+        request.getSession().setAttribute(Parameters.COMPLIANCE_TABLE,complianceTable);
+        return securityEntityList;
     }
 }
