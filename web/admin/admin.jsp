@@ -18,6 +18,12 @@
     <title> Index </title>
 </head>
 <body>
+<c:set var="user" value="${sessionScope.user}"/>
+<c:out value="${user.firstName}"/>
+<c:out value="${user.middleName}"/>
+<c:out value="${user.lastName}"/>
+<c:out value="${sessionScope.role}"/>
+
 <form action="admin.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>

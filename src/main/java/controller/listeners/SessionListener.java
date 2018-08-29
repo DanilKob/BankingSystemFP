@@ -4,6 +4,7 @@ package controller.listeners;
 import controller.Parameters;
 import model.entity.User;
 
+
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.HashSet;
@@ -20,9 +21,13 @@ public class SessionListener implements HttpSessionListener {
                 .getSession().getServletContext()
                 .getAttribute(Parameters.LOGGED_USERS);
 
-        String login = (String) httpSessionEvent.getSession().getAttribute(Parameters.LOGIN);
+        // todo make method in RoleUtility
+        User user = (User)httpSessionEvent.getSession().getAttribute(Parameters.USER);
+        if(user!=null){
+            String login = (String) httpSessionEvent.getSession().getAttribute(Parameters.LOGIN);
+            loggedUsers.remove(login);
+        }
 
-        loggedUsers.remove(login);
         //httpSessionEvent.getSession().getServletContext().setAttribute(Parameters.LOGGED_USERS, loggedUsers);
         System.out.println("Session Destroyed");
     }

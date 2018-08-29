@@ -2,6 +2,7 @@ package controller.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -16,6 +17,9 @@ public enum Languages {
 
     private final Properties regexProperties;
     private final Properties textProperties;
+    //private final DateTimeFormatter dateTimeFormatter;
+
+
     // todo delete useless set of avaliable languages
     private static Set<String> languageSet = new HashSet<>();
 
@@ -42,6 +46,7 @@ public enum Languages {
     public static boolean contains(String languageName) {
         return languageSet.contains(languageName);
     }
+
     // todo delete useless set of avaliable languages
 
     /**
@@ -52,6 +57,7 @@ public enum Languages {
     Languages(String textPath, String regexPath){
         this.textProperties = loadProperty(textPath);
         this.regexProperties = loadProperty(regexPath);
+        //dateTimeFormatter = DateTimeFormatter.ofPattern(textProperties.getProperty());
     }
 
     /**

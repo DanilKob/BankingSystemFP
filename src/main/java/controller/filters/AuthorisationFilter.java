@@ -2,6 +2,8 @@ package controller.filters;
 
 import controller.PagesName;
 import controller.Parameters;
+import controller.command.CommandConstants;
+import controller.command.CommandManager;
 import controller.utility.RolesUtility;
 import model.entity.User;
 
@@ -10,12 +12,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class AuthorisationFilter implements Filter {
+    private static final String SERVLET_PATH = "/servlet";
+    //private Map<String,Set<String>> commandMap = new HashMap<>();
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        /*
+        Set<String> guestCommands = new HashSet<>();
+        Set<String> userCommands = new HashSet<>();
+        Set<String> adminCommands = new HashSet<>();
 
+        guestCommands.add(CommandConstants.LOGIN_COMMAND);
+        guestCommands.add(CommandConstants.REGISTRATION_COMMAND);
+
+        userCommands.add(CommandConstants.LOGOUT_COMMAND);
+        userCommands.add(CommandConstants.CREDITS_COMMAND);
+        userCommands.add(CommandConstants.CREDIT_PAGE_COMMAND);
+        userCommands.add(CommandConstants.DEPOSITS_COMMAND);
+        userCommands.add(CommandConstants.DEPOSIT_PAGE_COMMAND);
+
+        commandMap.put(User.ROLE.GUEST.name(),guestCommands);
+        commandMap.put(User.ROLE.USER.name(),userCommands);
+        commandMap.put(User.ROLE.ADMIN.name(),adminCommands);
+        */
     }
 
     @Override
@@ -24,48 +48,65 @@ public class AuthorisationFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse)servletResponse;
         HttpSession session = httpServletRequest.getSession();
-        String path = ((HttpServletRequest) servletRequest).getRequestURL().toString();
+        String path = httpServletRequest.getRequestURL().toString();
 
         System.out.println("===================");
         System.out.println("====== AuthFilter======");
 
         System.out.println("path = "+path);
-        /*
-        if(session.isNew()){
-            // todo call model from filter!!!
-            System.out.println("Session = "+session+" is new");
-            session.setAttribute(Parameters.ROLE,User.ROLE.GUEST);
-        }
-        */
-        User.ROLE roleFromPath = defineRoleFromPath(path);
+
         User.ROLE roleFromSession = defineRoleFromSession(session);
+        String commandName = httpServletRequest.getParameter(Parameters.ACTION_PARAM);
+
+        if(isServletCall(path)){
+            if(checkCommandAccess(commandName,roleFromSession)){
+                filterChain.doFilter(servletRequest,servletResponse);
+                return;
+            }else{
+                System.out.println("ACCESS IS NOT CORRECT!!!!!!!!!!!!");
+                httpServletResponse.sendRedirect(removeServletDirectoryFromPath(path));
+                return;
+            }
+        }
+
+        User.ROLE roleFromPath = defineRoleFromPath(path);
+
 
         System.out.println("Session = "+session);
         System.out.println("roleFromPath = "+roleFromPath);
         System.out.println("roleFromSession = "+roleFromSession);
 
+        // admin = admin
+        // user = user
+        // guest = guest
         if(roleFromPath.equals(roleFromSession)){
+            System.out.println("ROLE FROM PATH AND SESSION ARE EQUAL");
             filterChain.doFilter(servletRequest,servletResponse);
             return;
         }
 
+        RolesUtility.logoutUser(httpServletRequest);
+
+        path = removeServletDirectoryFromPath(path);
+
+        // user or admin goes to guest
         if(roleFromPath.equals(User.ROLE.GUEST)){
-            RolesUtility.removeRoleAndLogin(httpServletRequest);
             httpServletResponse.sendRedirect(PagesName.INDEX_PAGE);
             return;
         }
+        System.out.println("ROLE FROM PATH AND SESSION ARE NOT EQUAL");
+        // admin goes to user
 
         System.out.println("Filter redirect to error");
         //httpServletResponse.sendRedirect(PagesName.ERROR);
         // filter path
         System.out.println("path = "+path);
 
-        RolesUtility.removeRoleAndLogin(httpServletRequest);
+
         String pathRedirect = removeRoleDirectoryFromPath(path,roleFromPath)+PagesName.ERROR;
 
         System.out.println("redirect path = " + pathRedirect);
         httpServletResponse.sendRedirect( pathRedirect);
-
 
         System.out.println("!===================!");
     }
@@ -73,6 +114,11 @@ public class AuthorisationFilter implements Filter {
     @Override
     public void destroy() {
 
+    }
+
+    private boolean checkCommandAccess(String commandName, User.ROLE roleFromSession){
+        //return commandMap.get(roleFromSession.name()).contains(commandName);
+        return CommandManager.getInstance().getCommandNameSet(roleFromSession).contains(commandName);
     }
 
     private User.ROLE defineRoleFromPath(String path){
@@ -110,27 +156,16 @@ public class AuthorisationFilter implements Filter {
         String target = role.name().toLowerCase()+"/*.*";
         return  path.replaceAll(target,"");
     }
+
+    private String removeServletDirectoryFromPath(String path){
+        String target = SERVLET_PATH;
+        return  path.replaceAll(target,"");
+    }
+
+    private boolean isServletCall(String path){
+        return path.contains(SERVLET_PATH);
+    }
+
+
+
 }
-
-        /*
-
-        System.out.println("Session = "+session);
-        System.out.println("roleFromPath = "+roleFromPath);
-        System.out.println("roleFromSession = "+roleFromSession);
-
-        System.out.println(roleFromPath.equals(roleFromSession));
-
-
-        if(checkAccess(roleFromPath,roleFromSession)){
-            filterChain.doFilter(servletRequest,servletResponse);
-        }else{
-            System.out.println("Filter redirect to error");
-            //httpServletResponse.sendRedirect(PagesName.ERROR);
-            // filter path
-            System.out.println("path = "+path);
-            String pathRedirect = removeRoleDirectoryFromPath(path,roleFromPath)+PagesName.ERROR;
-
-            System.out.println("redirect path = " + pathRedirect);
-            httpServletResponse.sendRedirect( pathRedirect);
-        }
-        */

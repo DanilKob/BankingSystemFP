@@ -18,6 +18,7 @@
     <title> <fmt:message key="registration.page"/>Index </title>
 </head>
 <body>
+<c:out value="${sessionScope.role}"/>
 <form action="registration.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>

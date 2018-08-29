@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="credit" uri="/WEB-INF/creditTable" %>
 
 <c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
 <fmt:setLocale value="${language}" />
@@ -18,7 +19,13 @@
     <title> <fmt:message key="user.welcome.page"/> </title>
 </head>
 <body>
-<form action="user.jsp">
+<c:set var="user" value="${sessionScope.user}"/>
+<c:out value="${user.firstName}"/>
+<c:out value="${user.middleName}"/>
+<c:out value="${user.lastName}"/>
+<c:out value="${sessionScope.role}"/>
+
+<form action="/user/user.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -31,5 +38,57 @@
 
     <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
 </form>
+
+
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="bankAccounts">
+    <p><input type="submit" value="<fmt:message key="user.bank.account"/>"/></p>
+</form>
+
+
+<c:if test="${not empty requestScope.bankAccounts}">
+    <table>
+        <caption>Bank accounts</caption>
+        <tr>
+            <td>
+                #
+            </td>
+            <td>
+                Account ID
+            </td>
+            <td>
+                Balance
+            </td>
+
+            <td>
+                Type
+            </td>
+        </tr>
+        <c:set var="count" value="0" scope="page" />
+        <c:forEach items="${requestScope.bankAccounts}" var="bankAccount">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
+                <td>
+                    <c:out value="${bankAccount.entity.id} "/><br>
+                </td>
+                <td>
+                    <c:out value="${bankAccount.entity.balance}"/><br>
+                </td>
+                <td>
+                    <form action="/servlet" method="get">
+                        <input type="hidden" name="command" value="${bankAccount.entity.accountType}">
+                        <input type="hidden" name="fakeId" value="${bankAccount.fakeId}">
+                        <p><input type="submit" value="${bankAccount.entity.accountType}"/></p>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
+<a href="credit.jsp"> Credits </a>
 </body>
 </html>
