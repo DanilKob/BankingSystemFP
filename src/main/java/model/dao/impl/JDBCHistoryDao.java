@@ -47,8 +47,8 @@ public class JDBCHistoryDao extends AbstractJDBCGenericDao<History> implements H
             User user;
             History history;
             while(resultSet.next()){
-                history = historyExtracter.extractFromResultSet(resultSet,new History());
-                user = userMapper.makeUnique(userExtracter.extractFromResultSet(resultSet,new User()));
+                history = historyExtracter.extractEntityFromResultSet(resultSet,new History());
+                user = userMapper.makeUnique(userExtracter.extractEntityFromResultSet(resultSet,new User()));
                 history.setUser(user);
                 historyList.add(history);
             }

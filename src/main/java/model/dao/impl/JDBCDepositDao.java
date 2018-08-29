@@ -3,7 +3,6 @@ package model.dao.impl;
 import model.dao.DepositDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
-import model.entity.CreditAccount;
 import model.entity.DepositAccount;
 
 import java.sql.Connection;
@@ -50,13 +49,13 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
             if(resultSet.next()){
                 System.out.println("Result is not empty !!!");
-                depositAccount = depositExtracter.extractFromResultSet(resultSet,new DepositAccount());
+                depositAccount = depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount());
             }
             /*
             DepositMapper depositMapper = new DepositMapper();
 
             if(resultSet.next()){
-                depositAccount = depositMapper.extractFromResultSet(resultSet);
+                depositAccount = depositMapper.extractEntityFromResultSet(resultSet);
             }else{
                 System.out.println("No such account");
                 // todo throw my Exception
@@ -69,7 +68,7 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             }
             */
 
-            //depositAccount = depositMapper.extractFromResultSet(resultSet);
+            //depositAccount = depositMapper.extractEntityFromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -94,7 +93,7 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
             depositAccounts = new LinkedList<>();
             while(resultSet.next()){
-                depositAccounts.add(depositExtracter.extractFromResultSet(resultSet,new DepositAccount()));
+                depositAccounts.add(depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount()));
             }
         } catch (SQLException e) {
             e.printStackTrace();

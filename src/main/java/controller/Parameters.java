@@ -30,6 +30,10 @@ public interface Parameters {
     String SERIAL_ID_FROM_PAGE = "serialNumberFromPage";
     String COMPLIANCE_TABLE = "complianceTable";
 
+    String BANK_ACCOUNTS = "bankAccounts";
+    String BANK_ACCOUNT_ID = "bankAccountId";
+    String BANK_ACCOUNT_HISTORY = "bankAccountHistory";
+
     String CREDITS = "credits";
     String CREDIT_ID = "creditId";
     String CREDIT_ACCOUNT = "creditAccount";

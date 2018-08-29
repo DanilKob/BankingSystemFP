@@ -2,6 +2,7 @@ package model.entity;
 
 import model.dao.extracter.ExtractParam;
 import model.dao.statement.tables.BankAccountTable;
+import model.dao.statement.tables.BankAccountTypeTable;
 import model.entity.enums.Account;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public class BankAccount implements Entity{
     @ExtractParam(columnName = BankAccountTable.BANK_ACCOUNT_BALANCE)
     private int balance;
 
-
+    @ExtractParam(columnName = BankAccountTypeTable.ACCOUNT_TYPE)
     private Account accountType;
 
     @ExtractParam(columnName = BankAccountTable.BANK_ACCOUNT_DATE)

@@ -2,6 +2,7 @@ package model.dao.statement;
 
 import model.dao.statement.tables.*;
 import model.entity.User;
+import model.entity.enums.Account;
 
 public interface Statements {
     String AND = " AND ";
@@ -76,6 +77,12 @@ public interface Statements {
             + ")"
             +" VALUES (?,?,?,?)";
 
+    String SELECT_ALL_BANK_ACCOUNT_BY_USER_ID = "SELECT * FROM " + BankAccountTypeTable.BANK_ACCOUNT_TYPE_TABLE
+            + " INNER JOIN " + BankAccountTable.BANK_ACCOUNT_TABLE  + " ON "
+            + BankAccountTypeTable.ID + " = " + BankAccountTable.BANK_ACCOUNT_TYPE_ID
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
+
+
     String SELECT_CREDIT_BY_BANK_ACCOUNT_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             + " INNER JOIN " + CreditTable.CREDIT_TABLE
             + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_CREDIT_ID
@@ -91,12 +98,14 @@ public interface Statements {
             + " WHERE " + BankAccountTable.BANK_ACCOUNT_ID + " = ?";
 
 
-    String SELECT_ALL_CREDIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+    String SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             + " INNER JOIN " + CreditTable.CREDIT_TABLE
             + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_CREDIT_ID
             + " = "
             + CreditTable.CREDIT_TABLE + "." + CreditTable.CREDIT_ID
-            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?"
+            + " AND "
+            + BankAccountTable.BANK_ACCOUNT_TYPE_ID  + " <> " + Account.UNCONFIRMED_CREDIT.type_id;
 
     String SELECT_ALL_DEPOSIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             + " INNER JOIN " + DepositTable.DEPOSIT_TABLE
@@ -104,10 +113,6 @@ public interface Statements {
             + " = "
             + DepositTable.DEPOSIT_TABLE+ "." + DepositTable.DEPOSIT_ID
             + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
-
-
-
-
 
     String COUNT_ROW_PSEYDONYM = "countrow";
 

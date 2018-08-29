@@ -26,6 +26,11 @@ public class JDBCDaoFactory extends AbstractDaoFactory {
         return new JDBCDepositDao(getConnection());
     }
 
+    @Override
+    public HistoryDao createHistoryDao() {
+        return new JDBCHistoryDao(getConnection());
+    }
+
     public Connection getConnection(){
         try {
             return ConnectionPoolHolder.getDataSource().getConnection();

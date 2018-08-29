@@ -49,7 +49,54 @@
     <p><input type="submit" value="<fmt:message key="user.deposits"/>"/></p>
 </form>
 
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="bankAccounts">
+    <p><input type="submit" value="<fmt:message key="user.bank.account"/>"/></p>
+</form>
 
+
+<c:if test="${not empty requestScope.bankAccounts}">
+    <table>
+        <caption>Bank accounts</caption>
+        <tr>
+            <td>
+                #
+            </td>
+            <td>
+                Account ID
+            </td>
+            <td>
+                Balance
+            </td>
+
+            <td>
+                Type
+            </td>
+        </tr>
+        <c:set var="count" value="0" scope="page" />
+        <c:forEach items="${requestScope.bankAccounts}" var="bankAccount">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
+                <td>
+                    <c:out value="${bankAccount.id} "/><br>
+                </td>
+                <td>
+                    <c:out value="${bankAccount.balance}"/><br>
+                </td>
+                <td>
+                    <form action="/servlet" method="get">
+                        <input type="hidden" name="command" value="${bankAccount.accountType}">
+                        <input type="hidden" name="serialNumberFromPage" value="${count}">
+                        <p><input type="submit" value="${bankAccount.accountType}"/></p>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 
 <c:if test="${not empty requestScope.credits}">
     <table>

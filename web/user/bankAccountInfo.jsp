@@ -32,42 +32,119 @@
 
 <form action="/servlet" method="get">
     <input type="hidden" name="command" value="history">
-    <input type="hidden" name="serialNumberFromPage" value="${param.serialNumberFromPage}">
+    <c:if test="${not empty param.serialNumberFromPage}">
+        <input type="hidden" name="serialNumberFromPage" value="${param.serialNumberFromPage}">
+    </c:if>
     <p><input type="submit" value="Account history"/></p>
 </form>
 
 <br>
 
-<table>
-    <tr>
-        <td>
-            id
-        </td>
-        <td>
-            Balance
-        </td>
-        <td>
-            Credit Name
-        </td>
-        <td>
-            Type
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <c:out value="${requestScope.creditAccount.id}"/><br>
-        </td>
-        <td>
-            <c:out value="${requestScope.creditAccount.balance}"/><br>
-        </td>
-        <td>
-            <c:out value="${requestScope.creditAccount.name}"/><br>
-        </td>
-        <td>
-            Credit
-        </td>
-    </tr>
-</table>
+
+
+<c:if test="${not empty requestScope.bankAccountHistory}">
+    <c:forEach items="${requestScope.bankAccountHistory}" var="history">
+        <table>
+            <tr>
+                <td>
+                    From
+                </td>
+                <td>
+                    To
+                </td>
+                <td>
+                    Sender/Receiver
+                </td>
+                <td>
+                    Price
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <c:out value="${history.fromAccountId}"/><br>
+                </td>
+                <td>
+                    <c:out value="${history.toAccountId}"/><br>
+                </td>
+                <td>
+                    <c:out value="${history.user.firstName}"/><br>
+                    <c:out value="${history.user.middleName}"/><br>
+                    <c:out value="${history.user.lastName}"/><br>
+                </td>
+                <td>
+                    <c:out value="${history.balance}"/><br>
+                </td>
+            </tr>
+        </table>
+    </c:forEach>
+</c:if>
+
+<c:if test="${not empty requestScope.creditAccount}">
+    <table>
+        <tr>
+            <td>
+                id
+            </td>
+            <td>
+                Balance
+            </td>
+            <td>
+                Credit Name
+            </td>
+            <td>
+                Type
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <c:out value="${requestScope.creditAccount.id}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.creditAccount.balance}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.creditAccount.name}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.creditAccount.accountType}"/><br>
+            </td>
+        </tr>
+    </table>
+</c:if>
+
+<c:if test="${not empty requestScope.depositAccount}">
+    <table>
+        <tr>
+            <td>
+                id
+            </td>
+            <td>
+                Balance
+            </td>
+            <td>
+                Deposit Name
+            </td>
+            <td>
+                Type
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <c:out value="${requestScope.depositAccount.id}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.depositAccount.balance}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.depositAccount.name}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.depositAccount.accountType}"/><br>
+            </td>
+        </tr>
+    </table>
+</c:if>
+
 
 <a href="/user/user.jsp"> User </a>
 </body>

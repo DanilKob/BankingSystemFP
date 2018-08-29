@@ -3,6 +3,7 @@ package controller.filters;
 import controller.PagesName;
 import controller.Parameters;
 import controller.command.CommandConstants;
+import controller.command.CommandManager;
 import controller.utility.RolesUtility;
 import model.entity.User;
 
@@ -18,9 +19,10 @@ import java.util.Set;
 
 public class AuthorisationFilter implements Filter {
     private static final String SERVLET_PATH = "/servlet";
-    private Map<User.ROLE,Set<String>> commandMap = new HashMap<>();
+    //private Map<String,Set<String>> commandMap = new HashMap<>();
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        /*
         Set<String> guestCommands = new HashSet<>();
         Set<String> userCommands = new HashSet<>();
         Set<String> adminCommands = new HashSet<>();
@@ -34,9 +36,10 @@ public class AuthorisationFilter implements Filter {
         userCommands.add(CommandConstants.DEPOSITS_COMMAND);
         userCommands.add(CommandConstants.DEPOSIT_PAGE_COMMAND);
 
-        commandMap.put(User.ROLE.GUEST,guestCommands);
-        commandMap.put(User.ROLE.USER,userCommands);
-        commandMap.put(User.ROLE.ADMIN,adminCommands);
+        commandMap.put(User.ROLE.GUEST.name(),guestCommands);
+        commandMap.put(User.ROLE.USER.name(),userCommands);
+        commandMap.put(User.ROLE.ADMIN.name(),adminCommands);
+        */
     }
 
     @Override
@@ -114,7 +117,8 @@ public class AuthorisationFilter implements Filter {
     }
 
     private boolean checkCommandAccess(String commandName, User.ROLE roleFromSession){
-        return commandMap.get(roleFromSession).contains(commandName);
+        //return commandMap.get(roleFromSession.name()).contains(commandName);
+        return CommandManager.getInstance().getCommandNameSet(roleFromSession).contains(commandName);
     }
 
     private User.ROLE defineRoleFromPath(String path){

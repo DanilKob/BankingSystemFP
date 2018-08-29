@@ -75,7 +75,7 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<User> userExtracter = new Extracter<>();
             if(resultSet.next()){
-                user = userExtracter.extractFromResultSet(resultSet, new User());
+                user = userExtracter.extractEntityFromResultSet(resultSet, new User());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<User> userExtracter = new Extracter<>();
             if(resultSet.next()){
-                optionalUser = Optional.of(userExtracter.extractFromResultSet(resultSet, new User()));
+                optionalUser = Optional.of(userExtracter.extractEntityFromResultSet(resultSet, new User()));
             }
             // todo throw my exception
         } catch (SQLException e) {

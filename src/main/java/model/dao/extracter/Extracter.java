@@ -29,7 +29,7 @@ public class Extracter<T extends Entity> {
         setterMap.put(LocalDateTime.class, new LocalDateTimeGetter());
     }
 
-    public T extractFromResultSet(ResultSet rs, T entity) throws IllegalAccessException, SQLException {
+    public T extractEntityFromResultSet(ResultSet rs, T entity) throws IllegalAccessException, SQLException {
 
         setColumnNames(rs);
         setAnnotatedFields(entity);
@@ -42,6 +42,7 @@ public class Extracter<T extends Entity> {
         }
         return entity;
     }
+
 
 
     private void setColumnNames(ResultSet resultSet) throws SQLException {

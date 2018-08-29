@@ -64,7 +64,7 @@
             <c:out value="${requestScope.creditAccount.name}"/><br>
         </td>
         <td>
-            Credit
+            <c:out value="${requestScope.creditAccount.accountType}"/><br>
         </td>
     </tr>
 </table>

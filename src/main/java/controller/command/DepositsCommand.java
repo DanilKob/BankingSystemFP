@@ -4,7 +4,7 @@ import controller.PagesName;
 import controller.Parameters;
 import model.entity.DepositAccount;
 import model.entity.User;
-import model.service.BankAccountService;
+import model.service.DepositAccountService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -15,7 +15,7 @@ public class DepositsCommand extends AbstractBankAccountInfo{
         // todo remove this if
         if((request.getSession().getAttribute(Parameters.USER))==null) System.out.println("USER IS NULL");
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
-        List<DepositAccount> depositAccountList = BankAccountService.getAllDepositAccountsByUserId(userId);
+        List<DepositAccount> depositAccountList = DepositAccountService.getAllDepositAccountsByUserId(userId);
 
         /*
         Crypter<DepositAccount> depositAccountCrypter = new Crypter<>();

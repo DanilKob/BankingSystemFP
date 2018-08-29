@@ -2,7 +2,6 @@ package model.dao.impl;
 
 import model.dao.CreditDao;
 import model.dao.extracter.Extracter;
-import model.dao.mapper.CreditMapper;
 import model.dao.statement.Statements;
 import model.entity.CreditAccount;
 
@@ -43,11 +42,10 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
                     .prepareStatement(Statements.SELECT_CREDIT_BY_BANK_ACCOUNT_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            CreditMapper creditMapper = new CreditMapper();
             Extracter<CreditAccount> creditAccountExtracter = new Extracter<>();
             if(resultSet.next()){
-                creditAccount = creditAccountExtracter.extractFromResultSet(resultSet, new CreditAccount());
-                //creditAccount = creditMapper.extractFromResultSet(resultSet);
+                creditAccount = creditAccountExtracter.extractEntityFromResultSet(resultSet, new CreditAccount());
+                //creditAccount = creditMapper.extractEntityFromResultSet(resultSet);
             }else{
                 // todo throw my exception
                 System.out.println("Nothing found");
@@ -72,13 +70,13 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
         List<CreditAccount> creditAccounts = null;
         try{
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.SELECT_ALL_CREDIT_BY_BANK_USER_ID);
+                    .prepareStatement(Statements.SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID);
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<CreditAccount> creditExtracter = new Extracter<>();
             creditAccounts = new LinkedList<>();
             while(resultSet.next()){
-                creditAccounts.add(creditExtracter.extractFromResultSet(resultSet,new CreditAccount()));
+                creditAccounts.add(creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount()));
             }
         } catch (SQLException e) {
             e.printStackTrace();

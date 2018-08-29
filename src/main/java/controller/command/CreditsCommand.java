@@ -2,14 +2,12 @@ package controller.command;
 
 import controller.PagesName;
 import controller.Parameters;
-import controller.crypter.Crypter;
 import model.entity.CreditAccount;
 import model.entity.User;
-import model.service.BankAccountService;
+import model.service.CreditAccountService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 public class CreditsCommand extends AbstractBankAccountInfo{
 
@@ -18,7 +16,7 @@ public class CreditsCommand extends AbstractBankAccountInfo{
         if(((User)request.getSession().getAttribute(Parameters.USER))==null) System.out.println("USER IS NULL");
 
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
-        List<CreditAccount> creditAccounts = BankAccountService.getAllCreditAccountsByUserId(userId);
+        List<CreditAccount> creditAccounts = CreditAccountService.getAllCreditAccountsByUserId(userId);
 
         super.createComplianceTableInSession(request,creditAccounts);
 

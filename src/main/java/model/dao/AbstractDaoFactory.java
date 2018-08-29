@@ -5,4 +5,5 @@ public abstract class AbstractDaoFactory {
     public abstract BankAccountDao createBankAccountDao();
     public abstract CreditDao createCreditDao();
     public abstract DepositDao createDepositDao();
+    public abstract HistoryDao createHistoryDao();
 }

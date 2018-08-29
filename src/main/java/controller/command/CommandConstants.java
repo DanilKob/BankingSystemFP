@@ -6,10 +6,11 @@ public interface CommandConstants {
     String REGISTRATION_COMMAND = "register";
     String DEFAULT_COMMAND = "default";
     String REDIRECT = "redirect/";
+    String BANK_ACCOUNTS_COMMAND = "bankAccounts";
     String CREDITS_COMMAND = "credits";
     String DEPOSITS_COMMAND = "deposits";
-    String CREDIT_PAGE_COMMAND = "creditPage";
-    String DEPOSIT_PAGE_COMMAND = "depositPage";
+    String CREDIT_PAGE_COMMAND = "CREDIT";
+    String DEPOSIT_PAGE_COMMAND = "DEPOSIT";
 
     String HISTORY_COMMAND = "history";
 }
