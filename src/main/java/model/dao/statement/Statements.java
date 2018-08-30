@@ -77,10 +77,12 @@ public interface Statements {
             + ")"
             +" VALUES (?,?,?,?)";
 
-    String SELECT_ALL_BANK_ACCOUNT_BY_USER_ID = "SELECT * FROM " + BankAccountTypeTable.BANK_ACCOUNT_TYPE_TABLE
+    String SELECT_ALL_CONFIRMED_BANK_ACCOUNT_BY_USER_ID = "SELECT * FROM " + BankAccountTypeTable.BANK_ACCOUNT_TYPE_TABLE
             + " INNER JOIN " + BankAccountTable.BANK_ACCOUNT_TABLE  + " ON "
             + BankAccountTypeTable.ID + " = " + BankAccountTable.BANK_ACCOUNT_TYPE_ID
-            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?"
+            + " AND "
+            + BankAccountTable.BANK_ACCOUNT_TYPE_ID + " <> " + TableConstants.ACCOUNT_TYPE_UNCONFIRMED;
 
 
     String SELECT_CREDIT_BY_BANK_ACCOUNT_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
@@ -106,6 +108,15 @@ public interface Statements {
             + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?"
             + " AND "
             + BankAccountTable.BANK_ACCOUNT_TYPE_ID  + " <> " + Account.UNCONFIRMED_CREDIT.type_id;
+
+    String SELECT_ALL_UNCONFIRMED_CREDIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " INNER JOIN " + CreditTable.CREDIT_TABLE
+            + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_CREDIT_ID
+            + " = "
+            + CreditTable.CREDIT_TABLE + "." + CreditTable.CREDIT_ID
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?"
+            + " AND "
+            + BankAccountTable.BANK_ACCOUNT_TYPE_ID  + " = " + Account.UNCONFIRMED_CREDIT.type_id;
 
     String SELECT_ALL_DEPOSIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             + " INNER JOIN " + DepositTable.DEPOSIT_TABLE
@@ -186,6 +197,7 @@ public interface Statements {
    INNER JOIN USER ON USER.ID = USER_HAS_PAYMENT_HISTORY.USER_ID
    WHERE (PAYMENT_HISTORY.BANK_ACCOUNT_TO = 10 OR PAYMENT_HISTORY.BANK_ACCOUNT_FROM = 10) AND USER.ID<>8;
     */
+    /*
     String SELECT_HISTORY_BY_ACCOUNT_ID_AND_USER_ID = "SELECT "
             + HistoryTable.ACCOUNT_FROM +","
             + HistoryTable.ACCOUNT_TO +","
@@ -208,4 +220,40 @@ public interface Statements {
             + " ) "
             + " AND "
             + UserTable.USER_ID + "<>?";
+        */
+        /*
+        select BANK_ACCOUNT_FROM,BANK_ACCOUNT_TO,PRICE,DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME
+        from user_has_payment_history
+        inner join payment_history
+        on user_has_payment_history.payment_history_id = payment_history.history_id
+        inner join user
+        on user.id = user_has_payment_history.user_id
+        where user_has_payment_history.user_id = 16
+    and
+    (payment_history.bank_account_from = 16 or payment_history.bank_account_to = 16);
+        */
+        String SELECT_HISTORY_BY_ACCOUNT_ID_AND_USER_ID = "SELECT "
+                + HistoryTable.ACCOUNT_FROM +","
+                + HistoryTable.ACCOUNT_TO +","
+                + HistoryTable.PRICE +","
+                + HistoryTable.DATE +","
+                + UserTable.USER_ID +","
+                + UserTable.USER_FIRST_NAME +","
+                + UserTable.USER_MIDDLE_NAME+","
+                + UserTable.USER_LAST_NAME
+                + " FROM " + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY
+                + " INNER JOIN "
+                + HistoryTable.HISTORY_TABLE
+                + " ON "
+                + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + "." +UserHasPaymentHistoryTable.PAYMENT_HISTORY_ID
+                + " = " + HistoryTable.HISTORY_TABLE + "." +HistoryTable.ID
+                + " INNER JOIN "
+                + UserTable.USER_TABLE
+                +" ON "
+                + UserTable.USER_ID + " = " + UserHasPaymentHistoryTable.USER_ID
+                + " WHERE ( "
+                + HistoryTable.ACCOUNT_FROM + " = ? OR " + HistoryTable.ACCOUNT_TO + " = ? "
+                + " ) "
+                + " AND "
+                + UserHasPaymentHistoryTable.USER_ID + " = ?";
 }

@@ -30,14 +30,19 @@ public interface Parameters {
     String FAKE_ID_FROM_PAGE = "fakeId";
     String COMPLIANCE_TABLE = "complianceTable";
 
-    String PAY_TO_ID = "bankAccountTo";
+    String PAY_TO_ACCOUNT_ID = "bankAccountTo";
+    String PAY_TO_USER_ID = "userTo";
     String PAY_PRICE = "price";
+
+    String PAYMENT_SUCCESS = "paymentSuccess";
 
     String BANK_ACCOUNTS = "bankAccounts";
     String BANK_ACCOUNT_ID = "bankAccountId";
     String BANK_ACCOUNT_HISTORY = "bankAccountHistory";
 
     String CREDITS = "credits";
+    String UNCONFIRMED_CREDITS = "unconfirmedCredits";
+    String CREDIT_TARIFF = "creditTariff";
     String CREDIT_ID = "creditId";
     String CREDIT_ACCOUNT = "creditAccount";
 

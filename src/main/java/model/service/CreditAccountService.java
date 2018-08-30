@@ -1,29 +1,39 @@
 package model.service;
 
 import controller.dto.CreditAccountDto;
-import controller.dto.RequisitionDto;
 import model.dao.CreditDao;
 import model.dao.config.DataBaseConfiguration;
 import model.entity.CreditAccount;
+import model.entity.Requsition;
 import model.entity.enums.Account;
 import model.exception.NotUniqueException;
+import model.exception.TariffNotExistException;
 
 import java.util.List;
 
 public class CreditAccountService {
-    public static void registerCreditAccount(CreditAccountDto creditAccountDto) throws NotUniqueException {
+    /*
+    public static void createCreditAccount(CreditAccount creditAccount) throws NotUniqueException {
+        creditAccount.setAccountType(Account.UNCONFIRMED_CREDIT);
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
-            CreditAccount creditAccount= convertCreditDtoToEntity(creditAccountDto);
             creditDao.create(creditAccount);
         }
     }
+    */
 
-    public static boolean payFromCredit(RequisitionDto requisitionDto){
-        int fromAccountId = requisitionDto.getFromAccountId();
-        int fromUserId = requisitionDto.getFromUserId();
-        int toAccountId = requisitionDto.getToAccountId();
-        int toUserId = requisitionDto.getToUserId();
-        int balance = requisitionDto.getBalance();
+    public static void registerCreditAccount(CreditAccount creditAccount) throws TariffNotExistException {
+        creditAccount.setAccountType(Account.UNCONFIRMED_CREDIT);
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            creditDao.registerCredit(creditAccount);
+        }
+    }
+
+    public static boolean payFromCredit(Requsition requsition){
+        int fromAccountId = requsition.getFromAccountId();
+        int fromUserId = requsition.getFromUserId();
+        int toAccountId = requsition.getToAccountId();
+        int toUserId = requsition.getToUserId();
+        int balance = requsition.getBalance();
 
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
             return creditDao.pay(fromAccountId,fromUserId,toAccountId,toUserId,balance);
@@ -32,7 +42,21 @@ public class CreditAccountService {
 
     public static List<CreditAccount> getAllCreditAccountsByUserId(int id){
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
-            return creditDao.findAllByUserId(id);
+            return creditDao.findAllConfirmedByUserId(id);
+        }
+    }
+
+    public static List<CreditAccount> getAllUnconfirmed(int userId){
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            return creditDao.findAllUnconfirmedCreditsByUserId(userId);
+        }
+    }
+
+    public static CreditAccount getConfirmedCreditAccount(int id){
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            CreditAccount creditAccount = creditDao.findById(id);
+            creditAccount.setAccountType(Account.CREDIT);
+            return creditAccount;
         }
     }
 
@@ -48,11 +72,5 @@ public class CreditAccountService {
         return creditAccount;
     }
 
-    public static CreditAccount getConfirmedCreditAccount(int id){
-        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
-            CreditAccount creditAccount = creditDao.findById(id);
-            creditAccount.setAccountType(Account.CREDIT);
-            return creditAccount;
-        }
-    }
+
 }

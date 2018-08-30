@@ -74,11 +74,12 @@ public class RegistrationCommand implements Command{
             //return CommandConstants.REDIRECT+PagesName.USER_HOME_PAGE;
             //return CommandConstants.REDIRECT+PagesName.LOGIN_PAGE;
             return PagesName.LOGIN_PAGE;
-        } catch (NotUniqueException e) {
+        }catch (NotUniqueException e) {
             System.out.println("Not Unique login");
             IOHandler.setLoginAlreadyExistMessageToRequest(request,language);
             return PagesName.REGISTRATION;
         }
+
 
     }
 

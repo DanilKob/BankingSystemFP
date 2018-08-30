@@ -4,6 +4,7 @@ import model.dao.CreditDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.CreditAccount;
+import model.exception.TariffNotExistException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -18,15 +19,35 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
 
     @Override
     public void create(CreditAccount entity) {
+
+    }
+
+    @Override
+    public void registerCredit(CreditAccount creditAccount) throws TariffNotExistException {
+        Connection connection = super.getConnection();
         try {
-            PreparedStatement preparedStatement = super.getConnection()
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+
+            PreparedStatement isExistStatement = connection.prepareStatement("select exists (select * from credit where credit.id = ?)");
+            isExistStatement.setInt(1,creditAccount.getCreditId());
+
+            ResultSet resultSet = isExistStatement.executeQuery();
+            resultSet.next();
+            if(!resultSet.getBoolean(1)){
+                throw new TariffNotExistException();
+            }
+
+            PreparedStatement preparedStatement = connection
                     .prepareStatement(Statements.INSER_CREDIT_USER_ID_CREDIT_ID_TYPE_DATE);
-            preparedStatement.setInt(1,entity.getUserId());
+            preparedStatement.setInt(1,creditAccount.getUserId());
             //preparedStatement.setInt(2,entity.getBalance());
-            preparedStatement.setInt(2,entity.getCreditId());
-            preparedStatement.setInt(3,entity.getAccountType().type_id);
+            preparedStatement.setInt(2,creditAccount.getCreditId());
+            preparedStatement.setInt(3,creditAccount.getAccountType().type_id);
 
             preparedStatement.execute();
+
+            connection.commit();
             // todo add exception
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,16 +86,14 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
         return null;
     }
 
-    @Override
-    public List<CreditAccount> findAllByUserId(int userId) {
-        List<CreditAccount> creditAccounts = null;
+    private List<CreditAccount> findCreditByStatement(int userId, String statement){
+        List<CreditAccount> creditAccounts = new LinkedList<>();
         try{
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID);
+                    .prepareStatement(statement);
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<CreditAccount> creditExtracter = new Extracter<>();
-            creditAccounts = new LinkedList<>();
             while(resultSet.next()){
                 creditAccounts.add(creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount()));
             }
@@ -84,13 +103,17 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             e.printStackTrace();
         }
         // todo
-
         return creditAccounts;
     }
 
     @Override
-    public List<CreditAccount> findAllUnconfirmedByUserId(int accountId) {
-        return null;
+    public List<CreditAccount> findAllConfirmedByUserId(int userId) {
+        return findCreditByStatement(userId,Statements.SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID);
+    }
+
+    @Override
+    public List<CreditAccount> findAllUnconfirmedCreditsByUserId(int userId) {
+        return findCreditByStatement(userId, Statements.SELECT_ALL_UNCONFIRMED_CREDIT_BY_BANK_USER_ID);
     }
 
     @Override

@@ -22,22 +22,29 @@
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        <input type="hidden" name="fakeId" value="${fakeId}">
     </select>
+
 </form>
 <c:set var="user" value="${sessionScope.user}"/>
 <c:out value="${user.firstName}"/>
 <c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
+
+<c:set var="fakeId" value="${param.fakeId}" scope="page"/>
+
 <br>
 <a href="/user/user.jsp"> User </a>
 <br>
 <form action="/servlet" method="post">
     <input type="hidden" name="command" value="pay">
+    <input type="hidden" name="fakeId" value="${fakeId}">
     <p>Pay on bank account ... </p>
     <p><input type="number" name="bankAccountTo"></p>
     <p>Price </p>
     <p><input type="number" name="price"></p>
+
     <p><input type="submit" value="Pay"/></p>
 </form>
 
@@ -45,6 +52,7 @@
 
 <form action="/servlet" method="get">
     <input type="hidden" name="command" value="history">
+    <input type="hidden" name="fakeId" value="${fakeId}">
     <p><input type="submit" value="Account history"/></p>
 </form>
 

@@ -45,6 +45,13 @@
     <p><input type="submit" value="<fmt:message key="user.bank.account"/>"/></p>
 </form>
 
+<c:if test="${not empty param.paymentSuccess}">
+    <br>
+    <p>Is payment success?</p>
+    <c:out value="${param.paymentSuccess}"/>
+    <br>
+</c:if>
+
 
 <c:if test="${not empty requestScope.bankAccounts}">
     <table>

@@ -23,22 +23,27 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
     }
 
     @Override
-    public void create(User entity) throws NotUniqueException {
+    public void create(User entity){
+
+    }
+
+    @Override
+    public void registerUser(User user) throws NotUniqueException{
         try {
             PreparedStatement preparedStatement = super.getConnection()
                     .prepareStatement(Statements.INSERT_USER_FIRST_LAST_MIDDLE_NAME_LOGIN_PASSWORD_ROLE_ID);
-            preparedStatement.setString(1, entity.getFirstName());
-            preparedStatement.setString(2, entity.getLastName());
-            preparedStatement.setString(3, entity.getMiddleName());
-            preparedStatement.setString(4, entity.getLogin());
-            preparedStatement.setString(5, entity.getPassword());
-            preparedStatement.setInt(6, entity.getRole().roleId);
+            preparedStatement.setString(1, user.getFirstName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getMiddleName());
+            preparedStatement.setString(4, user.getLogin());
+            preparedStatement.setString(5, user.getPassword());
+            preparedStatement.setInt(6, user.getRole().roleId);
 
-            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getFirstName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getMiddleName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getLastName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getLogin());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+entity.getPassword());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getFirstName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getMiddleName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getLastName());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getLogin());
+            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getPassword());
 
 
             System.out.println("In dao method");
@@ -49,7 +54,7 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             e.printStackTrace();
             //todo remove sout
             System.out.println("Not unique login");
-            throw new NotUniqueException(entity.getLogin());
+            throw new NotUniqueException(user.getLogin());
         } catch (SQLException e) {
             e.printStackTrace();
             //

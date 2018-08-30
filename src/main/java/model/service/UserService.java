@@ -27,7 +27,8 @@ public class UserService {
                     .setPassword(registrationForm.getPassword())
                     .setRole(User.ROLE.USER)
                     .build();
-            userDao.create(user);
+            userDao.registerUser(user);
+
         }
     }
 

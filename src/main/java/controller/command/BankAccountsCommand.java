@@ -15,7 +15,7 @@ public class BankAccountsCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
-        System.out.println(Statements.SELECT_ALL_BANK_ACCOUNT_BY_USER_ID);
+        System.out.println(Statements.SELECT_ALL_CONFIRMED_BANK_ACCOUNT_BY_USER_ID);
         List<BankAccount> bankAccountList = BankAccountService.getAllConfirmedBankAccount(userId);
 
         for (BankAccount bankAccount : bankAccountList) {

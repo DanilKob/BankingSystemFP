@@ -19,13 +19,38 @@
     <title>Payment</title>
 </head>
 <body>
-<c:set var="user" value="${requestScope.user}"/>
+
+<c:set var="userTo" value="${requestScope.user}"/>
+<c:set var="bankAccountTo" value="${param.bankAccountTo}" scope="page"/>
+<c:set var="price" value="${param.price}" scope="page"/>
+
+<c:set var="fakeId" value="${param.fakeId}" scope="page"/>
+<p>Fake Id :: ${fakeId}</p>
+<br>
+<p>You want to pay to user....</p>
+
 <br>
 <c:out value="${user.firstName}"/>
 <br>
 <c:out value="${user.middleName}"/>
 <br>
 <c:out value="${user.lastName}"/>
+
+<br>
+<p>Price</p>
+<c:out value="${requestScope.price}"/>
+
+<br>
+
+<form action="/servlet" method="get">
+    <input type="hidden" name="command" value="payConfirmation">
+    <input type="hidden" name="fakeId" value="${fakeId}">
+    <input type="hidden" name="userTo" value="${user.id}">
+    <input type="hidden" name="bankAccountTo" value="${bankAccountTo}">
+    <input type="hidden" name="price" value="${price}">
+
+    <p><input type="submit" value="Pay"/></p>
+</form>
 
 </body>
 </html>

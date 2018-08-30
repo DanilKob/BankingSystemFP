@@ -50,7 +50,7 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
         List<BankAccount> bankAccountList = new LinkedList<>();
         try {
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.SELECT_ALL_BANK_ACCOUNT_BY_USER_ID);
+                    .prepareStatement(Statements.SELECT_ALL_CONFIRMED_BANK_ACCOUNT_BY_USER_ID);
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<BankAccount> extracter = new Extracter<>();

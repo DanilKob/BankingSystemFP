@@ -58,6 +58,7 @@ public class CommandManager {
         registerCommand(User.ROLE.USER,CommandConstants.BANK_ACCOUNTS_COMMAND,new BankAccountsCommand());
         registerCommand(User.ROLE.USER,CommandConstants.HISTORY_COMMAND, new HistoryInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.PAY_COMMAND,new PayCommandRequest());
+        registerCommand(User.ROLE.USER,CommandConstants.PAYMENT_CONFIRMATION,new PaymentConfirmationCommand());
 
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);
