@@ -16,4 +16,10 @@ public interface CommandConstants {
     String HISTORY_COMMAND = "history";
     String PAY_COMMAND = "pay";
     String PAYMENT_CONFIRMATION = "payConfirmation";
+
+    String CREDIT_TARIFF_INFO = "creditTariffInfo";
+    String DEPOSIT_TARIFF_INFO = "depositTariffsInfo";
+
+    String REGISTER_CREDIT_ACCOUNT = "registerCreditAccount";
+    String REGISTER_DEPOSIT_ACCOUNT = "registerDepositAccount";
 }

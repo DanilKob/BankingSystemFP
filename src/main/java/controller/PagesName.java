@@ -19,4 +19,6 @@ public interface PagesName {
     */
     String BANK_ACCOUNT_PAGE = USER_DIRECTORY + "/" +"bankAccountInfo.jsp";
     String PAYMENT_PAGE = USER_DIRECTORY + "/" + "payment.jsp";
+
+    String TARIFF_INFO_PAGE = USER_DIRECTORY + "/" + "tariffs.jsp";
 }

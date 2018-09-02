@@ -42,7 +42,8 @@ public interface Parameters {
 
     String CREDITS = "credits";
     String UNCONFIRMED_CREDITS = "unconfirmedCredits";
-    String CREDIT_TARIFF = "creditTariff";
+    String CREDIT_TARIFF_ID = "creditTariffId";
+    String CREDIT_TARIFFS = "creditTariffs";
     String CREDIT_ID = "creditId";
     String CREDIT_ACCOUNT = "creditAccount";
 
@@ -50,6 +51,7 @@ public interface Parameters {
 
     String DEPOSITS = "deposits";
     String DEPOSIT_ID = "depositId";
+    String DEPOSIT_TARIFFS = "depositTariffs";
     String DEPOSIT_ACCOUNT = "depositAccount";
 
     String DEPOSIT_COMPLIANCE_TABLE  = "depositComplianceTable";

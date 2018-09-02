@@ -1,17 +1,21 @@
 package model.entity;
 
-import model.dao.extracter.ExtractParam;
-import model.dao.statement.tables.DepositTable;
-
 public class DepositAccount extends BankAccount {
-    @ExtractParam(columnName = DepositTable.DEPOSIT_NAME)
-    protected String name;
+
+    private DepositTariff depositTariff;
 
     //protected int accountPropertiesId;
-    private int depositId;
 
     private int depositRate;
     private int depositAmount;
+
+    public DepositTariff getDepositTariff() {
+        return depositTariff;
+    }
+
+    public void setDepositTariff(DepositTariff depositTariff) {
+        this.depositTariff = depositTariff;
+    }
 
     public int getDepositRate() {
         return depositRate;
@@ -29,19 +33,4 @@ public class DepositAccount extends BankAccount {
         this.depositAmount = depositAmount;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getDepositId() {
-        return depositId;
-    }
-
-    public void setDepositId(int depositId) {
-        this.depositId = depositId;
-    }
 }

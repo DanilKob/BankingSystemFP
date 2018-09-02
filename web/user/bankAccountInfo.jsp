@@ -125,7 +125,7 @@
                 <c:out value="${requestScope.creditAccount.balance}"/><br>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.name}"/><br>
+                <c:out value="${requestScope.creditAccount.creditTariff.name}"/><br>
             </td>
             <td>
                 <c:out value="${requestScope.creditAccount.accountType}"/><br>
@@ -133,6 +133,7 @@
         </tr>
     </table>
 </c:if>
+
 
 <c:if test="${not empty requestScope.depositAccount}">
     <table>
@@ -158,7 +159,7 @@
                 <c:out value="${requestScope.depositAccount.balance}"/><br>
             </td>
             <td>
-                <c:out value="${requestScope.depositAccount.name}"/><br>
+                <c:out value="${requestScope.depositAccount.depositTariff.name}"/><br>
             </td>
             <td>
                 <c:out value="${requestScope.depositAccount.accountType}"/><br>

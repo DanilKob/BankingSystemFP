@@ -2,8 +2,10 @@ package model.service;
 
 import controller.dto.CreditAccountDto;
 import model.dao.CreditDao;
+import model.dao.CreditTariffDao;
 import model.dao.config.DataBaseConfiguration;
 import model.entity.CreditAccount;
+import model.entity.CreditTariff;
 import model.entity.Requsition;
 import model.entity.enums.Account;
 import model.exception.NotUniqueException;
@@ -60,17 +62,23 @@ public class CreditAccountService {
         }
     }
 
+    public static List<CreditTariff> getAllCreditTariffs(){
+        try(CreditTariffDao creditTariffDao = DataBaseConfiguration.factory.createCreditTariffDao()){
+            return creditTariffDao.findAll();
+        }
+    }
+    /*
     //public static void payFromDepositAccount()
     // todo Refactor convert method
     public static CreditAccount convertCreditDtoToEntity(CreditAccountDto creditAccountDto){
         CreditAccount creditAccount = new CreditAccount();
         creditAccount.setUserId(creditAccountDto.getUserId());
         creditAccount.setCreditId(creditAccountDto.getAccountPropertiesId());
-        //creditAccount.setCreditId(creditAccountDto.getCreditId());
+        //creditAccount.setId(creditAccountDto.getId());
         creditAccount.setAccountType(Account.UNCONFIRMED_CREDIT);
         // todo add date
         return creditAccount;
     }
-
+    */
 
 }

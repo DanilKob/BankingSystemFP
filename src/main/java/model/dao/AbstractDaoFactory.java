@@ -6,4 +6,6 @@ public abstract class AbstractDaoFactory {
     public abstract CreditDao createCreditDao();
     public abstract DepositDao createDepositDao();
     public abstract HistoryDao createHistoryDao();
+    public abstract CreditTariffDao createCreditTariffDao();
+    public abstract DepositTariffDao createDepositTariffDao();
 }

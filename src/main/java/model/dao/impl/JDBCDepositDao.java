@@ -4,6 +4,7 @@ import model.dao.DepositDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.DepositAccount;
+import model.entity.DepositTariff;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +25,7 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             PreparedStatement preparedStatement = super.getConnection()
                     .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_BALANCE_DATE);
             preparedStatement.setInt(1,entity.getUserId());
-            preparedStatement.setInt(2,entity.getDepositId());
+            preparedStatement.setInt(2,entity.getDepositTariff().getId());
             preparedStatement.setInt(3,entity.getAccountType().type_id);
             preparedStatement.setInt(4,entity.getBalance());
 
@@ -47,9 +48,11 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             System.out.println("Search deposit");
             System.out.println(Statements.SELECT_DEPOSIT_BY_BANK_ACCOUNT_ID);
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
+            Extracter<DepositTariff> depositTariffExtracter = new Extracter<>();
             if(resultSet.next()){
                 System.out.println("Result is not empty !!!");
                 depositAccount = depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount());
+                depositAccount.setDepositTariff(depositTariffExtracter.extractEntityFromResultSet(resultSet, new DepositTariff()));
             }
             /*
             DepositMapper depositMapper = new DepositMapper();
@@ -84,16 +87,20 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
 
     @Override
     public List<DepositAccount> findAllByUserId(int userId) {
-        List<DepositAccount> depositAccounts = null;
+        List<DepositAccount> depositAccounts =  new LinkedList<>();
         try{
             PreparedStatement preparedStatement = super.getConnection()
                     .prepareStatement(Statements.SELECT_ALL_DEPOSIT_BY_BANK_USER_ID);
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
-            depositAccounts = new LinkedList<>();
+            Extracter<DepositTariff> depositTarrifExtracter = new Extracter<>();
+            DepositAccount depositAccount;
             while(resultSet.next()){
-                depositAccounts.add(depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount()));
+                depositAccount = depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount());
+                depositAccount.setDepositTariff(depositTarrifExtracter
+                        .extractEntityFromResultSet(resultSet, new DepositTariff()));
+                depositAccounts.add(depositAccount);
             }
         } catch (SQLException e) {
             e.printStackTrace();

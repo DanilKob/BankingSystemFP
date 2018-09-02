@@ -31,6 +31,16 @@ public class JDBCDaoFactory extends AbstractDaoFactory {
         return new JDBCHistoryDao(getConnection());
     }
 
+    @Override
+    public CreditTariffDao createCreditTariffDao() {
+        return new JDBCCreditTariffDao(getConnection());
+    }
+
+    @Override
+    public DepositTariffDao createDepositTariffDao() {
+        return new JDBCDepositTariffDao(getConnection());
+    }
+
     public Connection getConnection(){
         try {
             return ConnectionPoolHolder.getDataSource().getConnection();

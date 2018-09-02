@@ -8,7 +8,7 @@ import model.service.DepositAccountService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@Deprecated
 public class DepositsCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
