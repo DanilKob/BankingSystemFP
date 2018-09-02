@@ -25,7 +25,8 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<form action="/user/user.jsp">
+<form action="/servlet">
+    <input hidden name="command" value="userHomePage">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -45,13 +46,13 @@
 
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
-    <input type="hidden" name="command" value="creditTariffInfo">
+    <input type="hidden" name="command" value="creditTariffsInfo">
     <p><input type="submit" value="Credit tariffs"></p>
 </form>
 
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
-    <input type="hidden" name="command" value="depositTariffInfo">
+    <input type="hidden" name="command" value="depositTariffsInfo">
     <p><input type="submit" value="Deposit tariffs"></p>
 </form>
 

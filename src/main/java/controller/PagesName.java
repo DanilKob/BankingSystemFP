@@ -7,8 +7,8 @@ public interface PagesName {
     String ERROR = "error.jsp";
 
 
-    String USER_DIRECTORY = "/user";
-    String ADMIN_DIRECTORY = "/admin";
+    String USER_DIRECTORY = "/WEB-INF/user";
+    String ADMIN_DIRECTORY = "/WEB-INF/admin";
     String USER_HOME_PAGE = USER_DIRECTORY + "/" + "user.jsp";
     String ADMIN_HOME_PAGE = ADMIN_DIRECTORY + "/" + "admin.jsp";
     /*

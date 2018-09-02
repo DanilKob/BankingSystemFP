@@ -1,11 +1,20 @@
 package controller.command;
 
 public interface CommandConstants {
+    String SERVLET_MAPPING = "/servlet";
+
+    String REDIRECT = "redirect/";
+    String SET_COMMAND = SERVLET_MAPPING + "?command=";
+
+
     String LOGIN_COMMAND = "logIn";
     String LOGOUT_COMMAND = "logOut";
     String REGISTRATION_COMMAND = "register";
     String DEFAULT_COMMAND = "default";
-    String REDIRECT = "redirect/";
+
+    String USER_HOME_COMMAND = "userHomePage";
+
+
     String BANK_ACCOUNTS_COMMAND = "bankAccounts";
     String CREDITS_COMMAND = "credits";
     String UNCONFIRMED_CREDITS_COMMAND = "unconfirmedCredits";
@@ -17,7 +26,7 @@ public interface CommandConstants {
     String PAY_COMMAND = "pay";
     String PAYMENT_CONFIRMATION = "payConfirmation";
 
-    String CREDIT_TARIFF_INFO = "creditTariffInfo";
+    String CREDIT_TARIFF_INFO = "creditTariffsInfo";
     String DEPOSIT_TARIFF_INFO = "depositTariffsInfo";
 
     String REGISTER_CREDIT_ACCOUNT = "registerCreditAccount";

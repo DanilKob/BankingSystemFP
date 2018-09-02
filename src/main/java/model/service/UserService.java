@@ -1,5 +1,6 @@
 package model.service;
 
+import com.mysql.jdbc.PreparedStatement;
 import controller.dto.LoginDto;
 import controller.dto.RegistrationFormDto;
 import model.dao.UserDao;

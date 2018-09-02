@@ -18,7 +18,7 @@
     <title>Info</title>
 </head>
 <body>
-<form action="/user/bankAccountInfo.jsp">
+<form action="/WEB-INF/user/bankAccountInfo.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -35,7 +35,7 @@
 <c:set var="fakeId" value="${param.fakeId}" scope="page"/>
 
 <br>
-<a href="/user/user.jsp"> User </a>
+<a href="/WEB-INF/user/user.jsp"> User </a>
 <br>
 <form action="/servlet" method="post">
     <input type="hidden" name="command" value="pay">

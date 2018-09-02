@@ -45,6 +45,7 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             //preparedStatement.setInt(2,entity.getBalance());
             preparedStatement.setInt(2,creditAccount.getCreditTariff().getId());
             preparedStatement.setInt(3,creditAccount.getAccountType().type_id);
+            //preparedStatement.setInt(4,creditAccount.getBalance());
 
             preparedStatement.execute();
 

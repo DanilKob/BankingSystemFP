@@ -62,6 +62,9 @@ public class CommandManager {
         registerCommand(User.ROLE.USER,CommandConstants.CREDIT_TARIFF_INFO, new CreditTariffsInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.DEPOSIT_TARIFF_INFO, new DepositTariffInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.UNCONFIRMED_CREDITS_COMMAND, new UnConfirmedCreditsCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.USER_HOME_COMMAND, new UserHomePageCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.REGISTER_CREDIT_ACCOUNT,new RegisterCreditCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.REGISTER_DEPOSIT_ACCOUNT, new RegisterDepositCommand());
 
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);

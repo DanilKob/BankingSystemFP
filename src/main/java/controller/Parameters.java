@@ -33,6 +33,7 @@ public interface Parameters {
     String PAY_TO_ACCOUNT_ID = "bankAccountTo";
     String PAY_TO_USER_ID = "userTo";
     String PAY_PRICE = "price";
+    String BALANCE = "balance";
 
     String PAYMENT_SUCCESS = "paymentSuccess";
 
@@ -52,6 +53,7 @@ public interface Parameters {
     String DEPOSITS = "deposits";
     String DEPOSIT_ID = "depositId";
     String DEPOSIT_TARIFFS = "depositTariffs";
+    String DEPOSIT_TARIFF_ID = "depositTariffId";
     String DEPOSIT_ACCOUNT = "depositAccount";
 
     String DEPOSIT_COMPLIANCE_TABLE  = "depositComplianceTable";

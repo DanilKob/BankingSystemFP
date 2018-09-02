@@ -19,8 +19,9 @@
 </head>
 <body>
 
-CreditTariffs
+
 <c:if test="${not empty requestScope.creditTariffs}">
+    CreditTariffs
     <table>
         <caption>Credit tariffs</caption>
         <tr>
@@ -60,6 +61,52 @@ CreditTariffs
             </select>
         </p>
         <p><input type="submit" value="Open credit"/></p>
+    </form>
+</c:if>
+
+
+<c:if test="${not empty requestScope.depositTariffs}">
+    Deposit Tariffs
+    <table>
+        <caption>Deposit tariffs</caption>
+        <tr>
+            <td>
+                #
+            </td>
+            <td>
+                Tariff ID
+            </td>
+            <td>
+                Name
+            </td>
+        </tr>
+        <c:set var="count" value="0" scope="page" />
+        <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
+                <td>
+                    <c:out value="${depositTariff.id} "/><br>
+                </td>
+                <td>
+                    <c:out value="${depositTariff.name}"/><br>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+    <form action="${pageContext.request.contextPath}/servlet">
+        <input type="hidden" name="command" value="registerDepositAccount">
+        <input type="number" name="balance">
+        <p> Select deposit tariff
+            <select name="depositTariffId" required >
+                <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
+                    <option value="${depositTariff.id}">${depositTariff.name}</option>
+                </c:forEach>
+            </select>
+        </p>
+        <p><input type="submit" value="Open deposit"/></p>
     </form>
 </c:if>
 </body>

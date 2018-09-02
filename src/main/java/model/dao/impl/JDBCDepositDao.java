@@ -5,6 +5,7 @@ import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.DepositAccount;
 import model.entity.DepositTariff;
+import model.exception.TariffNotExistException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +31,39 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             preparedStatement.setInt(4,entity.getBalance());
 
             preparedStatement.execute();
+            // todo add exception
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void registerDeposit(DepositAccount depositAccount) throws TariffNotExistException{
+        Connection connection = super.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+
+            PreparedStatement isExistStatement = connection.prepareStatement("select exists (select * from deposit where deposit.id = ?)");
+            isExistStatement.setInt(1,depositAccount.getDepositTariff().getId());
+
+            ResultSet resultSet = isExistStatement.executeQuery();
+            resultSet.next();
+            if(!resultSet.getBoolean(1)){
+                throw new TariffNotExistException();
+            }
+
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_BALANCE_DATE);
+            preparedStatement.setInt(1,depositAccount.getUserId());
+            //preparedStatement.setInt(2,entity.getBalance());
+            preparedStatement.setInt(2,depositAccount.getDepositTariff().getId());
+            preparedStatement.setInt(3,depositAccount.getAccountType().type_id);
+            preparedStatement.setInt(4,depositAccount.getBalance());
+
+            preparedStatement.execute();
+
+            connection.commit();
             // todo add exception
         } catch (SQLException e) {
             e.printStackTrace();

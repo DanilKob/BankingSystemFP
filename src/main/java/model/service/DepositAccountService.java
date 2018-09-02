@@ -8,14 +8,22 @@ import model.entity.DepositAccount;
 import model.entity.DepositTariff;
 import model.entity.enums.Account;
 import model.exception.NotUniqueException;
+import model.exception.TariffNotExistException;
 
 import java.util.List;
 
 public class DepositAccountService {
+    /*
     public static void registerDepositAccount(DepositAccountDto depositAccountDto) throws NotUniqueException {
         try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
             DepositAccount depositAccount = convertDepositDtoToEntity(depositAccountDto);
             depositDao.create(depositAccount);
+        }
+    }
+    */
+    public static void registerDepositAccount(DepositAccount depositAccount) throws TariffNotExistException {
+        try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
+            depositDao.registerDeposit(depositAccount);
         }
     }
 
