@@ -1,6 +1,5 @@
 package controller.command;
 
-import controller.PagesName;
 import controller.Parameters;
 import model.entity.CreditAccount;
 import model.entity.CreditTariff;
@@ -26,8 +25,8 @@ public class RegisterCreditCommand extends AbstractBankAccountInfo{
         } catch (TariffNotExistException e) {
             // todo forward to registrayion credit page
             e.printStackTrace();
-            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
         }
-        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
     }
 }

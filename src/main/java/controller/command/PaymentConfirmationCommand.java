@@ -1,6 +1,5 @@
 package controller.command;
 
-import controller.PagesName;
 import controller.Parameters;
 import model.entity.Requsition;
 import model.service.CreditAccountService;
@@ -43,6 +42,6 @@ public class PaymentConfirmationCommand extends AbstractBankAccountInfo{
         request.setAttribute(Parameters.PAYMENT_SUCCESS,isPaymentSuccessful);
 
         // todo redirect to status pages
-        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
     }
 }

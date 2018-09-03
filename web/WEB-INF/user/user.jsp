@@ -25,7 +25,7 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<form action="/servlet">
+<form action="${pageContext.request.contextPath}/servlet">
     <input hidden name="command" value="userHomePage">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>

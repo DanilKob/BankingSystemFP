@@ -12,7 +12,9 @@ public interface CommandConstants {
     String REGISTRATION_COMMAND = "register";
     String DEFAULT_COMMAND = "default";
 
-    String USER_HOME_COMMAND = "userHomePage";
+    String USER_HOME_PAGE_COMMAND = "userHomePage";
+    String ADMIN_HOME_PAGE_COMMAND = "adminHomePage";
+
 
 
     String BANK_ACCOUNTS_COMMAND = "bankAccounts";

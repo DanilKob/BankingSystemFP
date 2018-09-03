@@ -65,7 +65,7 @@ public class RolesUtility {
         return false;
     }
      */
-
+    // todo remove method and default command
     public static String defineHomePageByRole(User.ROLE role){
         String page;
         switch (role){

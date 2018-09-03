@@ -15,7 +15,7 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
-    <title> Index </title>
+    <title> Admin page </title>
 </head>
 <body>
 <c:set var="user" value="${sessionScope.user}"/>
@@ -24,12 +24,14 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<form action="admin.jsp">
+<form action="${pageContext.request.contextPath}/servlet">
+    <input hidden name="command" value="adminHomePage">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
     </select>
 </form>
+
 <br>
 <form action="${pageContext.request.contextPath}/servlet" method="post">
 

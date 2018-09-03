@@ -3,7 +3,6 @@ package controller.command;
 import controller.Parameters;
 import model.entity.DepositAccount;
 import model.entity.DepositTariff;
-import model.exception.NotUniqueException;
 import model.exception.TariffNotExistException;
 import model.service.DepositAccountService;
 
@@ -28,10 +27,10 @@ public class RegisterDepositCommand extends AbstractBankAccountInfo{
         } catch (TariffNotExistException e) {
             e.printStackTrace();
             // todo redirect to error
-            //return CommandConstants.REDIRECT + CommandConstants.USER_HOME_COMMAND;
-            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
+            //return CommandConstants.REDIRECT + CommandConstants.USER_HOME_PAGE_COMMAND;
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
         }
         // todo set message
-        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
     }
 }
