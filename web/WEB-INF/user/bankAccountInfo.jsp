@@ -18,10 +18,16 @@
     <title>Info</title>
 </head>
 <body>
-<form action="/WEB-INF/user/bankAccountInfo.jsp">
+<c:set var="fakeId" value="${param.fakeId}" scope="page"/>
+<c:set var="command" value="${param.command}" scope="page"/>
+
+
+
+<form action="/servlet">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        <input type="hidden" name="command" value="${command}">
         <input type="hidden" name="fakeId" value="${fakeId}">
     </select>
 
@@ -32,10 +38,8 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<c:set var="fakeId" value="${param.fakeId}" scope="page"/>
 
-<br>
-<a href="/WEB-INF/user/user.jsp"> User </a>
+
 <br>
 <form action="/servlet" method="post">
     <input type="hidden" name="command" value="pay">

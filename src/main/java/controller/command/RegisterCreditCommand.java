@@ -13,7 +13,7 @@ public class RegisterCreditCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
         int userId = super.getUserIdInSession(request);
-        int creditTariffId = (int)request.getAttribute(Parameters.CREDIT_TARIFF_ID);
+        int creditTariffId = Integer.parseInt(request.getParameter(Parameters.CREDIT_TARIFF_ID));
 
         CreditAccount creditAccount = new CreditAccount();
         // todo

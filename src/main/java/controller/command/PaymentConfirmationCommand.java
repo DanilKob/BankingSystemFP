@@ -42,7 +42,7 @@ public class PaymentConfirmationCommand extends AbstractBankAccountInfo{
 
         request.setAttribute(Parameters.PAYMENT_SUCCESS,isPaymentSuccessful);
 
-
-        return CommandConstants.REDIRECT + PagesName.USER_HOME_PAGE;
+        // todo redirect to status pages
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
     }
 }

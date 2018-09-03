@@ -191,6 +191,8 @@ public interface Statements {
     String SELECT_UNCONFIRMED_CREDIT_BY_ACCOUNT_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             +" WHERE " + BankAccountTable.BANK_ACCOUNT_TYPE_ID + " = " + TableConstants.ACCOUNT_TYPE_UNCONFIRMED;
 
+
+    // todo change select history sql statement
     String SELECT_HISTORY_BY_ACCOUNT_ID_AND_USER_ID = "SELECT "
             + HistoryTable.ACCOUNT_FROM +","
             + HistoryTable.ACCOUNT_TO +","
@@ -215,6 +217,76 @@ public interface Statements {
             + " ) "
             + " AND "
             + UserHasPaymentHistoryTable.USER_ID + " = ?";
+
+    /*
+    userID, accountId, userId, accountId, userId, userId, accountId, accountId
+     */
+    String SELECT_ALL_HISTORY_BY_ACCOUNT_ID_USER_ID = "SELECT "
+            + HistoryTable.ACCOUNT_FROM +","
+            + HistoryTable.ACCOUNT_TO +","
+            + HistoryTable.PRICE +","
+            + HistoryTable.DATE +","
+            + UserTable.USER_ID +","
+            + UserTable.USER_FIRST_NAME +","
+            + UserTable.USER_MIDDLE_NAME+","
+            + UserTable.USER_LAST_NAME
+            + " FROM " + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY
+            + " INNER JOIN "
+            + HistoryTable.HISTORY_TABLE
+            + " ON "
+            + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + "." +UserHasPaymentHistoryTable.PAYMENT_HISTORY_ID
+            + " = " + HistoryTable.HISTORY_TABLE + "." +HistoryTable.ID
+            + " INNER JOIN "
+            + UserTable.USER_TABLE
+            +" ON "
+            + UserTable.USER_TABLE + "." +UserTable.USER_ID
+            + " = " + UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + "." +UserHasPaymentHistoryTable.USER_ID
+            + " WHERE "
+            + "("
+            +       UserHasPaymentHistoryTable.USER_HAS_PAYMENT_HISTORY + "." +UserHasPaymentHistoryTable.USER_ID + " = ?"
+            +       " AND "
+            +       "("
+            +           "("
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_FROM + " = ? "
+            +               " AND "
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_TO
+            +                   " IN "
+            +                        "( SELECT " + BankAccountTable.BANK_ACCOUNT_TABLE + "."
+            +                                   BankAccountTable.BANK_ACCOUNT_ID + " FROM "
+            +                                   BankAccountTable.BANK_ACCOUNT_TABLE + " WHERE "
+            +                                   BankAccountTable.BANK_ACCOUNT_TABLE + "."
+            +                                   BankAccountTable.BANK_ACCOUNT_USER_ID + " = ? "
+            +                           ")"
+            +            ")"
+            +           " OR "
+            +           "("
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_TO + " = ? "
+            +               " AND "
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_FROM
+            +                   " IN "
+            +                        "( SELECT " + BankAccountTable.BANK_ACCOUNT_TABLE + "."
+            +                                   BankAccountTable.BANK_ACCOUNT_ID + " FROM "
+            +                                   BankAccountTable.BANK_ACCOUNT_TABLE + " WHERE "
+            +                                   BankAccountTable.BANK_ACCOUNT_TABLE + "."
+            +                                   BankAccountTable.BANK_ACCOUNT_USER_ID + " = ? "
+            +                         ")"
+            +            ")"
+            +       ")"
+            + " ) "
+            + " OR "
+            + "("
+            +       UserHasPaymentHistoryTable.USER_ID + " <> ?"
+            +       " AND "
+            +       "("
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_FROM + " = ? "
+            +               " OR "
+            +               HistoryTable.HISTORY_TABLE + "." + HistoryTable.ACCOUNT_TO + " = ? "
+            +       ")"
+            + ")";
+
+
+
+
 
 
 
