@@ -17,7 +17,9 @@ public class RegisterDepositCommand extends AbstractBankAccountInfo{
         int balance = Integer.parseInt(request.getParameter(Parameters.BALANCE));
 
         DepositAccount depositAccount = new DepositAccount();
-        depositAccount.getDepositTariff().setId(depositTariffId);
+        DepositTariff depositTariff = new DepositTariff();
+        depositTariff.setId(depositTariffId);
+        depositAccount.setDepositTariff(depositTariff);
         depositAccount.setUserId(userId);
         depositAccount.setBalance(balance);
 
@@ -26,9 +28,10 @@ public class RegisterDepositCommand extends AbstractBankAccountInfo{
         } catch (TariffNotExistException e) {
             e.printStackTrace();
             // todo redirect to error
-            return CommandConstants.REDIRECT + CommandConstants.USER_HOME_COMMAND;
+            //return CommandConstants.REDIRECT + CommandConstants.USER_HOME_COMMAND;
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
         }
         // todo set message
-        return CommandConstants.REDIRECT + CommandConstants.USER_HOME_COMMAND;
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
     }
 }

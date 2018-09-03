@@ -23,6 +23,7 @@ public class DepositAccountService {
     */
     public static void registerDepositAccount(DepositAccount depositAccount) throws TariffNotExistException {
         try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
+            depositAccount.setAccountType(Account.DEPOSIT);
             depositDao.registerDeposit(depositAccount);
         }
     }

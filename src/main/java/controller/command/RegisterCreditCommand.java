@@ -3,6 +3,7 @@ package controller.command;
 import controller.PagesName;
 import controller.Parameters;
 import model.entity.CreditAccount;
+import model.entity.CreditTariff;
 import model.exception.TariffNotExistException;
 import model.service.CreditAccountService;
 
@@ -16,14 +17,17 @@ public class RegisterCreditCommand extends AbstractBankAccountInfo{
 
         CreditAccount creditAccount = new CreditAccount();
         // todo
-        creditAccount.getCreditTariff().setId(creditTariffId);
+        CreditTariff creditTariff = new CreditTariff();
+        creditTariff.setId(creditTariffId);
+        creditAccount.setCreditTariff(creditTariff);
         creditAccount.setUserId(userId);
         try {
             CreditAccountService.registerCreditAccount(creditAccount);
         } catch (TariffNotExistException e) {
             // todo forward to registrayion credit page
-            return CommandConstants.REDIRECT + PagesName.USER_HOME_PAGE;
+            e.printStackTrace();
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
         }
-        return CommandConstants.REDIRECT + PagesName.USER_HOME_PAGE;
+        return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_COMMAND;
     }
 }
