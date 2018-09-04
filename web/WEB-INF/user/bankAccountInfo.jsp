@@ -118,6 +118,9 @@
                 Credit Name
             </td>
             <td>
+                Indebtedness
+            </td>
+            <td>
                 Type
             </td>
         </tr>
@@ -130,6 +133,9 @@
             </td>
             <td>
                 <c:out value="${requestScope.creditAccount.creditTariff.name}"/><br>
+            </td
+            <td>
+                <c:out value="${requestScope.creditAccount.indebtedness}"/><br>
             </td>
             <td>
                 <c:out value="${requestScope.creditAccount.accountType}"/><br>
@@ -152,6 +158,9 @@
                 Deposit Name
             </td>
             <td>
+                Deposit amount
+            </td>
+            <td>
                 Type
             </td>
         </tr>
@@ -164,6 +173,9 @@
             </td>
             <td>
                 <c:out value="${requestScope.depositAccount.depositTariff.name}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.depositAccount.depositAmount}"/><br>
             </td>
             <td>
                 <c:out value="${requestScope.depositAccount.accountType}"/><br>
