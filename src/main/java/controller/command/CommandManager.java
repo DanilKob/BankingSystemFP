@@ -57,7 +57,7 @@ public class CommandManager {
         registerCommand(User.ROLE.USER,CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.BANK_ACCOUNTS_COMMAND,new BankAccountsCommand());
         registerCommand(User.ROLE.USER,CommandConstants.HISTORY_COMMAND, new HistoryInfoCommand());
-        registerCommand(User.ROLE.USER,CommandConstants.PAY_COMMAND,new PayCommandRequest());
+        registerCommand(User.ROLE.USER,CommandConstants.PAY_COMMAND,new PayRequestCommand());
         registerCommand(User.ROLE.USER,CommandConstants.PAYMENT_CONFIRMATION,new PaymentConfirmationCommand());
         registerCommand(User.ROLE.USER,CommandConstants.CREDIT_TARIFF_INFO, new CreditTariffsInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.DEPOSIT_TARIFF_INFO, new DepositTariffInfoCommand());

@@ -7,7 +7,7 @@ import model.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class PayCommandRequest extends AbstractBankAccountInfo{
+public class PayRequestCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
         int userIdInSession = super.getUserIdInSession(request);

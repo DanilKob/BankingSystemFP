@@ -23,34 +23,47 @@
 <c:set var="userTo" value="${requestScope.user}"/>
 <c:set var="bankAccountTo" value="${param.bankAccountTo}" scope="page"/>
 <c:set var="price" value="${param.price}" scope="page"/>
-
 <c:set var="fakeId" value="${param.fakeId}" scope="page"/>
-<p>Fake Id :: ${fakeId}</p>
-<br>
-<p>You want to pay to user....</p>
 
-<br>
-<c:out value="${user.firstName}"/>
-<br>
-<c:out value="${user.middleName}"/>
-<br>
-<c:out value="${user.lastName}"/>
 
-<br>
-<p>Price</p>
-<c:out value="${requestScope.price}"/>
+<c:if test="${(not empty userTo)&&(not emptybankAccountTo)&&(not emptyprice)&&(not empty fakeId)}">
+    <p>Fake Id :: ${fakeId}</p>
+    <br>
+    <p>You want to pay to user....</p>
 
-<br>
+    <br>
+    <c:out value="${user.firstName}"/>
+    <c:out value="${user.middleName}"/>
+    <c:out value="${user.lastName}"/>
 
-<form action="/servlet" method="get">
-    <input type="hidden" name="command" value="payConfirmation">
-    <input type="hidden" name="fakeId" value="${fakeId}">
-    <input type="hidden" name="userTo" value="${user.id}">
-    <input type="hidden" name="bankAccountTo" value="${bankAccountTo}">
-    <input type="hidden" name="price" value="${price}">
+    <br>
+    <p>Price</p>
+    <c:out value="${requestScope.price}"/>
 
-    <p><input type="submit" value="Pay"/></p>
+    <br>
+
+    <form action="/servlet" method="get">
+        <input type="hidden" name="command" value="payConfirmation">
+        <input type="hidden" name="fakeId" value="${fakeId}">
+        <input type="hidden" name="userTo" value="${user.id}">
+        <input type="hidden" name="bankAccountTo" value="${bankAccountTo}">
+        <input type="hidden" name="price" value="${price}">
+
+        <p><input type="submit" value="Pay"/></p>
+    </form>
+</c:if>
+
+<c:if test="${not empty requestScope.paymentSuccess}">
+    <br>
+    <p>Is payment success?</p>
+    <c:out value="${requestScope.paymentSuccess}"/>
+    <br>
+</c:if>
+
+
+<form action="${pageContext.request.contextPath}/servlet">
+    <input hidden name="command" value="userHomePage">
+    <p><input type="submit" value="Home page"/></p>
 </form>
-
 </body>
 </html>
