@@ -5,18 +5,11 @@ import model.dao.mapper.MappingKey;
 import model.dao.statement.tables.CreditTable;
 
 public class CreditAccount extends BankAccount {
-    /*
-    @MappingKey
-    private int creditId;
-    @ExtractParam(columnName = CreditTable.CREDIT_NAME)
-    private String name;
-    */
+
     private CreditTariff creditTariff;
 
+    private int indebtedness;
 
-    private int percent;
-    private int limit;
-    private int period;
 
     public CreditTariff getCreditTariff() {
         return creditTariff;
@@ -25,46 +18,12 @@ public class CreditAccount extends BankAccount {
     public void setCreditTariff(CreditTariff creditTariff) {
         this.creditTariff = creditTariff;
     }
-    /*
-    public void setCreditId(int creditId) {
-        this.creditId = creditId;
+
+    public int getIndebtedness() {
+        return indebtedness;
     }
 
-    public int getCreditId() {
-        return creditId;
+    public void setIndebtedness(int indebtedness) {
+        this.indebtedness = indebtedness;
     }
-    */
-
-    public int getPercent() {
-        return percent;
-    }
-
-    public void setPercent(int percent) {
-        this.percent = percent;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
-    }
-    /*
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    */
 }

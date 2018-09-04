@@ -95,7 +95,7 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
         Optional<User> optionalUser = Optional.empty();
         try {
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.LOGIN_BY_LOGIN_PASSWORD);
+                    .prepareStatement(Statements.SELECT_USER_BY_LOGIN_PASSWORD);
             preparedStatement.setString(1,login);
             preparedStatement.setString(2,password);
             ResultSet resultSet = preparedStatement.executeQuery();

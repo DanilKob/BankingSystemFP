@@ -30,6 +30,7 @@ public class CreditAccountService {
         }
     }
 
+    /*
     public static boolean payFromCredit(Requsition requsition){
         int fromAccountId = requsition.getFromAccountId();
         int fromUserId = requsition.getFromUserId();
@@ -41,7 +42,7 @@ public class CreditAccountService {
             return creditDao.pay(fromAccountId,fromUserId,toAccountId,toUserId,balance);
         }
     }
-
+    */
     public static List<CreditAccount> getAllCreditAccountsByUserId(int id){
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
             return creditDao.findAllConfirmedByUserId(id);

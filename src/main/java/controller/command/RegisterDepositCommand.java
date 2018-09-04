@@ -13,14 +13,15 @@ public class RegisterDepositCommand extends AbstractBankAccountInfo{
     public String execute(HttpServletRequest request) {
         int userId = super.getUserIdInSession(request);
         int depositTariffId = Integer.parseInt(request.getParameter(Parameters.DEPOSIT_TARIFF_ID));
-        int balance = Integer.parseInt(request.getParameter(Parameters.BALANCE));
+        int depositAmount = Integer.parseInt(request.getParameter(Parameters.BALANCE));
 
         DepositAccount depositAccount = new DepositAccount();
         DepositTariff depositTariff = new DepositTariff();
         depositTariff.setId(depositTariffId);
         depositAccount.setDepositTariff(depositTariff);
         depositAccount.setUserId(userId);
-        depositAccount.setBalance(balance);
+        //depositAccount.setBalance(balance);
+        depositAccount.setDepositAmount(depositAmount);
 
         try {
             DepositAccountService.registerDepositAccount(depositAccount);

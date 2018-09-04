@@ -32,7 +32,6 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
 
             PreparedStatement isExistStatement = connection.prepareStatement("select exists (select * from credit where credit.id = ?)");
             isExistStatement.setInt(1,creditAccount.getCreditTariff().getId());
-
             ResultSet resultSet = isExistStatement.executeQuery();
             resultSet.next();
             if(!resultSet.getBoolean(1)){
@@ -125,80 +124,6 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
         return findCreditByStatement(userId, Statements.SELECT_ALL_UNCONFIRMED_CREDIT_BY_BANK_USER_ID);
     }
 
-    @Override
-    public boolean pay(int fromAccountId, int fromUserId, int toAccountId, int toUserId, int price) {
-        Connection connection = super.getConnection();
-        try {
-            connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-
-            PreparedStatement psTakeMoney = connection.prepareStatement(Statements.TAKE_MONEY_FROM_BANK_ACCOUNT);
-            psTakeMoney.setInt(1,price);
-            psTakeMoney.setInt(2,fromAccountId);
-            psTakeMoney.setInt(3,price);
-
-            PreparedStatement psAddMoney = connection.prepareStatement(Statements.ADD_MONEY_TO_BANK_ACCOUNT);
-            psAddMoney.setInt(1,price);
-            psAddMoney.setInt(2,toAccountId);
-
-            if(psTakeMoney.executeUpdate() == 0){
-                System.out.println("Insufficient funds! Refill your bank account");
-                connection.rollback();
-                return false;
-            }
-
-            if(psAddMoney.executeUpdate() == 0){
-                connection.rollback();
-                return false;
-            }
-            //////////////////////////////////////////////////////////////////////////////////////////////
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement(Statements.INSERT_INTO_HISTORY_FROM_ID_TO_ID_PRICE_DATE,Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1,fromAccountId);
-            preparedStatement.setInt(2,toAccountId);
-            preparedStatement.setInt(3,price);
-            preparedStatement.setTimestamp(4,Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.executeUpdate();
-
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            int generatedKey = 0;
-            if(rs.next()){
-                generatedKey = rs.getInt(1);
-            }
-
-            System.out.println("generated key = " + generatedKey);
-            ///////////////////////////////////////////////////////////////////////////////////////////
-
-
-            PreparedStatement addHistory = connection.prepareStatement(Statements.INSERT_INTO_HISTORY_USER_ID_HISTORY_ID);
-            addHistory.setInt(1, fromUserId);
-            addHistory.setInt(2,generatedKey);
-            addHistory.addBatch();
-
-            if(fromUserId != toUserId) {
-                addHistory.setInt(1,toUserId);
-                addHistory.setInt(2,generatedKey);
-                addHistory.addBatch();
-            }
-
-            addHistory.executeBatch();
-            //////////////////////////////////////////////////////////////////////////////////////////
-
-            connection.commit();
-            System.out.println("Payment is successful");
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // todo refactor and add logger
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }
-        return false;
-    }
 
     @Override
     public void update(CreditAccount entity) {

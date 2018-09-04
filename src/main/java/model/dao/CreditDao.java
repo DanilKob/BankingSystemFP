@@ -6,7 +6,6 @@ import model.exception.TariffNotExistException;
 import java.util.List;
 
 public interface CreditDao extends GenericDao<CreditAccount> {
-    boolean pay(int fromAccountId, int fromUserId, int toAccountId, int toUserId, int price);
 
     void registerCredit(CreditAccount creditAccount) throws TariffNotExistException;
 

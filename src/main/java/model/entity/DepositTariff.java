@@ -11,7 +11,13 @@ public class DepositTariff implements Entity {
     private int id;
 
     @ExtractParam(columnName = DepositTable.DEPOSIT_NAME)
-    protected String name;
+    private String name;
+
+    @ExtractParam(columnName = DepositTable.DEPOSIT_RATE)
+    private int rate;
+
+    @ExtractParam(columnName = DepositTable.DEPOSIT_PERIOD)
+    private int accrualRate;
 
     public String getName() {
         return name;
@@ -27,5 +33,21 @@ public class DepositTariff implements Entity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getAccrualRate() {
+        return accrualRate;
+    }
+
+    public void setAccrualRate(int accrualRate) {
+        this.accrualRate = accrualRate;
     }
 }

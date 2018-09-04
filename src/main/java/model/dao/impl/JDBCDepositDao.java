@@ -24,7 +24,7 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
     public void create(DepositAccount entity) {
         try {
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_BALANCE_DATE);
+                    .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_ID_DEPOSIT_AMOUNT);
             preparedStatement.setInt(1,entity.getUserId());
             preparedStatement.setInt(2,entity.getDepositTariff().getId());
             preparedStatement.setInt(3,entity.getAccountType().type_id);
@@ -54,12 +54,12 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             }
 
             PreparedStatement preparedStatement = connection
-                    .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_BALANCE_DATE);
+                    .prepareStatement(Statements.INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_ID_DEPOSIT_AMOUNT);
             preparedStatement.setInt(1,depositAccount.getUserId());
             //preparedStatement.setInt(2,entity.getBalance());
             preparedStatement.setInt(2,depositAccount.getDepositTariff().getId());
             preparedStatement.setInt(3,depositAccount.getAccountType().type_id);
-            preparedStatement.setInt(4,depositAccount.getBalance());
+            preparedStatement.setInt(4,depositAccount.getDepositAmount());
 
             preparedStatement.execute();
 

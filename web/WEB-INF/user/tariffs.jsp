@@ -34,6 +34,12 @@
             <td>
                 Name
             </td>
+            <td>
+                Rate
+            </td>
+            <td>
+                Accrual Rate(min)
+            </td>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.creditTariffs}" var="creditTariff">
@@ -47,6 +53,12 @@
                 </td>
                 <td>
                     <c:out value="${creditTariff.name}"/><br>
+                </td>
+                <td>
+                    <c:out value="${creditTariff.rate}"/><br>
+                </td>
+                <td>
+                    <c:out value="${creditTariff.accrualRate}"/><br>
                 </td>
             </tr>
         </c:forEach>
@@ -79,6 +91,12 @@
             <td>
                 Name
             </td>
+            <td>
+                Rate
+            </td>
+            <td>
+                Accrual Rate(min)
+            </td>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
@@ -92,6 +110,12 @@
                 </td>
                 <td>
                     <c:out value="${depositTariff.name}"/><br>
+                </td>
+                <td>
+                    <c:out value="${depositTariff.rate}"/><br>
+                </td>
+                <td>
+                    <c:out value="${depositTariff.accrualRate}"/><br>
                 </td>
             </tr>
         </c:forEach>

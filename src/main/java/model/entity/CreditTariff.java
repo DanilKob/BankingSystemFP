@@ -13,6 +13,12 @@ public class CreditTariff implements Entity {
     @ExtractParam(columnName = CreditTable.CREDIT_NAME)
     private String name;
 
+    @ExtractParam(columnName = CreditTable.CREDIT_RATE)
+    private int rate;
+
+    @ExtractParam(columnName = CreditTable.CREDIT_PERIOD)
+    private int accrualRate;
+
     public String getName() {
         return name;
     }
@@ -27,5 +33,21 @@ public class CreditTariff implements Entity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public int getAccrualRate() {
+        return accrualRate;
+    }
+
+    public void setAccrualRate(int accrualRate) {
+        this.accrualRate = accrualRate;
     }
 }

@@ -3,6 +3,8 @@ package controller.command;
 import controller.PagesName;
 import controller.Parameters;
 import model.entity.Requsition;
+import model.exception.BankAccountNotExistException;
+import model.service.BankAccountService;
 import model.service.CreditAccountService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,6 @@ public class PaymentConfirmationCommand extends AbstractBankAccountInfo{
         System.out.println(Integer.parseInt(request.getParameter(Parameters.PAY_TO_ACCOUNT_ID)));
         int payToAccountId = Integer.parseInt(request.getParameter(Parameters.PAY_TO_ACCOUNT_ID));
         System.out.println(request.getParameter(Parameters.PAY_TO_USER_ID));
-        int userToId =  Integer.parseInt(request.getParameter(Parameters.PAY_TO_USER_ID));
 
         int price = Integer.parseInt(request.getParameter(Parameters.PAY_PRICE));
 
@@ -31,11 +32,18 @@ public class PaymentConfirmationCommand extends AbstractBankAccountInfo{
         requsition.setFromUserId(userIdInSession);
 
         requsition.setToAccountId(payToAccountId);
-        requsition.setToUserId(userToId);
 
         requsition.setBalance(price);
 
-        boolean isPaymentSuccessful = CreditAccountService.payFromCredit(requsition);
+        boolean isPaymentSuccessful = false;
+        try {
+            isPaymentSuccessful = BankAccountService.pay(requsition);
+        } catch (BankAccountNotExistException e) {
+            e.printStackTrace();
+            // todo add logger
+            // todo add message
+            return PagesName.ERROR;
+        }
 
         System.out.println("In confirmation command!!!");
         System.out.println("Success ? "+isPaymentSuccessful);

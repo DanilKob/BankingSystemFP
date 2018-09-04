@@ -11,4 +11,7 @@ public interface BankAccountTable {
     String BANK_ACCOUNT_TYPE_ID = "bank_account_type_id";
     String BANK_ACCOUNT_CREDIT_ID = "credit_id";
     String BANK_ACCOUNT_DEPOSIT_ID = "deposit_id";
+    String BANK_ACCOUNT_SHELF_LIFE = "shelf_life";
+    String BANK_ACCOUNT_CREDIT_LIMIT = "credit_limit";
+    String BANK_ACCOUNT_DEPOSIT_AMMOUNT = "deposit_amount";
 }
