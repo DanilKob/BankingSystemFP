@@ -18,26 +18,37 @@
     <title>Info</title>
 </head>
 <body>
-<form action="/user/bankAccountInfo.jsp">
+<c:set var="fakeId" value="${param.fakeId}" scope="page"/>
+<c:set var="command" value="${param.command}" scope="page"/>
+
+
+
+<form action="/servlet">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        <input type="hidden" name="command" value="${command}">
+        <input type="hidden" name="fakeId" value="${fakeId}">
     </select>
+
 </form>
 <c:set var="user" value="${sessionScope.user}"/>
 <c:out value="${user.firstName}"/>
 <c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
-<br>
-<a href="/user/user.jsp"> User </a>
+
+
+
 <br>
 <form action="/servlet" method="post">
     <input type="hidden" name="command" value="pay">
+    <input type="hidden" name="fakeId" value="${fakeId}">
     <p>Pay on bank account ... </p>
     <p><input type="number" name="bankAccountTo"></p>
     <p>Price </p>
     <p><input type="number" name="price"></p>
+
     <p><input type="submit" value="Pay"/></p>
 </form>
 
@@ -45,6 +56,7 @@
 
 <form action="/servlet" method="get">
     <input type="hidden" name="command" value="history">
+    <input type="hidden" name="fakeId" value="${fakeId}">
     <p><input type="submit" value="Account history"/></p>
 </form>
 
@@ -106,25 +118,32 @@
                 Credit Name
             </td>
             <td>
+                Indebtedness
+            </td>
+            <td>
                 Type
             </td>
         </tr>
         <tr>
             <td>
-                <c:out value="${requestScope.creditAccount.id}"/><br>
+                <c:out value="${requestScope.creditAccount.id}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.balance}"/><br>
+                <c:out value="${requestScope.creditAccount.balance}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.name}"/><br>
+                <c:out value="${requestScope.creditAccount.creditTariff.name}"/>
+            </td
+            <td>
+                <c:out value="${requestScope.creditAccount.indebtedness}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.accountType}"/><br>
+                <c:out value="${requestScope.creditAccount.accountType}"/>
             </td>
         </tr>
     </table>
 </c:if>
+
 
 <c:if test="${not empty requestScope.depositAccount}">
     <table>
@@ -139,6 +158,9 @@
                 Deposit Name
             </td>
             <td>
+                Deposit amount
+            </td>
+            <td>
                 Type
             </td>
         </tr>
@@ -150,7 +172,10 @@
                 <c:out value="${requestScope.depositAccount.balance}"/><br>
             </td>
             <td>
-                <c:out value="${requestScope.depositAccount.name}"/><br>
+                <c:out value="${requestScope.depositAccount.depositTariff.name}"/><br>
+            </td>
+            <td>
+                <c:out value="${requestScope.depositAccount.depositAmount}"/><br>
             </td>
             <td>
                 <c:out value="${requestScope.depositAccount.accountType}"/><br>

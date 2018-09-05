@@ -18,7 +18,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/user/credit.jsp">
+<form action="/WEB-INF/user/deposit.jsp">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -30,13 +30,6 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<form action="/servlet" method="get">
-    <input type="hidden" name="command" value="history">
-    <input type="hidden" name="serialNumberFromPage" value="${param.serialNumberFromPage}">
-    <p><input type="submit" value="Account history"/></p>
-</form>
-
-<br>
 
 <table>
     <tr>
@@ -47,7 +40,7 @@
             Balance
         </td>
         <td>
-            Credit Name
+            Deposit Name
         </td>
         <td>
             Type
@@ -55,20 +48,20 @@
     </tr>
     <tr>
         <td>
-            <c:out value="${requestScope.creditAccount.id}"/><br>
+            <c:out value="${requestScope.depositAccount.id}"/><br>
         </td>
         <td>
-            <c:out value="${requestScope.creditAccount.balance}"/><br>
+            <c:out value="${requestScope.depositAccount.balance}"/><br>
         </td>
         <td>
-            <c:out value="${requestScope.creditAccount.name}"/><br>
+            <c:out value="${requestScope.depositAccount.name}"/><br>
         </td>
         <td>
-            <c:out value="${requestScope.creditAccount.accountType}"/><br>
+            Deposit
         </td>
     </tr>
 </table>
 
-<a href="/user/user.jsp"> User </a>
+<a href="/WEB-INF/user/user.jsp"> User </a>
 </body>
 </html>

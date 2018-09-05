@@ -8,7 +8,7 @@ import model.service.CreditAccountService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
+@Deprecated
 public class CreditsCommand extends AbstractBankAccountInfo{
 
     @Override

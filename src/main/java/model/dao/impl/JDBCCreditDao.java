@@ -3,10 +3,12 @@ package model.dao.impl;
 import model.dao.CreditDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
+import model.dao.statement.TableConstants;
 import model.entity.CreditAccount;
+import model.entity.CreditTariff;
+import model.exception.TariffNotExistException;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,15 +20,50 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
 
     @Override
     public void create(CreditAccount entity) {
+
+    }
+
+    @Override
+    public void udpateCreditAccountBalanceByAccountId(int creditId, int indebtedness) {
         try {
             PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.UPDATE_CREDIT_ACCOUNT_BALANCE_INDEBTEDNESS_BY_BANK_ACCOUNT_ID);
+            preparedStatement.setInt(1,indebtedness);
+            preparedStatement.setInt(2,indebtedness);
+            preparedStatement.setInt(3,TableConstants.ACCOUNT_TYPE_CREDIT);
+            preparedStatement.setInt(4,creditId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void registerCredit(CreditAccount creditAccount) throws TariffNotExistException {
+        Connection connection = super.getConnection();
+        try {
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+
+            PreparedStatement isExistStatement = connection.prepareStatement("select exists (select * from credit where credit.id = ?)");
+            isExistStatement.setInt(1,creditAccount.getCreditTariff().getId());
+            ResultSet resultSet = isExistStatement.executeQuery();
+            resultSet.next();
+            if(!resultSet.getBoolean(1)){
+                throw new TariffNotExistException();
+            }
+
+            PreparedStatement preparedStatement = connection
                     .prepareStatement(Statements.INSER_CREDIT_USER_ID_CREDIT_ID_TYPE_DATE);
-            preparedStatement.setInt(1,entity.getUserId());
+            preparedStatement.setInt(1,creditAccount.getUserId());
             //preparedStatement.setInt(2,entity.getBalance());
-            preparedStatement.setInt(2,entity.getCreditId());
-            preparedStatement.setInt(3,entity.getAccountType().type_id);
+            preparedStatement.setInt(2,creditAccount.getCreditTariff().getId());
+            preparedStatement.setInt(3,creditAccount.getAccountType().type_id);
+            //preparedStatement.setInt(4,creditAccount.getBalance());
 
             preparedStatement.execute();
+
+            connection.commit();
             // todo add exception
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,8 +80,10 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<CreditAccount> creditAccountExtracter = new Extracter<>();
+            Extracter<CreditTariff> creditTariffExtracter = new Extracter<>();
             if(resultSet.next()){
                 creditAccount = creditAccountExtracter.extractEntityFromResultSet(resultSet, new CreditAccount());
+                creditAccount.setCreditTariff(creditTariffExtracter.extractEntityFromResultSet(resultSet,new CreditTariff()));
                 //creditAccount = creditMapper.extractEntityFromResultSet(resultSet);
             }else{
                 // todo throw my exception
@@ -59,24 +98,22 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
         return creditAccount;
     }
 
-    @Override
-    public List<CreditAccount> findAll() {
 
-        return null;
-    }
-
-    @Override
-    public List<CreditAccount> findAllByUserId(int userId) {
-        List<CreditAccount> creditAccounts = null;
+    private List<CreditAccount> findCreditByStatement(int userId, String statement){
+        List<CreditAccount> creditAccounts = new LinkedList<>();
         try{
             PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement(Statements.SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID);
+                    .prepareStatement(statement);
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<CreditAccount> creditExtracter = new Extracter<>();
-            creditAccounts = new LinkedList<>();
+            Extracter<CreditTariff> creditTariffExtracter = new Extracter<>();
+            CreditAccount creditAccount;
             while(resultSet.next()){
-                creditAccounts.add(creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount()));
+                creditAccount = creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount());
+                creditAccount.setCreditTariff(creditTariffExtracter.
+                        extractEntityFromResultSet(resultSet, new CreditTariff()));
+                creditAccounts.add(creditAccount);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,89 +121,49 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             e.printStackTrace();
         }
         // todo
-
         return creditAccounts;
     }
 
     @Override
-    public List<CreditAccount> findAllUnconfirmedByUserId(int accountId) {
+    public List<CreditAccount> findAll() {
         return null;
     }
 
     @Override
-    public boolean pay(int fromAccountId, int fromUserId, int toAccountId, int toUserId, int price) {
-        Connection connection = super.getConnection();
-        try {
-            connection.setAutoCommit(false);
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-
-            PreparedStatement psTakeMoney = connection.prepareStatement(Statements.TAKE_MONEY_FROM_BANK_ACCOUNT);
-            psTakeMoney.setInt(1,price);
-            psTakeMoney.setInt(2,fromAccountId);
-            psTakeMoney.setInt(3,price);
-
-            PreparedStatement psAddMoney = connection.prepareStatement(Statements.ADD_MONEY_TO_BANK_ACCOUNT);
-            psAddMoney.setInt(1,price);
-            psAddMoney.setInt(2,toAccountId);
-
-            if(psTakeMoney.executeUpdate() == 0){
-                System.out.println("Insufficient funds! Refill your bank account");
-                connection.rollback();
-                return false;
+    public List<CreditAccount> findAllUnconfirmedCredits() {
+        List<CreditAccount> creditAccounts = new LinkedList<>();
+        try{
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.SELECT_ALL_UNCONFIRMED_CREDITS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Extracter<CreditAccount> creditExtracter = new Extracter<>();
+            Extracter<CreditTariff> creditTariffExtracter = new Extracter<>();
+            CreditAccount creditAccount;
+            while(resultSet.next()){
+                creditAccount = creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount());
+                creditAccount.setCreditTariff(creditTariffExtracter.
+                        extractEntityFromResultSet(resultSet, new CreditTariff()));
+                creditAccounts.add(creditAccount);
             }
-
-            if(psAddMoney.executeUpdate() == 0){
-                connection.rollback();
-                return false;
-            }
-            //////////////////////////////////////////////////////////////////////////////////////////////
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement(Statements.INSERT_INTO_HISTORY_FROM_ID_TO_ID_PRICE_DATE,Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1,fromAccountId);
-            preparedStatement.setInt(2,toAccountId);
-            preparedStatement.setInt(3,price);
-            preparedStatement.setTimestamp(4,Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.executeUpdate();
-
-            ResultSet rs = preparedStatement.getGeneratedKeys();
-            int generatedKey = 0;
-            if(rs.next()){
-                generatedKey = rs.getInt(1);
-            }
-
-            System.out.println("generated key = " + generatedKey);
-            ///////////////////////////////////////////////////////////////////////////////////////////
-
-
-            PreparedStatement addHistory = connection.prepareStatement(Statements.INSERT_INTO_HISTORY_USER_ID_HISTORY_ID);
-            addHistory.setInt(1, fromUserId);
-            addHistory.setInt(2,generatedKey);
-            addHistory.addBatch();
-
-            if(fromUserId != toUserId) {
-                addHistory.setInt(1,toUserId);
-                addHistory.setInt(2,generatedKey);
-                addHistory.addBatch();
-            }
-
-            addHistory.executeBatch();
-            //////////////////////////////////////////////////////////////////////////////////////////
-
-            connection.commit();
-            System.out.println("Payment is successful");
-            return true;
-
         } catch (SQLException e) {
             e.printStackTrace();
-            // todo refactor and add logger
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
-        return false;
+        // todo
+        return creditAccounts;
     }
+
+    @Override
+    public List<CreditAccount> findAllConfirmedByUserId(int userId) {
+        return findCreditByStatement(userId,Statements.SELECT_ALL_CONFIRMED_CREDIT_BY_BANK_USER_ID);
+    }
+
+    @Override
+    public List<CreditAccount> findAllUnconfirmedCreditsByUserId(int userId) {
+        return findCreditByStatement(userId, Statements.SELECT_ALL_UNCONFIRMED_CREDIT_BY_BANK_USER_ID);
+    }
+
 
     @Override
     public void update(CreditAccount entity) {
@@ -175,7 +172,14 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
 
     @Override
     public void delete(int id) {
-
+        try {
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.DELETE_CREDIT_ACCOUNT_BY_ACCOUNT_ID);
+            preparedStatement.setInt(1,id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // todo refactor to another class

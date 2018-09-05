@@ -19,6 +19,8 @@ public class CreditInfoCommand extends AbstractBankAccountInfo{
 
         CreditAccount creditAccount = CreditAccountService.getConfirmedCreditAccount(realCreditId);
 
+        System.out.println(creditAccount.getIndebtedness());
+
         request.setAttribute(Parameters.CREDIT_ACCOUNT,creditAccount);
         //return /*CommandConstants.REDIRECT +*/ PagesName.CREDIT_PAGE;
         return PagesName.BANK_ACCOUNT_PAGE;

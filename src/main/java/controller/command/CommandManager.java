@@ -57,7 +57,21 @@ public class CommandManager {
         registerCommand(User.ROLE.USER,CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositInfoCommand());
         registerCommand(User.ROLE.USER,CommandConstants.BANK_ACCOUNTS_COMMAND,new BankAccountsCommand());
         registerCommand(User.ROLE.USER,CommandConstants.HISTORY_COMMAND, new HistoryInfoCommand());
-        registerCommand(User.ROLE.USER,CommandConstants.PAY_COMMAND,new PayCommandRequest());
+        registerCommand(User.ROLE.USER,CommandConstants.PAY_COMMAND,new PayRequestCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.PAYMENT_CONFIRMATION,new PaymentConfirmationCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.CREDIT_TARIFF_INFO, new CreditTariffsInfoCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.DEPOSIT_TARIFF_INFO, new DepositTariffInfoCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.USER_UNCONFIRMED_CREDITS_COMMAND, new UserUnconfirmedCreditsCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.USER_HOME_PAGE_COMMAND, new UserHomePageCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.REGISTER_CREDIT_ACCOUNT,new RegisterCreditCommand());
+        registerCommand(User.ROLE.USER,CommandConstants.REGISTER_DEPOSIT_ACCOUNT, new RegisterDepositCommand());
+
+
+        registerCommand(User.ROLE.ADMIN,CommandConstants.ADMIN_HOME_PAGE_COMMAND, new AdminHomePageCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.ALL_UNCONFIRMED_CREDITS, new AllUnconfirmedCreditsCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.UNCONFIRMED_CREDIT_INFO, new UnconfirmedCreditInfoCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.CONFIRM_CREDIT, new ConfirmCreditCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.CANCEL_CREDIT, new CancelCreditCommand());
 
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);

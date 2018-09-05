@@ -35,10 +35,21 @@ public class JDBCHistoryDao extends AbstractJDBCGenericDao<History> implements H
         List<History> historyList = new LinkedList<>();
         try {
             PreparedStatement preparedStatement = getConnection()
-                    .prepareStatement(Statements.SELECT_HISTORY_BY_ACCOUNT_ID_AND_USER_ID);
+                    .prepareStatement(Statements.SELECT_ALL_HISTORY_BY_ACCOUNT_ID_USER_ID);
+            // userID, accountId, userId, accountId, userId, userId, accountId, accountId
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, bankAccountId);
+            preparedStatement.setInt(3, userId);
+            preparedStatement.setInt(4,bankAccountId);
+            preparedStatement.setInt(5, userId);
+            preparedStatement.setInt(6, userId);
+            preparedStatement.setInt(7, bankAccountId);
+            preparedStatement.setInt(8, bankAccountId);
+            /*
             preparedStatement.setInt(1,bankAccountId);
             preparedStatement.setInt(2,bankAccountId);
             preparedStatement.setInt(3,userId);
+            */
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<History> historyExtracter = new Extracter<>();
             Extracter<User> userExtracter = new Extracter<>();

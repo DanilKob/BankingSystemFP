@@ -25,7 +25,8 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<form action="/user/user.jsp">
+<form action="${pageContext.request.contextPath}/servlet">
+    <input hidden name="command" value="userHomePage">
     <select id="language" name="language" onchange="submit()">
         <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
         <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
@@ -33,9 +34,7 @@
 </form>
 <br>
 <form action="${pageContext.request.contextPath}/servlet" method="post">
-
     <input type="hidden" name="command" value="logOut">
-
     <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
 </form>
 
@@ -44,6 +43,30 @@
     <input type="hidden" name="command" value="bankAccounts">
     <p><input type="submit" value="<fmt:message key="user.bank.account"/>"/></p>
 </form>
+
+
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="creditTariffsInfo">
+    <p><input type="submit" value="Credit tariffs"></p>
+</form>
+
+
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="depositTariffsInfo">
+    <p><input type="submit" value="Deposit tariffs"></p>
+</form>
+
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="unconfirmedCredits">
+    <p><input type="submit" value="Unconfirmed tariffs"></p>
+</form>
+
+<c:if test="${not empty requestScope.paymentSuccess}">
+    <br>
+    <p>Is payment success?</p>
+    <c:out value="${requestScope.paymentSuccess}"/>
+    <br>
+</c:if>
 
 
 <c:if test="${not empty requestScope.bankAccounts}">
@@ -78,11 +101,50 @@
                     <c:out value="${bankAccount.entity.balance}"/><br>
                 </td>
                 <td>
-                    <form action="/servlet" method="get">
+                    <form action="${pageContext.request.contextPath}/servlet" method="get">
                         <input type="hidden" name="command" value="${bankAccount.entity.accountType}">
                         <input type="hidden" name="fakeId" value="${bankAccount.fakeId}">
                         <p><input type="submit" value="${bankAccount.entity.accountType}"/></p>
                     </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
+
+
+
+<c:if test="${not empty requestScope.unconfirmedCredits}">
+    <table>
+        <tr>
+            <td>
+                #
+            </td>
+            <td>
+                Id
+            </td>
+            <td>
+                Balance
+            </td>
+            <td>
+                Credit Name
+            </td>
+        </tr>
+        <c:set var="count" value="0" scope="page" />
+        <c:forEach items="${requestScope.unconfirmedCredits}" var="unconfirmedCredit">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
+                <td>
+                    <c:out value="${unconfirmedCredit.entity.id}"/><br>
+                </td>
+                <td>
+                    <c:out value="${unconfirmedCredit.entity.balance}"/><br>
+                </td>
+                <td>
+                    <c:out value="${unconfirmedCredit.entity.creditTariff.name}"/><br>
                 </td>
             </tr>
         </c:forEach>

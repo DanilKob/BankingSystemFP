@@ -26,13 +26,16 @@ public abstract class AbstractBankAccountInfo implements Command{
         int accountIdFromPage;
         if(request.getParameter(Parameters.FAKE_ID_FROM_PAGE)==null
                 || request.getParameter(Parameters.FAKE_ID_FROM_PAGE).isEmpty()){
-
+            throw new RuntimeException();
+            /*
             accountIdFromPage = Integer.parseInt(String.valueOf(request.getSession()
                     .getAttribute(Parameters.FAKE_ID_FROM_PAGE)));
-
+            */
         }else{
+
             accountIdFromPage = Integer.parseInt(request.getParameter(Parameters.FAKE_ID_FROM_PAGE));
             request.getSession().setAttribute(Parameters.FAKE_ID_FROM_PAGE,accountIdFromPage);
+
         }
 
         return complianceTable.get(accountIdFromPage);

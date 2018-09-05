@@ -58,7 +58,9 @@ public class LogInCommand implements Command {
             optionalUser.get().setLogin(login);
             RolesUtility.addLoginInServletContext(request,login);
             RolesUtility.addRoleAndLoginInSession(request,optionalUser.get());
-            return CommandConstants.REDIRECT + RolesUtility.defineHomePageByRole(optionalUser.get().getRole());
+            //return CommandConstants.REDIRECT + RolesUtility.defineHomePageByRole(optionalUser.get().getRole());
+            //return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + getHomePageCommand(optionalUser.get().getRole());
         }else{
             System.out.println("LOGIN ISN'T EXIST");
             return PagesName.LOGIN_PAGE;
@@ -101,6 +103,17 @@ public class LogInCommand implements Command {
             break;
             case USER: page = PagesName.USER_HOME_PAGE;
             break;
+            default: page = PagesName.LOGIN_PAGE;
+        }
+        return page;
+    }
+    private String getHomePageCommand(User.ROLE role){
+        String page;
+        switch (role){
+            case USER: page = CommandConstants.USER_HOME_PAGE_COMMAND;
+                break;
+            case ADMIN: page = CommandConstants.ADMIN_HOME_PAGE_COMMAND;
+                break;
             default: page = PagesName.LOGIN_PAGE;
         }
         return page;
