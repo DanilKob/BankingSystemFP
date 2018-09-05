@@ -15,31 +15,51 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <title> Tarif info</title>
 </head>
 <body>
 
+<c:set var="command" value="${param.command}" scope="page"/>
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand font-weight-bold">Banking system</a>
+
+    <form class="form-inline " action="${pageContext.request.contextPath}/servlet" method="post">
+        <input type="hidden" name="command" value="logOut">
+        <button class="btn btn-sm btn-primary btn-outline-dark" type="submit"><fmt:message key="logout"/></button>
+    </form>
+
+    <form class="form-inline" action="${pageContext.request.contextPath}/servlet">
+        <input hidden name="command" value="${command}">
+        <select class="custom-select" id="language" name="language" onchange="submit()">
+            <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
+            <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        </select>
+    </form>
+
+</nav>
+
 
 <c:if test="${not empty requestScope.creditTariffs}">
-    CreditTariffs
-    <table>
+    <table class="table table-sm table-bordered table-striped">
         <caption>Credit tariffs</caption>
         <tr>
-            <td>
+            <th>
                 #
-            </td>
+            </th>
             <td>
                 Tariff ID
             </td>
-            <td>
+            <th>
                 Name
-            </td>
-            <td>
+            </th>
+            <th>
                 Rate
-            </td>
-            <td>
+            </th>
+            <th>
                 Accrual Rate(min)
-            </td>
+            </th>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.creditTariffs}" var="creditTariff">
@@ -63,40 +83,42 @@
             </tr>
         </c:forEach>
     </table>
-    <form action="${pageContext.request.contextPath}/servlet">
-        <input type="hidden" name="command" value="registerCreditAccount">
-        <p> Select credit tariff
-            <select name="creditTariffId" required >
-                <c:forEach items="${requestScope.creditTariffs}" var="creditTariff">
-                    <option value="${creditTariff.id}">${creditTariff.name}</option>
-                </c:forEach>
-            </select>
-        </p>
-        <p><input type="submit" value="Open credit"/></p>
-    </form>
+    <div class="container">
+        <form action="${pageContext.request.contextPath}/servlet">
+            <input type="hidden" name="command" value="registerCreditAccount">
+            <p> Select credit tariff
+                <select class="custom-select" name="creditTariffId" required >
+                    <c:forEach items="${requestScope.creditTariffs}" var="creditTariff">
+                        <option value="${creditTariff.id}">${creditTariff.name}</option>
+                    </c:forEach>
+                </select>
+            </p>
+            <button class="btn btn-sm btn-primary " type="submit">Open credit</button>
+        </form>
+    </div>
+
 </c:if>
 
 
 <c:if test="${not empty requestScope.depositTariffs}">
-    Deposit Tariffs
-    <table>
+    <table class="table table-sm table-bordered table-striped">
         <caption>Deposit tariffs</caption>
         <tr>
-            <td>
+            <th>
                 #
-            </td>
+            </th>
             <td>
                 Tariff ID
             </td>
-            <td>
+            <th>
                 Name
-            </td>
-            <td>
-                Rate
-            </td>
-            <td>
+            </th>
+            <th>
+                Rate(%)
+            </th>
+            <th>
                 Accrual Rate(min)
-            </td>
+            </th>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
@@ -120,18 +142,24 @@
             </tr>
         </c:forEach>
     </table>
-    <form action="${pageContext.request.contextPath}/servlet">
-        <input type="hidden" name="command" value="registerDepositAccount">
-        <input type="number" name="balance">
-        <p> Select deposit tariff
-            <select name="depositTariffId" required >
-                <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
-                    <option value="${depositTariff.id}">${depositTariff.name}</option>
-                </c:forEach>
-            </select>
-        </p>
-        <p><input type="submit" value="Open deposit"/></p>
-    </form>
+    <div class="container">
+        <form action="${pageContext.request.contextPath}/servlet">
+            <input type="hidden" name="command" value="registerDepositAccount">
+
+            <label for="balance" class="sr-only">Email address</label>
+            <input type="text" id="balance" name="balance" class="form-control" placeholder="Deposit amount" required>
+
+            <p> Select deposit tariff
+                <select  class="custom-select" name="depositTariffId" required >
+                    <c:forEach items="${requestScope.depositTariffs}" var="depositTariff">
+                        <option value="${depositTariff.id}">${depositTariff.name}</option>
+                    </c:forEach>
+                </select>
+            </p>
+            <button class="btn btn-sm btn-primary " type="submit">Open deposit</button>
+        </form>
+    </div>
+
 </c:if>
 </body>
 </html>

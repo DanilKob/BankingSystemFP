@@ -16,6 +16,7 @@
 <html  lang="${language}">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <title>Payment</title>
 </head>
 <body>
@@ -27,20 +28,36 @@
 
 
 <c:if test="${(not empty userTo)&&(not emptybankAccountTo)&&(not emptyprice)&&(not empty fakeId)}">
-    <p>Fake Id :: ${fakeId}</p>
     <br>
-    <p>You want to pay to user....</p>
+    <p class="text-info">You want to pay to...</p>
 
-    <br>
-    <c:out value="${user.firstName}"/>
-    <c:out value="${user.middleName}"/>
-    <c:out value="${user.lastName}"/>
+    <table class="table table-sm table-bordered">
+        <tr>
+            <th>
+                Account id
+            </th>
+            <th>
+                Uaer
+            </th>
+            <th>
+                Price
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <c:out value="${bankAccountTo}"/>
+            </td>
+            <td>
+                <c:out value="${user.firstName}"/>
+                <c:out value="${user.middleName}"/>
+                <c:out value="${user.lastName}"/>
+            </td>
+            <td>
+                <c:out value="${requestScope.price}"/>
+            </td>
+        </tr>
+    </table>
 
-    <br>
-    <p>Price</p>
-    <c:out value="${requestScope.price}"/>
-
-    <br>
 
     <form action="/servlet" method="get">
         <input type="hidden" name="command" value="payConfirmation">
@@ -48,22 +65,21 @@
         <input type="hidden" name="userTo" value="${user.id}">
         <input type="hidden" name="bankAccountTo" value="${bankAccountTo}">
         <input type="hidden" name="price" value="${price}">
-
-        <p><input type="submit" value="Pay"/></p>
+        <button class="btn btn-sm btn-primary " type="submit"> Pay</button>
     </form>
 </c:if>
 
 <c:if test="${not empty requestScope.paymentSuccess}">
     <br>
-    <p>Is payment success?</p>
-    <c:out value="${requestScope.paymentSuccess}"/>
-    <br>
+    <p class="font-weight-bold">Is payment success?</p>
+    <p class="font-weight-bold"></p><c:out value="${requestScope.paymentSuccess}"/>
 </c:if>
 
 
 <form action="${pageContext.request.contextPath}/servlet">
     <input hidden name="command" value="userHomePage">
-    <p><input type="submit" value="Home page"/></p>
+    <button class="btn btn-sm btn-primary " type="submit"> Home</button>
 </form>
+
 </body>
 </html>

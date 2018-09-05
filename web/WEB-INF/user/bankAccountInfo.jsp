@@ -15,44 +15,66 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
-    <title>Info</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title>Bank account info</title>
 </head>
 <body>
 <c:set var="fakeId" value="${param.fakeId}" scope="page"/>
 <c:set var="command" value="${param.command}" scope="page"/>
 
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand font-weight-bold">Banking system</a>
+    <a class="nav-link" href="registration.jsp" style="float: left"> <fmt:message key="index.registration"/></a>
 
+    <form class="form-inline " action="${pageContext.request.contextPath}/servlet" method="get">
+        <input type="hidden" name="command" value="userHomePage">
+        <button class="btn btn-sm btn-primary btn-outline-dark" type="submit">Home</button>
+    </form>
 
-<form action="/servlet">
-    <select id="language" name="language" onchange="submit()">
-        <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
-        <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+    <form class="form-inline " action="${pageContext.request.contextPath}/servlet" method="post">
+        <input type="hidden" name="command" value="logOut">
+        <button class="btn btn-sm btn-primary btn-outline-dark" type="submit"><fmt:message key="logout"/></button>
+    </form>
+
+    <form class="form-inline" action="${pageContext.request.contextPath}/servlet">
         <input type="hidden" name="command" value="${command}">
         <input type="hidden" name="fakeId" value="${fakeId}">
-    </select>
+        <select class="custom-select" id="language" name="language" onchange="submit()">
+            <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
+            <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        </select>
+    </form>
 
-</form>
+</nav>
+
+
 <c:set var="user" value="${sessionScope.user}"/>
-<c:out value="${user.firstName}"/>
-<c:out value="${user.middleName}"/>
-<c:out value="${user.lastName}"/>
-<c:out value="${sessionScope.role}"/>
+
+<p class="text-center ">
+    <c:out value="${sessionScope.role}"/>
+</p>
+<p class="font-weight-bold text-center">
+    <c:out value="${user.firstName}"/>
+    <c:out value="${user.middleName}"/>
+    <c:out value="${user.lastName}"/>
+</p>
+<div class="container">
+    <form action="${pageContext.request.contextPath}/servlet" method="post">
+        <input type="hidden" name="command" value="pay">
+        <input type="hidden" name="fakeId" value="${fakeId}">
+
+        <h1 class="h3 mb-3 font-weight-normal">Pay on bank account ...</h1>
+
+        <label for="bankAccountTo" class="sr-only">Target account id </label>
+        <input type="number" id="bankAccountTo" name="bankAccountTo" class="form-control" placeholder=" target bank account id"  required autofocus>
 
 
+        <label for="price" class="sr-only">Price</label>
+        <input type="number" id="price" name="price" class="form-control" placeholder="price"  required>
 
-<br>
-<form action="/servlet" method="post">
-    <input type="hidden" name="command" value="pay">
-    <input type="hidden" name="fakeId" value="${fakeId}">
-    <p>Pay on bank account ... </p>
-    <p><input type="number" name="bankAccountTo"></p>
-    <p>Price </p>
-    <p><input type="number" name="price"></p>
-
-    <p><input type="submit" value="Pay"/></p>
-</form>
-
-<br>
+        <button class="btn btn-sm btn-primary " type="submit">Pay</button>
+    </form>
+</div>
 
 <form action="/servlet" method="get">
     <input type="hidden" name="command" value="history">
@@ -64,23 +86,23 @@
 
 <c:if test="${not empty requestScope.bankAccountHistory}">
     <c:forEach items="${requestScope.bankAccountHistory}" var="history">
-        <table>
+        <table class="table table-striped table-sm">
             <tr>
-                <td>
+                <th>
                     From
-                </td>
-                <td>
+                </th>
+                <th>
                     To
-                </td>
-                <td>
+                </th>
+                <th>
                     Sender/Receiver
-                </td>
-                <td>
+                </th>
+                <th>
                     Price
-                </td>
-                <td>
+                </th>
+                <th>
                     Date
-                </td>
+                </th>
             </tr>
             <tr>
                 <td>
@@ -106,24 +128,25 @@
 </c:if>
 
 <c:if test="${not empty requestScope.creditAccount}">
-    <table>
+    <table class="table table-striped">
         <tr>
-            <td>
+            <th>
                 id
-            </td>
-            <td>
+            </th>
+            <th>
                 Balance
-            </td>
-            <td>
+            </th>
+            <th>
                 Credit Name
-            </td>
-            <td>
+            </th>
+            <th>
                 Indebtedness
-            </td>
-            <td>
+            </th>
+            <th>
                 Type
-            </td>
+            </th>
         </tr>
+
         <tr>
             <td>
                 <c:out value="${requestScope.creditAccount.id}"/>
@@ -133,7 +156,7 @@
             </td>
             <td>
                 <c:out value="${requestScope.creditAccount.creditTariff.name}"/>
-            </td
+            </td>
             <td>
                 <c:out value="${requestScope.creditAccount.indebtedness}"/>
             </td>
@@ -146,23 +169,23 @@
 
 
 <c:if test="${not empty requestScope.depositAccount}">
-    <table>
+    <table class="table table-striped ">
         <tr>
-            <td>
+            <th>
                 id
-            </td>
-            <td>
+            </th>
+            <th>
                 Balance
-            </td>
-            <td>
+            </th>
+            <th>
                 Deposit Name
-            </td>
-            <td>
+            </th>
+            <th>
                 Deposit amount
-            </td>
-            <td>
+            </th>
+            <th>
                 Type
-            </td>
+            </th>
         </tr>
         <tr>
             <td>
@@ -183,8 +206,6 @@
         </tr>
     </table>
 </c:if>
-
-
 
 </body>
 </html>

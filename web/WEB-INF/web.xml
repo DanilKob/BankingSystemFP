@@ -34,6 +34,15 @@
         <listener-class>controller.listeners.SessionListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>controller.listeners.ContextListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>loggerPropertiesPath</param-name>
+        <param-value>WEB-INF/log4j.properties</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>Servlet</servlet-name>
         <servlet-class>controller.Servlet</servlet-class>

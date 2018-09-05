@@ -9,6 +9,8 @@ public interface TextKeys {
     String YOUR_NAME_IS = "YourNameIs";
     String LOGIN = "UserLogin";
     String LOGIN_ALREADY_EXIST = "LoginAlreadyExist";
+    String LOGIN_ALREADY_IN_SYSTEM = "loginAlreadyInSystem";
+    String LOGIN_OR_PASSWORD_MISTAKE = "loginPasswordMistake";
 
     String BAD_LAST_NAME = "BadLastName";
     String BAD_FIRST_NAME = "BadFirstName";

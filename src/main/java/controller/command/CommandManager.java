@@ -76,22 +76,6 @@ public class CommandManager {
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);
         registerCommand(User.ROLE.ADMIN,CommandConstants.LOGOUT_COMMAND,logoutCommand);
-
-        /*
-        commandMap.put(CommandConstants.LOGIN_COMMAND, new LogInCommand());
-        commandMap.put(CommandConstants.LOGOUT_COMMAND,new LogOutCommand());
-        commandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
-        commandMap.put(CommandConstants.DEFAULT_COMMAND,new DefaultCommand());
-        commandMap.put(CommandConstants.CREDITS_COMMAND, new CreditsCommand());
-        commandMap.put(CommandConstants.CREDIT_PAGE_COMMAND, new CreditInfoCommand());
-        commandMap.put(CommandConstants.DEPOSITS_COMMAND,new DepositsCommand());
-        commandMap.put(CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositInfoCommand());
-        */
-        /*
-        guestCommandMap.put(CommandConstants.LOGIN_COMMAND, new LogInCommand());
-        guestCommandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
-        */
-
     }
 
     private void registerCommand(User.ROLE role, String commandName, Command command){

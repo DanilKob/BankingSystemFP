@@ -15,57 +15,61 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
-    <title> <fmt:message key="registration.page"/>Index </title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title> <fmt:message key="registration.page"/></title>
 </head>
 <body>
-<c:out value="${sessionScope.role}"/>
-<form action="registration.jsp">
-    <select id="language" name="language" onchange="submit()">
-        <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
-        <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
-    </select>
-</form>
-<br>
-<form action="${pageContext.request.contextPath}/servlet" method="post">
-       <p>${pageContext.request.requestURL}</p>
 
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand">Banking system</a>
+    <a class="nav-link" href="login.jsp">  <fmt:message key="index.login"/> </a>
+
+    <form class="form-inline" action="registration.jsp">
+        <select class="custom-select" id="language" name="language" onchange="submit()">
+            <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
+            <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        </select>
+    </form>
+</nav>
+<p class="font-weight-bold text-left"><c:out value="${sessionScope.role}"/></p>
+
+<form action="${pageContext.request.contextPath}/servlet" method="post" class="form-signin" action="${pageContext.request.contextPath}/servlet" method="post"  style="position: absolute;left: 50%; transform: translate(-50%);">
     <input type="hidden" name="command" value="register">
-    <input type="hidden" name="page" value="registration.jsp">
-    
+    <h1 class="h3 mb-3 font-weight-normal">Please register</h1>
 
-    <p><fmt:message key="registration.first.name"/> </p>
     <c:if test="${not empty requestScope.firstNameError}">
         <p><c:out value="${requestScope.firstNameError}"/> Error output</p>
     </c:if>
-    <p><input type="text" name="firstName" value="${param.firstName}" size="30%"/></p>
+    <label for="firstName" class="sr-only">First name</label>
+    <input type="text" id="firstName" name="firstName" class="form-control" placeholder="<fmt:message key="registration.first.name"/>" value="${param.firstName}" required autofocus>
 
-    <p><fmt:message key="registration.last.name"/></p>
-    <c:if test="${not empty requestScope.lastNameError}">
-        <p><c:out value="${requestScope.lastNameError}"/> Error output</p>
-    </c:if>
-    <p><input type="text" name="lastName" value="${param.lastName}"size="30%"/></p>
-    
-    <p><fmt:message key="registration.middle.name"/></p>
     <c:if test="${not empty requestScope.middleNameError}">
         <p><c:out value="${requestScope.middleNameError}"/> Error output</p>
     </c:if>
-    <p><input type="text" name="middleName" value="${param.middleName}" size="30%"/></p>
-    
-    <p><fmt:message key="registration.login"/> </p>
+    <label for="middleName" class="sr-only">Middle name</label>
+    <input type="text" id="middleName" name="middleName" class="form-control" placeholder="<fmt:message key="registration.middle.name"/>" value="${param.middleName}" required >
+
+    <c:if test="${not empty requestScope.lastNameError}">
+        <p><c:out value="${requestScope.lastNameError}"/> Error output</p>
+    </c:if>
+    <label for="lastName" class="sr-only">Email address</label>
+    <input type="text" id="lastName" name="lastName" class="form-control" placeholder="<fmt:message key="registration.last.name"/>" value="${param.lastName}" required >
+
     <c:if test="${not empty requestScope.loginError}">
         <p><c:out value="${requestScope.loginError}"/> Error output</p>
     </c:if>
-    <p><input type="text" name="login" value="${param.login}" size="30%"/></p>
+    <label for="login" class="sr-only">Email address</label>
+    <input type="text" id="login" name="login" class="form-control" placeholder="<fmt:message key="registration.login"/>" value="${param.login}" required >
 
-    <p><fmt:message key="registration.password"/> </p>
     <c:if test="${not empty requestScope.passwordError}">
         <p><c:out value="${requestScope.passwordError}"/> Error output</p>
     </c:if>
-    <p><input type="text" name="password" value="${param.password}" size="30%"/></p>
+    <label for="password" class="sr-only">Email address</label>
+    <input type="text" id="password" name="password" class="form-control" placeholder="<fmt:message key="registration.password"/> " value="${param.password}" required >
 
-    <p><input type="submit" value="Register"/></p>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
 </form>
-
 
 </body>
 </html>
