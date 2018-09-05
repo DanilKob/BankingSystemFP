@@ -70,6 +70,8 @@ public class CommandManager {
         registerCommand(User.ROLE.ADMIN,CommandConstants.ADMIN_HOME_PAGE_COMMAND, new AdminHomePageCommand());
         registerCommand(User.ROLE.ADMIN,CommandConstants.ALL_UNCONFIRMED_CREDITS, new AllUnconfirmedCreditsCommand());
         registerCommand(User.ROLE.ADMIN,CommandConstants.UNCONFIRMED_CREDIT_INFO, new UnconfirmedCreditInfoCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.CONFIRM_CREDIT, new ConfirmCreditCommand());
+        registerCommand(User.ROLE.ADMIN,CommandConstants.CANCEL_CREDIT, new CancelCreditCommand());
 
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);

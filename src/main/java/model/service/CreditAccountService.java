@@ -11,6 +11,7 @@ import model.entity.enums.Account;
 import model.exception.NotUniqueException;
 import model.exception.TariffNotExistException;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 public class CreditAccountService {
@@ -69,6 +70,17 @@ public class CreditAccountService {
         }
     }
 
+    public static void confirmCreditAccount(int creditAccountId, int indebtedness){
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            creditDao.udpateCreditAccountBalanceByAccountId(creditAccountId,indebtedness);
+        }
+    }
+
+    public static void cancelCreditAccount(int id){
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            creditDao.delete(id);
+        }
+    }
     public static List<CreditTariff> getAllCreditTariffs(){
         try(CreditTariffDao creditTariffDao = DataBaseConfiguration.factory.createCreditTariffDao()){
             return creditTariffDao.findAll();

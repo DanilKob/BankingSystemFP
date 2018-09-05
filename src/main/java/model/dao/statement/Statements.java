@@ -143,6 +143,17 @@ public interface Statements {
             + " FROM " + BankAccountTable.BANK_ACCOUNT_TABLE + " WHERE " + BankAccountTable.BANK_ACCOUNT_ID
             + " = ? LIMIT 1 )";
 
+    String UPDATE_CREDIT_ACCOUNT_BALANCE_INDEBTEDNESS_BY_BANK_ACCOUNT_ID = "UPDATE "
+            + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " SET  " + BankAccountTable.BANK_ACCOUNT_BALANCE + " = ? " + ", "
+                        + BankAccountTable.BANK_ACCOUNT_CREDIT_INDEBTEDNESS + " = ? " + ", "
+                        + BankAccountTable.BANK_ACCOUNT_TYPE_ID + " = ? "
+            + " WHERE "
+            + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_ID + " = ? ";
+
+    String DELETE_CREDIT_ACCOUNT_BY_ACCOUNT_ID = "DELETE FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_ID + " = ? ";
+
     String COUNT_ROW_PSEYDONYM = "countrow";
 
 
@@ -178,10 +189,6 @@ public interface Statements {
             + "AND "
             + BankAccountTable.BANK_ACCOUNT_BALANCE + " >= ?";
 
-    // update bank_account set balance = balance ?<OPERATION> ?<AMOUNT> where bank_account.account_id = ?<ACCOUNT_ID>;
-    String MAKE_OPERATION_WITH_BANK_ACCOUNT_BALANCE =  "UPDATE " + BankAccountTable.BANK_ACCOUNT_TABLE
-            + " SET " + BankAccountTable.BANK_ACCOUNT_BALANCE + " = " + BankAccountTable.BANK_ACCOUNT_BALANCE + " ? ? "
-            + " WHERE " + BankAccountTable.BANK_ACCOUNT_ID + " = ? ";
 
     String INSERT_INTO_HISTORY_USER_ID_HISTORY_ID = "insert into user_has_payment_history " +
             "(user_id, payment_history_id ) values (?,?)";

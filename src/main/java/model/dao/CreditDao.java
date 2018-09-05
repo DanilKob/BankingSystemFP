@@ -15,4 +15,6 @@ public interface CreditDao extends GenericDao<CreditAccount> {
 
     List<CreditAccount> findAllUnconfirmedCredits();
 
+    void udpateCreditAccountBalanceByAccountId(int creditId, int indebtedness);
+
 }

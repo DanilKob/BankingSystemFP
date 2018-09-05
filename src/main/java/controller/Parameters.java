@@ -61,4 +61,6 @@ public interface Parameters {
     String ALL_UNCONFIRMED_CREDITS = "allUnconfirmedCredits";
     String ALL_DEPOSITS_BY_USER_WITH_CREDIT = "allUserDeposits";
 
+    String CREDIT_INDEBTEDNESS = "creditIndebtedness";
+
 }

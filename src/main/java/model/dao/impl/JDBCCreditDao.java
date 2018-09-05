@@ -3,6 +3,7 @@ package model.dao.impl;
 import model.dao.CreditDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
+import model.dao.statement.TableConstants;
 import model.entity.CreditAccount;
 import model.entity.CreditTariff;
 import model.exception.TariffNotExistException;
@@ -20,6 +21,21 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
     @Override
     public void create(CreditAccount entity) {
 
+    }
+
+    @Override
+    public void udpateCreditAccountBalanceByAccountId(int creditId, int indebtedness) {
+        try {
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.UPDATE_CREDIT_ACCOUNT_BALANCE_INDEBTEDNESS_BY_BANK_ACCOUNT_ID);
+            preparedStatement.setInt(1,indebtedness);
+            preparedStatement.setInt(2,indebtedness);
+            preparedStatement.setInt(3,TableConstants.ACCOUNT_TYPE_CREDIT);
+            preparedStatement.setInt(4,creditId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -156,7 +172,14 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
 
     @Override
     public void delete(int id) {
-
+        try {
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.DELETE_CREDIT_ACCOUNT_BY_ACCOUNT_ID);
+            preparedStatement.setInt(1,id);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     // todo refactor to another class
