@@ -120,12 +120,28 @@ public interface Statements {
             + " AND "
             + BankAccountTable.BANK_ACCOUNT_TYPE_ID  + " = " + Account.UNCONFIRMED_CREDIT.type_id;
 
+    String SELECT_ALL_UNCONFIRMED_CREDITS = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " INNER JOIN " + CreditTable.CREDIT_TABLE
+            + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_CREDIT_ID
+            + " = "
+                    + CreditTable.CREDIT_TABLE + "." + CreditTable.CREDIT_ID
+            + " WHERE "
+            + BankAccountTable.BANK_ACCOUNT_TYPE_ID  + " = " + Account.UNCONFIRMED_CREDIT.type_id;
+
     String SELECT_ALL_DEPOSIT_BY_BANK_USER_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
             + " INNER JOIN " + DepositTable.DEPOSIT_TABLE
             + " ON " + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_DEPOSIT_ID
             + " = "
             + DepositTable.DEPOSIT_TABLE+ "." + DepositTable.DEPOSIT_ID
             + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ?";
+
+    String SELECT_ALL_DEPOSIT_BY_USER_BANK_ACCOUNT_ID = "SELECT * FROM " + BankAccountTable.BANK_ACCOUNT_TABLE
+            + " INNER JOIN " + DepositTable.DEPOSIT_TABLE
+            + " ON " + DepositTable.DEPOSIT_TABLE + "." + DepositTable.DEPOSIT_ID
+            + " = " + BankAccountTable.BANK_ACCOUNT_TABLE + "." +BankAccountTable.BANK_ACCOUNT_DEPOSIT_ID
+            + " WHERE " + BankAccountTable.BANK_ACCOUNT_USER_ID + " = ( SELECT " + BankAccountTable.BANK_ACCOUNT_USER_ID
+            + " FROM " + BankAccountTable.BANK_ACCOUNT_TABLE + " WHERE " + BankAccountTable.BANK_ACCOUNT_ID
+            + " = ? LIMIT 1 )";
 
     String COUNT_ROW_PSEYDONYM = "countrow";
 

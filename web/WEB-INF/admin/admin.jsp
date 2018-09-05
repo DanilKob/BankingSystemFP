@@ -40,6 +40,52 @@
 
 <br>
 
+<form action="${pageContext.request.contextPath}/servlet" method="get">
+    <input type="hidden" name="command" value="allUnconfirmedCredits">
+    <p><input type="submit" value="Unconfirmed credits list"/></p>
+</form>
+
+
+<c:if test="${not empty requestScope.allUnconfirmedCredits}">
+    <table>
+        <tr>
+            <td>
+                #
+            </td>
+            <td>
+                User Id
+            </td>
+            <td>
+                Credit Name
+            </td>
+            <td>
+                Bank account Id
+            </td>
+        </tr>
+        <c:set var="count" value="0" scope="page" />
+        <c:forEach items="${requestScope.allUnconfirmedCredits}" var="unconfirmedCredit">
+            <c:set var="count" value="${count + 1}" scope="page"/>
+            <tr>
+                <td>
+                    <c:out value="${count} "/><br>
+                </td>
+                <td>
+                    <c:out value="${unconfirmedCredit.entity.userId}"/><br>
+                </td>
+                <td>
+                    <c:out value="${unconfirmedCredit.entity.creditTariff.name}"/><br>
+                </td>
+                <td>
+                    <form action="${pageContext.request.contextPath}/servlet" method="get">
+                        <input type="hidden" name="command" value="unconfirmedCreditInfo">
+                        <input type="hidden" name="fakeId" value="${unconfirmedCredit.fakeId}">
+                        <p><input type="submit" value="${unconfirmedCredit.entity.id}"/></p>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </table>
+</c:if>
 
 </body>
 </html>

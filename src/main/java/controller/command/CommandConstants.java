@@ -19,7 +19,7 @@ public interface CommandConstants {
 
     String BANK_ACCOUNTS_COMMAND = "bankAccounts";
     String CREDITS_COMMAND = "credits";
-    String UNCONFIRMED_CREDITS_COMMAND = "unconfirmedCredits";
+    String USER_UNCONFIRMED_CREDITS_COMMAND = "unconfirmedCredits";
     String DEPOSITS_COMMAND = "deposits";
     String CREDIT_PAGE_COMMAND = "CREDIT";
     String DEPOSIT_PAGE_COMMAND = "DEPOSIT";
@@ -33,4 +33,11 @@ public interface CommandConstants {
 
     String REGISTER_CREDIT_ACCOUNT = "registerCreditAccount";
     String REGISTER_DEPOSIT_ACCOUNT = "registerDepositAccount";
+
+
+    String ALL_UNCONFIRMED_CREDITS = "allUnconfirmedCredits";
+    String UNCONFIRMED_CREDIT_INFO = "unconfirmedCreditInfo";
+
+    String CONFIRM_CREDIT = "confirmCredit";
+    String CANCEL_CREDIT = "cancelCredit";
 }

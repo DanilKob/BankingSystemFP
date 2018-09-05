@@ -58,4 +58,7 @@ public interface Parameters {
 
     String DEPOSIT_COMPLIANCE_TABLE  = "depositComplianceTable";
 
+    String ALL_UNCONFIRMED_CREDITS = "allUnconfirmedCredits";
+    String ALL_DEPOSITS_BY_USER_WITH_CREDIT = "allUserDeposits";
+
 }

@@ -13,4 +13,6 @@ public interface CreditDao extends GenericDao<CreditAccount> {
 
     List<CreditAccount> findAllUnconfirmedCreditsByUserId(int accountId);
 
+    List<CreditAccount> findAllUnconfirmedCredits();
+
 }

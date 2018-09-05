@@ -120,6 +120,32 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
     }
 
     @Override
+    public List<DepositAccount> findAllByUserBankAccountId(int bankAccountId) {
+        List<DepositAccount> depositAccountList = new LinkedList<>();
+        try {
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.SELECT_ALL_DEPOSIT_BY_USER_BANK_ACCOUNT_ID);
+            preparedStatement.setInt(1,bankAccountId);
+            System.out.println(Statements.SELECT_ALL_DEPOSIT_BY_USER_BANK_ACCOUNT_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Extracter<DepositAccount> depositAccountExtracter = new Extracter<>();
+            Extracter<DepositTariff> depositTariffExtracter = new Extracter<>();
+            DepositAccount depositAccount;
+            while(resultSet.next()){
+                depositAccount = depositAccountExtracter.extractEntityFromResultSet(resultSet, new DepositAccount());
+                depositAccount.setDepositTariff(depositTariffExtracter.extractEntityFromResultSet(resultSet,new DepositTariff()));
+                depositAccountList.add(depositAccount);
+                System.out.println("ONE MORE DEPOSIT!!!!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return depositAccountList;
+    }
+
+    @Override
     public List<DepositAccount> findAllByUserId(int userId) {
         List<DepositAccount> depositAccounts =  new LinkedList<>();
         try{

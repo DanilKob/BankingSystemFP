@@ -49,9 +49,15 @@ public class CreditAccountService {
         }
     }
 
-    public static List<CreditAccount> getAllUnconfirmed(int userId){
+    public static List<CreditAccount> getAllUnconfirmedBuUserId(int userId){
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
             return creditDao.findAllUnconfirmedCreditsByUserId(userId);
+        }
+    }
+
+    public static List<CreditAccount> getAllUnconfirmedCredits(){
+        try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
+            return creditDao.findAllUnconfirmedCredits();
         }
     }
 

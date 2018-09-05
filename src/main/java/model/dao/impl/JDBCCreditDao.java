@@ -8,7 +8,6 @@ import model.entity.CreditTariff;
 import model.exception.TariffNotExistException;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,11 +82,6 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
         return creditAccount;
     }
 
-    @Override
-    public List<CreditAccount> findAll() {
-
-        return null;
-    }
 
     private List<CreditAccount> findCreditByStatement(int userId, String statement){
         List<CreditAccount> creditAccounts = new LinkedList<>();
@@ -95,6 +89,36 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             PreparedStatement preparedStatement = super.getConnection()
                     .prepareStatement(statement);
             preparedStatement.setInt(1,userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Extracter<CreditAccount> creditExtracter = new Extracter<>();
+            Extracter<CreditTariff> creditTariffExtracter = new Extracter<>();
+            CreditAccount creditAccount;
+            while(resultSet.next()){
+                creditAccount = creditExtracter.extractEntityFromResultSet(resultSet,new CreditAccount());
+                creditAccount.setCreditTariff(creditTariffExtracter.
+                        extractEntityFromResultSet(resultSet, new CreditTariff()));
+                creditAccounts.add(creditAccount);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        // todo
+        return creditAccounts;
+    }
+
+    @Override
+    public List<CreditAccount> findAll() {
+        return null;
+    }
+
+    @Override
+    public List<CreditAccount> findAllUnconfirmedCredits() {
+        List<CreditAccount> creditAccounts = new LinkedList<>();
+        try{
+            PreparedStatement preparedStatement = super.getConnection()
+                    .prepareStatement(Statements.SELECT_ALL_UNCONFIRMED_CREDITS);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<CreditAccount> creditExtracter = new Extracter<>();
             Extracter<CreditTariff> creditTariffExtracter = new Extracter<>();

@@ -57,4 +57,10 @@ public class DepositAccountService {
             return depositTariffDao.findAll();
         }
     }
+
+    public static List<DepositAccount> getAllDepositsByUserBankAcountId(int bankAccountId){
+        try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
+            return depositDao.findAllByUserBankAccountId(bankAccountId);
+        }
+    }
 }

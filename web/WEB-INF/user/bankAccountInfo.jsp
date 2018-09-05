@@ -126,19 +126,19 @@
         </tr>
         <tr>
             <td>
-                <c:out value="${requestScope.creditAccount.id}"/><br>
+                <c:out value="${requestScope.creditAccount.id}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.balance}"/><br>
+                <c:out value="${requestScope.creditAccount.balance}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.creditTariff.name}"/><br>
+                <c:out value="${requestScope.creditAccount.creditTariff.name}"/>
             </td
             <td>
-                <c:out value="${requestScope.creditAccount.indebtedness}"/><br>
+                <c:out value="${requestScope.creditAccount.indebtedness}"/>
             </td>
             <td>
-                <c:out value="${requestScope.creditAccount.accountType}"/><br>
+                <c:out value="${requestScope.creditAccount.accountType}"/>
             </td>
         </tr>
     </table>
