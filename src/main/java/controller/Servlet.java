@@ -3,6 +3,7 @@ package controller;
 import controller.command.Command;
 import controller.command.CommandManager;
 import controller.command.CommandConstants;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -33,14 +34,12 @@ public class Servlet extends HttpServlet {
         Command command = CommandManager.getInstance().getCommand(req);
         String page = command.execute(req);
 
-        System.out.println("Command = "+command.getClass().getName());
-        System.out.println("page = "+page);
+        
 
-        // todo Ask about method "isRedirected"
+        Logger.getLogger(Servlet.class.getName()).info(command.getClass().getName());
 
         if(page.contains(CommandConstants.REDIRECT)){
             page = page.replace(CommandConstants.REDIRECT,"");
-            System.out.println("page after replace = "+page);
             resp.sendRedirect(page);
         }else{
             req.getRequestDispatcher(page).forward(req,resp);

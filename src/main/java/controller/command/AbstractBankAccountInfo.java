@@ -12,30 +12,18 @@ import java.util.Map;
 
 public abstract class AbstractBankAccountInfo implements Command{
 
-    public int decryptBankAccountIdFromRequest(HttpServletRequest request) throws ClassCastException{
+    public int decryptBankAccountIdFromRequest(HttpServletRequest request) throws ClassCastException,IllegalArgumentException{
         Map<Integer,Integer> complianceTable = (Map<Integer, Integer>) request.getSession()
                 .getAttribute(Parameters.COMPLIANCE_TABLE);
 
-        // todo check compliance map for null
-        /*
-        if(complianceTable==null) {
-            return CommandConstants.REDIRECT + PagesName.ERROR;
-        }
-        */
         // todo check exception
         int accountIdFromPage;
         if(request.getParameter(Parameters.FAKE_ID_FROM_PAGE)==null
                 || request.getParameter(Parameters.FAKE_ID_FROM_PAGE).isEmpty()){
-            throw new RuntimeException();
-            /*
-            accountIdFromPage = Integer.parseInt(String.valueOf(request.getSession()
-                    .getAttribute(Parameters.FAKE_ID_FROM_PAGE)));
-            */
+            throw new IllegalArgumentException();
         }else{
-
             accountIdFromPage = Integer.parseInt(request.getParameter(Parameters.FAKE_ID_FROM_PAGE));
             request.getSession().setAttribute(Parameters.FAKE_ID_FROM_PAGE,accountIdFromPage);
-
         }
 
         return complianceTable.get(accountIdFromPage);

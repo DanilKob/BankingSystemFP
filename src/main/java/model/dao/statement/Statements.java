@@ -68,7 +68,7 @@ public interface Statements {
             + ")"
             +" VALUES (?,?,?)";
 
-    String INSER_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_ID_DEPOSIT_AMOUNT = "INSERT INTO " + BankAccountTable.BANK_ACCOUNT_TABLE
+    String INSERT_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_ID_DEPOSIT_AMOUNT = "INSERT INTO " + BankAccountTable.BANK_ACCOUNT_TABLE
             + "( "
                 + BankAccountTable.BANK_ACCOUNT_USER_ID + ","
                 //+ TableConstants.BANK_ACCOUNT_BALANCE+ ","
@@ -147,6 +147,7 @@ public interface Statements {
             + BankAccountTable.BANK_ACCOUNT_TABLE
             + " SET  " + BankAccountTable.BANK_ACCOUNT_BALANCE + " = ? " + ", "
                         + BankAccountTable.BANK_ACCOUNT_CREDIT_INDEBTEDNESS + " = ? " + ", "
+                        + BankAccountTable.BALANCE_IN_CONTRACT + " = ? " + ", "
                         + BankAccountTable.BANK_ACCOUNT_TYPE_ID + " = ? "
             + " WHERE "
             + BankAccountTable.BANK_ACCOUNT_TABLE + "." + BankAccountTable.BANK_ACCOUNT_ID + " = ? ";

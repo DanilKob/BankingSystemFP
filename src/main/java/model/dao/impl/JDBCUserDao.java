@@ -104,13 +104,11 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
                 optionalUser = Optional.of(userExtracter.extractEntityFromResultSet(resultSet, new User()));
             }
             // todo throw my exception
-        } catch (SQLException e) {
+        } catch (SQLException | IllegalAccessException e) {
             e.printStackTrace();
             //
             // todo add logger
             throw new RuntimeException();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
         }
         return optionalUser;
     }

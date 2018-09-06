@@ -17,12 +17,6 @@ public class BankAccountsCommand extends AbstractBankAccountInfo{
         int userId = ((User)request.getSession().getAttribute(Parameters.USER)).getId();
         System.out.println(Statements.SELECT_ALL_CONFIRMED_BANK_ACCOUNT_BY_USER_ID);
         List<BankAccount> bankAccountList = BankAccountService.getAllConfirmedBankAccount(userId);
-        /*
-        for (BankAccount bankAccount : bankAccountList) {
-            System.out.println(bankAccount.getAccountType());
-        }
-        */
-        //super.createComplianceTableInSession(request,bankAccountList);
 
         List<SecurityEntity<BankAccount>> securityBankAccountList = super.cryptEntityList(request,bankAccountList);
 

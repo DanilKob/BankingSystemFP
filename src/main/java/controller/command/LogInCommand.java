@@ -9,33 +9,34 @@ import controller.utility.RegexKeys;
 import controller.utility.RolesUtility;
 
 import model.entity.User;
-import model.mock.service.GuestService;
+import model.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
-public class LogInCommand implements Command {
-    // todo best place to keep this class
-    GuestService guestService = new GuestService();
-    //IOHandler IOHandler = new IOHandler();
-    RolesUtility rolesUtility = new RolesUtility();
 
+public class LogInCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
 
         String login = request.getParameter(Parameters.LOGIN);
         String password = request.getParameter(Parameters.PASSWORD);
-
-        // todo IllegalArgumentException
-        Languages language = IOHandler.getLanguageFromRequest(request);
-
+        Languages language;
+        try{
+            language = IOHandler.getLanguageFromRequest(request);
+        }catch (IllegalArgumentException e){
+            Logger.getLogger(LoggerConstants.DANGER_USER).warn("DANGER USER");
+            return PagesName.ERROR;
+        }
 
         boolean isLoginCorrect = IOHandler.checkInputByRegex(login,RegexKeys.LOGIN_REGEX,Languages.ENG);
         boolean isPasswordCorrect = IOHandler.checkInputByRegex(password,RegexKeys.PASSWORD_REGEX,Languages.ENG);
 
-        System.out.println("login" + login);
-        System.out.println("isLoginCorrect = " + isLoginCorrect);
-        System.out.println("isPasswordCorrect =  " + isPasswordCorrect);
+        Logger.getLogger(LogInCommand.class.getName()).debug("login" + login);
+        Logger.getLogger(LogInCommand.class.getName()).debug("isLoginCorrect = " + isLoginCorrect);
+        Logger.getLogger(LogInCommand.class.getName()).debug("isPasswordCorrect =  " + isPasswordCorrect);
+
 
         if(isInputDataUncorrect(isLoginCorrect,isPasswordCorrect)){
             IOHandler.setLoginErrorMessagesToRequest(request,isLoginCorrect,isPasswordCorrect,language);
@@ -44,69 +45,34 @@ public class LogInCommand implements Command {
 
         // todo remove to filter
         if(RolesUtility.isUserAlreadyLogged(request,login)){
-            // todo block postman
             RolesUtility.logoutUser(request);
-            System.out.println("USER HAS ALREADY REGISTERED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Logger.getLogger(LogInCommand.class.getName()).debug("User is already logged");
+            IOHandler.setLoginAlreadyInSystemMessage(request,language);
             return PagesName.LOGIN_PAGE;
         }
 
         LoginDto loginDto = new LoginDto(login,password);
 
-        Optional<User> optionalUser = model.service.UserService.login(loginDto);
+        Optional<User> optionalUser = UserService.login(loginDto);
 
         if(optionalUser.isPresent()){
             optionalUser.get().setLogin(login);
             RolesUtility.addLoginInServletContext(request,login);
             RolesUtility.addRoleAndLoginInSession(request,optionalUser.get());
-            //return CommandConstants.REDIRECT + RolesUtility.defineHomePageByRole(optionalUser.get().getRole());
-            //return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
+            Logger.getLogger(LogInCommand.class.getName()).info(login + optionalUser.get().getRole());
             return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + getHomePageCommand(optionalUser.get().getRole());
         }else{
-            System.out.println("LOGIN ISN'T EXIST");
+            Logger.getLogger(LogInCommand.class.getName()).debug("Login or password is not correct");
+            IOHandler.setLoginPasswordMistakeMessage(request,language);
             return PagesName.LOGIN_PAGE;
         }
-        /*
-        try {
-            // todo return object User. not just role
-            //User.ROLE role = guestService.login(new User());
-
-            LoginDto loginDto = new LoginDto(login,password);
-
-            Optional<User> optionalUser = model.service.UserService.login(loginDto);
-
-            if(optionalUser.isPresent()){
-                RolesUtility.addLoginInServletContext(request,login);
-                RolesUtility.addRoleAndLoginInSession(request,optionalUser.get().getRole(),login);
-            }else{
-                return PagesName.LOGIN_PAGE;
-            }
-
-
-            // todo if statement has not already accepted, catch exception
-            return CommandConstants.REDIRECT+ getHomePageByRole(optionalUser.get().getRole());
-        } /*catch (LoginException e) {
-            return PagesName.LOGIN_PAGE;
-        }
-        */
     }
 
     private boolean isInputDataUncorrect(boolean isLoginCorrect, boolean isPasswordCorrect){
-        // todo debug mode. Must be uncommented
         return !isLoginCorrect || !isPasswordCorrect;
     }
 
 
-    private String getHomePageByRole(User.ROLE role){
-        String page;
-        switch (role){
-            case ADMIN: page = PagesName.ADMIN_HOME_PAGE;
-            break;
-            case USER: page = PagesName.USER_HOME_PAGE;
-            break;
-            default: page = PagesName.LOGIN_PAGE;
-        }
-        return page;
-    }
     private String getHomePageCommand(User.ROLE role){
         String page;
         switch (role){

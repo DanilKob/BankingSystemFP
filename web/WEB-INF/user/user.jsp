@@ -16,49 +16,60 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <title> <fmt:message key="user.welcome.page"/> </title>
 </head>
 <body>
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand font-weight-bold">Banking system</a>
+
+    <form class="form-inline " action="${pageContext.request.contextPath}/servlet" method="post">
+        <input type="hidden" name="command" value="logOut">
+        <button class="btn btn-sm btn-primary btn-outline-dark" type="submit"><fmt:message key="logout"/></button>
+    </form>
+
+    <form class="form-inline" action="${pageContext.request.contextPath}/servlet">
+        <input hidden name="command" value="userHomePage">
+        <select class="custom-select" id="language" name="language" onchange="submit()">
+            <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
+            <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        </select>
+    </form>
+
+</nav>
+
 <c:set var="user" value="${sessionScope.user}"/>
-<c:out value="${user.firstName}"/>
-<c:out value="${user.middleName}"/>
-<c:out value="${user.lastName}"/>
-<c:out value="${sessionScope.role}"/>
 
-<form action="${pageContext.request.contextPath}/servlet">
-    <input hidden name="command" value="userHomePage">
-    <select id="language" name="language" onchange="submit()">
-        <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
-        <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
-    </select>
-</form>
-<br>
-<form action="${pageContext.request.contextPath}/servlet" method="post">
-    <input type="hidden" name="command" value="logOut">
-    <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
-</form>
+<p class="text-center ">
+    <c:out value="${sessionScope.role}"/>
+</p>
+<p class="font-weight-bold text-center">
+    <c:out value="${user.firstName}"/>
+    <c:out value="${user.middleName}"/>
+    <c:out value="${user.lastName}"/>
+</p>
 
 
-<form action="${pageContext.request.contextPath}/servlet" method="get">
+<form class="form-inline" action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="bankAccounts">
-    <p><input type="submit" value="<fmt:message key="user.bank.account"/>"/></p>
+    <button class="btn btn-sm btn-primary " type="submit"> <fmt:message key="user.bank.account"/></button>
 </form>
-
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="creditTariffsInfo">
-    <p><input type="submit" value="Credit tariffs"></p>
+    <button class="btn btn-sm btn-primary " type="submit">Credit tariffs</button>
 </form>
 
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="depositTariffsInfo">
-    <p><input type="submit" value="Deposit tariffs"></p>
+    <button class="btn btn-sm btn-primary " type="submit">Deposit tariffs</button>
 </form>
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="unconfirmedCredits">
-    <p><input type="submit" value="Unconfirmed tariffs"></p>
+    <button class="btn btn-sm btn-primary " type="submit">Unconfirmed tariffs</button>
 </form>
 
 <c:if test="${not empty requestScope.paymentSuccess}">
@@ -70,22 +81,22 @@
 
 
 <c:if test="${not empty requestScope.bankAccounts}">
-    <table>
+    <table class="table table-striped">
         <caption>Bank accounts</caption>
         <tr>
-            <td>
+            <th>
                 #
-            </td>
-            <td>
+            </th>
+            <th>
                 Account ID
-            </td>
-            <td>
+            </th>
+            <th>
                 Balance
-            </td>
+            </th>
 
-            <td>
+            <th>
                 Type
-            </td>
+            </th>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.bankAccounts}" var="bankAccount">
@@ -115,20 +126,21 @@
 
 
 <c:if test="${not empty requestScope.unconfirmedCredits}">
-    <table>
+    <table class="table table-striped">
+        <caption>Unconfirmed credit</caption>
         <tr>
-            <td>
+            <th>
                 #
-            </td>
+            </th>
             <td>
                 Id
             </td>
-            <td>
+            <th>
                 Balance
-            </td>
-            <td>
+            </th>
+            <th>
                 Credit Name
-            </td>
+            </th>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.unconfirmedCredits}" var="unconfirmedCredit">
@@ -151,6 +163,5 @@
     </table>
 </c:if>
 
-<a href="credit.jsp"> Credits </a>
 </body>
 </html>

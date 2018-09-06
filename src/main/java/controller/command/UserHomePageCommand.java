@@ -7,6 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 public class UserHomePageCommand implements Command{
     @Override
     public String execute(HttpServletRequest request) {
-        return /*CommandConstants.REDIRECT + */PagesName.USER_HOME_PAGE;
+        return PagesName.USER_HOME_PAGE;
     }
 }

@@ -7,16 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 public class CommandManager {
-    private final int initialCapacity = 5;
     private static CommandManager instance = new CommandManager();
     private Map<String,Command> commandMap = new HashMap<>();
-    /*
-    private Map<String,Map<String,Command>> roleMap = new HashMap<>(initialCapacity);
 
-    private Map<String,Command> guestCommandMap = new HashMap<>();
-    private Map<String,Command> userCommandMap = new HashMap<>();
-    private Map<String,Command> adminCommandMap = new HashMap<>();
-    */
     private Set<String> guestCommandNamesSet = new HashSet<>();
     private Set<String> userCommandNamesSet = new HashSet<>();
     private Set<String> adminCommandNamesSet = new HashSet<>();
@@ -76,22 +69,6 @@ public class CommandManager {
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);
         registerCommand(User.ROLE.ADMIN,CommandConstants.LOGOUT_COMMAND,logoutCommand);
-
-        /*
-        commandMap.put(CommandConstants.LOGIN_COMMAND, new LogInCommand());
-        commandMap.put(CommandConstants.LOGOUT_COMMAND,new LogOutCommand());
-        commandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
-        commandMap.put(CommandConstants.DEFAULT_COMMAND,new DefaultCommand());
-        commandMap.put(CommandConstants.CREDITS_COMMAND, new CreditsCommand());
-        commandMap.put(CommandConstants.CREDIT_PAGE_COMMAND, new CreditInfoCommand());
-        commandMap.put(CommandConstants.DEPOSITS_COMMAND,new DepositsCommand());
-        commandMap.put(CommandConstants.DEPOSIT_PAGE_COMMAND,new DepositInfoCommand());
-        */
-        /*
-        guestCommandMap.put(CommandConstants.LOGIN_COMMAND, new LogInCommand());
-        guestCommandMap.put(CommandConstants.REGISTRATION_COMMAND,new RegistrationCommand());
-        */
-
     }
 
     private void registerCommand(User.ROLE role, String commandName, Command command){

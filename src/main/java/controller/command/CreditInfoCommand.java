@@ -12,10 +12,7 @@ public class CreditInfoCommand extends AbstractBankAccountInfo{
     public String execute(HttpServletRequest request) {
         // todo ClassCastException
 
-       // int creditIdFromPage = Integer.parseInt(request.getParameter(Parameters.FAKE_ID_FROM_PAGE));
         int realCreditId = super.decryptBankAccountIdFromRequest(request);
-
-        System.out.println("Real credit id " + realCreditId);
 
         CreditAccount creditAccount = CreditAccountService.getConfirmedCreditAccount(realCreditId);
 

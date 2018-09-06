@@ -2,56 +2,47 @@ package controller.command;
 
 import controller.PagesName;
 import controller.Parameters;
+import controller.utility.IOHandler;
+import controller.utility.Languages;
 import model.entity.Requsition;
 import model.exception.BankAccountNotExistException;
 import model.service.BankAccountService;
-import model.service.CreditAccountService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class PaymentConfirmationCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
-        System.out.println("In confirmation command!!!");
-        System.out.println("User Id in session ::");
+        Languages language = IOHandler.getLanguageFromRequest(request);
         int userIdInSession = super.getUserIdInSession(request);
-        System.out.println(userIdInSession);
-        System.out.println("Real Id in session ::");
         int realAccountId = super.decryptBankAccountIdFromRequest(request);
-        System.out.println(realAccountId);
-
-        System.out.println(Integer.parseInt(request.getParameter(Parameters.PAY_TO_ACCOUNT_ID)));
         int payToAccountId = Integer.parseInt(request.getParameter(Parameters.PAY_TO_ACCOUNT_ID));
-        System.out.println(request.getParameter(Parameters.PAY_TO_USER_ID));
-
         int price = Integer.parseInt(request.getParameter(Parameters.PAY_PRICE));
 
         Requsition requsition = new Requsition();
 
         requsition.setFromAccountId(realAccountId);
         requsition.setFromUserId(userIdInSession);
-
         requsition.setToAccountId(payToAccountId);
-
         requsition.setBalance(price);
 
-        boolean isPaymentSuccessful = false;
+        boolean isPaymentSuccessful;
         try {
             isPaymentSuccessful = BankAccountService.pay(requsition);
         } catch (BankAccountNotExistException e) {
             e.printStackTrace();
-            // todo add logger
-            // todo add message
-            return PagesName.ERROR;
+            Logger.getLogger(PaymentConfirmationCommand.class.getName()).info("Account is not exist");
+            return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND
+                    + CommandConstants.USER_HOME_PAGE_COMMAND + IOHandler.getAccountisNotExistParam(language);
         }
 
-        System.out.println("In confirmation command!!!");
-        System.out.println("Success ? "+isPaymentSuccessful);
+        Logger.getLogger(PaymentConfirmationCommand.class.getName()).info("Payment from user"
+                +userIdInSession+", accountId "+realAccountId+ " to accountId " + payToAccountId);
+        Logger.getLogger(PaymentConfirmationCommand.class.getName()).info("Was success ? "+isPaymentSuccessful);
 
         request.setAttribute(Parameters.PAYMENT_SUCCESS,isPaymentSuccessful);
 
-        // todo redirect to status pages
-        //return CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.USER_HOME_PAGE_COMMAND;
         return PagesName.PAYMENT_PAGE;
     }
 }
