@@ -14,6 +14,8 @@ public interface CommandConstants {
 
     String USER_HOME_PAGE_COMMAND = "userHomePage";
     String ADMIN_HOME_PAGE_COMMAND = "adminHomePage";
+    String HOME_PAGE_COMMAND = "homePage";
+    String SERVER_EXCEPTION_COMMAND = "serverException";
 
 
 

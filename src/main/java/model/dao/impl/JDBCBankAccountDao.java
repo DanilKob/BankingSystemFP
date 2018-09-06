@@ -5,6 +5,7 @@ import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.BankAccount;
 import model.exception.BankAccountNotExistException;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -19,24 +20,7 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
 
     @Override
     public void create(BankAccount entity) {
-        /*
-        try {
-            PreparedStatement preparedStatement = super.getConnection()
-                    .prepareStatement("");
 
-
-            preparedStatement.execute();
-        } catch (MySQLIntegrityConstraintViolationException e){
-            e.printStackTrace();
-            //todo remove sout
-            System.out.println("Not unique login");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            //
-            // todo add logger
-            throw new RuntimeException();
-        }
-        */
     }
 
     @Override
@@ -56,10 +40,9 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
             while(resultSet.next()){
                 bankAccountList.add(extracter.extractEntityFromResultSet(resultSet,new BankAccount()));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("findAllBankAccount",e);
+            throw new RuntimeException(e);
         }
         return bankAccountList;
     }
@@ -81,14 +64,12 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
             psAddMoney.setInt(2,toAccountId);
 
             if(psTakeMoney.executeUpdate() == 0){
-                System.out.println("Insufficient funds! Refill your bank account");
                 connection.rollback();
                 return false;
             }
 
             if(psAddMoney.executeUpdate() == 0){
                 connection.rollback();
-                // todo throw exception
                 throw new BankAccountNotExistException();
             }
             //////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,16 +82,10 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
             preparedStatement.executeUpdate();
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
-            if(!rs.next()){
-                // todo add logger
-                throw new RuntimeException();
-            }
+            rs.next();
             int generatedKey = rs.getInt(1);
 
-            System.out.println("generated key = " + generatedKey);
             ///////////////////////////////////////////////////////////////////////////////////////////
-            // todo get userToId from database
-
             PreparedStatement getUserIdByAccountIdStatement = connection
                     .prepareStatement(Statements.GET_USER_ID_BY_ACCOUNT_ID);
             preparedStatement.setInt(1,toAccountId);
@@ -130,24 +105,22 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
                 addHistory.setInt(2,generatedKey);
                 addHistory.addBatch();
             }
-
             addHistory.executeBatch();
             //////////////////////////////////////////////////////////////////////////////////////////
 
             connection.commit();
-            System.out.println("Payment is successful");
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            // todo refactor and add logger
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                Logger.getLogger(JDBCBankAccountDao.class.getName()).error("payment",e1);
+                throw new RuntimeException(e1);
             }
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("payment",e);
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override

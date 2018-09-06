@@ -26,10 +26,6 @@ public class CommandManager {
         return instance;
     }
 
-    public Command getCommand(String commandName){
-
-        return commandMap.get(commandName);
-    }
 
     public Command getCommand(HttpServletRequest request){
         String commandName = request.getParameter(Parameters.ACTION_PARAM);
@@ -69,6 +65,16 @@ public class CommandManager {
         Command logoutCommand = new LogOutCommand();
         registerCommand(User.ROLE.USER,CommandConstants.LOGOUT_COMMAND,logoutCommand);
         registerCommand(User.ROLE.ADMIN,CommandConstants.LOGOUT_COMMAND,logoutCommand);
+
+        Command homePageCommand = new HomePageCommand();
+        registerCommand(User.ROLE.GUEST,CommandConstants.HOME_PAGE_COMMAND,homePageCommand);
+        registerCommand(User.ROLE.USER,CommandConstants.HOME_PAGE_COMMAND,homePageCommand);
+        registerCommand(User.ROLE.ADMIN,CommandConstants.HOME_PAGE_COMMAND,homePageCommand);
+
+        Command serverExceptionCommand = new ServerExceptionCommand();
+        registerCommand(User.ROLE.GUEST,CommandConstants.SERVER_EXCEPTION_COMMAND,serverExceptionCommand);
+        registerCommand(User.ROLE.USER,CommandConstants.SERVER_EXCEPTION_COMMAND,serverExceptionCommand);
+        registerCommand(User.ROLE.ADMIN,CommandConstants.SERVER_EXCEPTION_COMMAND,serverExceptionCommand);
     }
 
     private void registerCommand(User.ROLE role, String commandName, Command command){

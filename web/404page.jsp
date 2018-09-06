@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Danila
-  Date: 14.08.2018
-  Time: 2:49
+  Date: 06.09.2018
+  Time: 15:04
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page pageEncoding="UTF-8" %>
@@ -16,15 +15,13 @@
 <html  lang="${language}">
 <head>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <title>Access error</title>
+    <title>404 Not found</title>
 </head>
 <body>
-<p class="text-danger text-center font-weight-bold">
-    <c:out value="${sessionScope.role}"/>
-</p>
-<div class="container">
-    <p class="text-danger font-weight-bold">
-        Access error
-    </p>
-</div>
+    <div class="container">
+        <p class="text-danger text-danger">
+            Page not found
+        </p>
+    </div>
+</body>
 </html>

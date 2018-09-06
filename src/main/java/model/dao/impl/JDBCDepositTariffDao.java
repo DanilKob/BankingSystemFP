@@ -4,6 +4,7 @@ import model.dao.DepositTariffDao;
 import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.DepositTariff;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,10 +40,9 @@ public class JDBCDepositTariffDao extends AbstractJDBCGenericDao<DepositTariff> 
             while(resultSet.next()){
                 depositTariffList.add(depositTariffExtracter.extractEntityFromResultSet(resultSet, new DepositTariff()));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find all deposit tariffs",e);
+            throw new RuntimeException(e);
         }
         return depositTariffList;
     }

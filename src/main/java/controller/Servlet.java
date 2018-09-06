@@ -3,6 +3,8 @@ package controller;
 import controller.command.Command;
 import controller.command.CommandManager;
 import controller.command.CommandConstants;
+import controller.command.LoggerConstants;
+import controller.utility.RolesUtility;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
@@ -32,9 +34,17 @@ public class Servlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException{
         Command command = CommandManager.getInstance().getCommand(req);
-        String page = command.execute(req);
+        String page;
 
-        
+        try{
+            page = command.execute(req);
+        }catch (NullPointerException | IllegalArgumentException | ClassCastException dangerUserException){
+            Logger.getLogger(LoggerConstants.DANGER_USER).info(dangerUserException);
+            RolesUtility.logoutUser(req);
+            page = CommandConstants.REDIRECT + PagesName.ERROR;
+        }catch (RuntimeException e){
+            page = CommandConstants.REDIRECT + CommandConstants.SET_COMMAND + CommandConstants.SERVER_EXCEPTION_COMMAND;
+        }
 
         Logger.getLogger(Servlet.class.getName()).info(command.getClass().getName());
 
@@ -44,12 +54,6 @@ public class Servlet extends HttpServlet {
         }else{
             req.getRequestDispatcher(page).forward(req,resp);
         }
-        /*
-        if(commandName!=null){
-            String pageResponse = CommandManager.getInstance().getCommand(commandName).execute(req);
-            req.getRequestDispatcher(pageResponse).forward(req,resp);
-        }else{
-            resp.sendRedirect(req.getContextPath());
-        }*/
+
     }
 }

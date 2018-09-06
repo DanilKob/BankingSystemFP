@@ -68,7 +68,6 @@
     <input type="text" id="password" name="password" class="form-control" placeholder="<fmt:message key="registration.password"/> " value="${param.password}" required >
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
 </form>
 
 </body>

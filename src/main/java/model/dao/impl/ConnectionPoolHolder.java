@@ -7,7 +7,6 @@ import org.apache.commons.dbcp.BasicDataSource;
 import javax.sql.DataSource;
 
 public class ConnectionPoolHolder {
-    // todo rename
     private static final String MYSQL_JDBC_DRIVER = "com.mysql.jdbc.Driver";
     private static volatile BasicDataSource dataSource;
     public static DataSource getDataSource() throws ClassNotFoundException{

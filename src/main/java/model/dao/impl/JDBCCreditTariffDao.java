@@ -6,6 +6,7 @@ import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.CreditTariff;
 import model.entity.DepositTariff;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,11 +43,9 @@ public class JDBCCreditTariffDao extends AbstractJDBCGenericDao<CreditTariff> im
             while(resultSet.next()){
                 creditTariffList.add(creditTariffExtracter.extractEntityFromResultSet(resultSet, new CreditTariff()));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        }catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find all",e);
+            throw new RuntimeException(e);
         }
         return creditTariffList;
     }
