@@ -15,22 +15,34 @@
 <fmt:setBundle basename="text" />
 <html  lang="${language}">
 <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <title> Admin page </title>
 </head>
 <body>
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand font-weight-bold">Banking system</a>
+
+    <form class="form-inline " action="${pageContext.request.contextPath}/servlet" method="post">
+        <input type="hidden" name="command" value="logOut">
+        <button class="btn btn-sm btn-primary btn-outline-dark" type="submit"><fmt:message key="logout"/></button>
+    </form>
+
+    <form class="form-inline" action="${pageContext.request.contextPath}/servlet">
+        <input hidden name="command" value="adminHomePage">
+        <select class="custom-select" id="language" name="language" onchange="submit()">
+            <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
+            <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
+        </select>
+    </form>
+
+</nav>
+
 <c:set var="user" value="${sessionScope.user}"/>
 <c:out value="${user.firstName}"/>
 <c:out value="${user.middleName}"/>
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
-
-<form action="${pageContext.request.contextPath}/servlet">
-    <input hidden name="command" value="adminHomePage">
-    <select id="language" name="language" onchange="submit()">
-        <option value="eng" ${language == 'eng' ? 'selected' : ''}>English</option>
-        <option value="rus" ${language == 'rus' ? 'selected' : ''}>Russian</option>
-    </select>
-</form>
 
 <br>
 <form action="${pageContext.request.contextPath}/servlet" method="post">
@@ -47,20 +59,20 @@
 
 
 <c:if test="${not empty requestScope.allUnconfirmedCredits}">
-    <table>
+    <table class="table table-striped table-sm">
         <tr>
-            <td>
+            <th>
                 #
-            </td>
-            <td>
+            </th>
+            <th>
                 User Id
-            </td>
-            <td>
+            </th>
+            <th>
                 Credit Name
-            </td>
-            <td>
+            </th>
+            <th>
                 Bank account Id
-            </td>
+            </th>
         </tr>
         <c:set var="count" value="0" scope="page" />
         <c:forEach items="${requestScope.allUnconfirmedCredits}" var="unconfirmedCredit">

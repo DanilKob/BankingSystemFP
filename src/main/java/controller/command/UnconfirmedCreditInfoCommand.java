@@ -4,6 +4,7 @@ import controller.PagesName;
 import controller.Parameters;
 import model.entity.CreditAccount;
 import model.entity.DepositAccount;
+import model.exception.BankAccountNotExistException;
 import model.service.CreditAccountService;
 import model.service.DepositAccountService;
 
@@ -14,7 +15,12 @@ public class UnconfirmedCreditInfoCommand extends AbstractBankAccountInfo{
     @Override
     public String execute(HttpServletRequest request) {
         int realCreditId = super.decryptBankAccountIdFromRequest(request);
-        CreditAccount creditAccount = CreditAccountService.getConfirmedCreditAccount(realCreditId);
+        CreditAccount creditAccount = null;
+        try {
+            creditAccount = CreditAccountService.getConfirmedCreditAccount(realCreditId);
+        } catch (BankAccountNotExistException e) {
+            return PagesName.ERROR;
+        }
         List<DepositAccount> depositAccountList = DepositAccountService.getAllDepositsByUserBankAcountId(realCreditId);
         for (DepositAccount depositAccount : depositAccountList) {
             System.out.println(depositAccount.getId());

@@ -7,20 +7,13 @@ import model.dao.config.DataBaseConfiguration;
 import model.entity.DepositAccount;
 import model.entity.DepositTariff;
 import model.entity.enums.Account;
+import model.exception.BankAccountNotExistException;
 import model.exception.NotUniqueException;
 import model.exception.TariffNotExistException;
 
 import java.util.List;
 
 public class DepositAccountService {
-    /*
-    public static void registerDepositAccount(DepositAccountDto depositAccountDto) throws NotUniqueException {
-        try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
-            DepositAccount depositAccount = convertDepositDtoToEntity(depositAccountDto);
-            depositDao.create(depositAccount);
-        }
-    }
-    */
     public static void registerDepositAccount(DepositAccount depositAccount) throws TariffNotExistException {
         try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
             depositAccount.setAccountType(Account.DEPOSIT);
@@ -28,7 +21,7 @@ public class DepositAccountService {
         }
     }
 
-    public static DepositAccount getDepositAccount(int id){
+    public static DepositAccount getDepositAccount(int id) throws BankAccountNotExistException {
         try(DepositDao depositDao = DataBaseConfiguration.factory.createDepositDao()){
             DepositAccount depositAccount = depositDao.findById(id);
             depositAccount.setAccountType(Account.DEPOSIT);
