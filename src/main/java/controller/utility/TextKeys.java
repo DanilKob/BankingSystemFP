@@ -11,6 +11,8 @@ public interface TextKeys {
     String LOGIN_ALREADY_EXIST = "LoginAlreadyExist";
     String LOGIN_ALREADY_IN_SYSTEM = "loginAlreadyInSystem";
     String LOGIN_OR_PASSWORD_MISTAKE = "loginPasswordMistake";
+    String ACCOUNT_NOT_EXIST = "accountNotExists";
+    String TARIFF_NOT_EXIST = "tariffNotExist";
 
     String BAD_LAST_NAME = "BadLastName";
     String BAD_FIRST_NAME = "BadFirstName";

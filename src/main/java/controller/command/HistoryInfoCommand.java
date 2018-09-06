@@ -3,7 +3,6 @@ package controller.command;
 import controller.PagesName;
 import controller.Parameters;
 import model.entity.History;
-import model.entity.User;
 import model.service.BankAccountService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,5 @@
 package controller.command;
 
-import controller.PagesName;
 import controller.Parameters;
 import controller.utility.RolesUtility;
 import model.entity.User;
@@ -18,8 +17,7 @@ public class DefaultCommand implements Command{
                 + RolesUtility.defineHomePageByRole((User.ROLE) request.getSession().getAttribute(Parameters.ROLE));
     }
     private String removeServletDirectoryFromPath(String path){
-        String target = SERVLET_PATH;
-        return  path.replaceAll(target,"");
+        return  path.replaceAll(SERVLET_PATH,"");
     }
 
 

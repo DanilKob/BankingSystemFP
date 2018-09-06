@@ -30,8 +30,9 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
                     .prepareStatement(Statements.UPDATE_CREDIT_ACCOUNT_BALANCE_INDEBTEDNESS_BY_BANK_ACCOUNT_ID);
             preparedStatement.setInt(1,indebtedness);
             preparedStatement.setInt(2,indebtedness);
-            preparedStatement.setInt(3,TableConstants.ACCOUNT_TYPE_CREDIT);
-            preparedStatement.setInt(4,creditId);
+            preparedStatement.setInt(3,indebtedness);
+            preparedStatement.setInt(4,TableConstants.ACCOUNT_TYPE_CREDIT);
+            preparedStatement.setInt(5,creditId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

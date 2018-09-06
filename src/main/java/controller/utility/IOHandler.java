@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class IOHandler {
 
+    private static final String ERROR_MESSAGE_PARAM = "&" + Parameters.ERROR_MESSAGE + "=";
+
     public static Languages getLanguageFromRequest(HttpServletRequest request){
         String language = ((String)request.getSession().getAttribute(Parameters.LANGUAGE)).toUpperCase();
         return Languages.valueOf(language);
@@ -40,6 +42,15 @@ public class IOHandler {
     public static void setLoginPasswordMistakeMessage(HttpServletRequest request,Languages language){
         request.setAttribute(Parameters.LOGIN_ERROR, getTextByKeyAndLanguage(TextKeys.LOGIN_OR_PASSWORD_MISTAKE,language));
     }
+
+    public static String getAccountisNotExistParam(Languages language){
+        return ERROR_MESSAGE_PARAM +getTextByKeyAndLanguage(TextKeys.ACCOUNT_NOT_EXIST,language);
+    }
+
+    public static String getTarrifNotExistParam(Languages language){
+        return ERROR_MESSAGE_PARAM +getTextByKeyAndLanguage(TextKeys.TARIFF_NOT_EXIST,language);
+    }
+
 
     public static void setRegistrationErrorMassageToReguest(HttpServletRequest request,
                                                             boolean isFirstNameCorrect, boolean isLastNameCorrect,

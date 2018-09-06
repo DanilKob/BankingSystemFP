@@ -2,7 +2,6 @@ package controller.filters;
 
 import controller.PagesName;
 import controller.Parameters;
-import controller.command.CommandConstants;
 import controller.command.CommandManager;
 import controller.utility.RolesUtility;
 import model.entity.User;
@@ -12,39 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class AuthorisationFilter implements Filter {
     private static final String SERVLET_PATH = "/servlet";
-    //private Map<String,Set<String>> commandMap = new HashMap<>();
+    private static final String CSS_DIRECTORY = "css/";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        /*
-        Set<String> guestCommands = new HashSet<>();
-        Set<String> userCommands = new HashSet<>();
-        Set<String> adminCommands = new HashSet<>();
-
-        guestCommands.add(CommandConstants.LOGIN_COMMAND);
-        guestCommands.add(CommandConstants.REGISTRATION_COMMAND);
-
-        userCommands.add(CommandConstants.LOGOUT_COMMAND);
-        userCommands.add(CommandConstants.CREDITS_COMMAND);
-        userCommands.add(CommandConstants.CREDIT_PAGE_COMMAND);
-        userCommands.add(CommandConstants.DEPOSITS_COMMAND);
-        userCommands.add(CommandConstants.DEPOSIT_PAGE_COMMAND);
-
-        commandMap.put(User.ROLE.GUEST.name(),guestCommands);
-        commandMap.put(User.ROLE.USER.name(),userCommands);
-        commandMap.put(User.ROLE.ADMIN.name(),adminCommands);
-        */
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        Set<String> logedUsers = (Set<String>)servletRequest.getServletContext().getAttribute(AuthorisationConstants.LOGINED_USER);
+        //Set<String> logedUsers = (Set<String>)servletRequest.getServletContext().getAttribute(AuthorisationConstants.LOGINED_USER);
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse)servletResponse;
         HttpSession session = httpServletRequest.getSession();
@@ -64,11 +42,29 @@ public class AuthorisationFilter implements Filter {
                 return;
             }else{
                 System.out.println("ACCESS IS NOT CORRECT!!!!!!!!!!!!");
+                RolesUtility.logoutUser(httpServletRequest);
                 httpServletResponse.sendRedirect(removeServletDirectoryFromPath(path));
+                //httpServletResponse.sendRedirect(clearUrl(path) + PagesName.ERROR);
                 return;
             }
         }
 
+        if(isCssRequest(path)){
+            filterChain.doFilter(servletRequest,servletResponse);
+            return;
+        }
+
+        // user or admin goes to guest pages
+        if(!User.ROLE.GUEST.equals(roleFromSession)){
+            RolesUtility.logoutUser(httpServletRequest);
+            httpServletResponse.sendRedirect(PagesName.INDEX_PAGE);
+            return;
+        }
+
+        // guest go to some guest page
+        filterChain.doFilter(servletRequest,servletResponse);
+
+        /*
         User.ROLE roleFromPath = defineRoleFromPath(path);
 
 
@@ -107,6 +103,7 @@ public class AuthorisationFilter implements Filter {
 
         System.out.println("redirect path = " + pathRedirect);
         httpServletResponse.sendRedirect( pathRedirect);
+        */
 
         System.out.println("!===================!");
     }
@@ -117,7 +114,6 @@ public class AuthorisationFilter implements Filter {
     }
 
     private boolean checkCommandAccess(String commandName, User.ROLE roleFromSession){
-        //return commandMap.get(roleFromSession.name()).contains(commandName);
         return CommandManager.getInstance().getCommandNameSet(roleFromSession).contains(commandName);
     }
 
@@ -126,13 +122,8 @@ public class AuthorisationFilter implements Filter {
         if(path.contains(PagesName.ADMIN_DIRECTORY)) return User.ROLE.ADMIN;
         return User.ROLE.GUEST;
     }
-    //todo refactor defineRoleFromSession
+
     private User.ROLE defineRoleFromSession(HttpSession session){
-        // todo maybe can be null
-        /*
-        User.ROLE roleFromSession = (User.ROLE) session.getAttribute(Parameters.ROLE);
-        return (roleFromSession==null)?User.ROLE.GUEST:roleFromSession;
-        */
         return (User.ROLE) session.getAttribute(Parameters.ROLE);
     }
 
@@ -158,14 +149,19 @@ public class AuthorisationFilter implements Filter {
     }
 
     private String removeServletDirectoryFromPath(String path){
-        String target = SERVLET_PATH;
-        return  path.replaceAll(target,"");
+        return  path.replaceAll(SERVLET_PATH,"");
     }
 
     private boolean isServletCall(String path){
         return path.contains(SERVLET_PATH);
     }
 
+    private boolean isCssRequest(String path){
+        return path.contains(CSS_DIRECTORY);
+    }
 
+    private String clearUrl(String path){
+        return path.replaceAll("/*","/");
+    }
 
 }

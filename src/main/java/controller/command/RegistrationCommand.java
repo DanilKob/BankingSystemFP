@@ -9,7 +9,6 @@ import controller.utility.RegexKeys;
 import controller.utility.RolesUtility;
 
 
-import model.entity.User;
 import model.exception.NotUniqueException;
 import model.service.UserService;
 
@@ -23,9 +22,6 @@ public class RegistrationCommand implements Command{
 
     @Override
     public String execute(HttpServletRequest request) {
-
-        // todo add logger
-        System.out.println(Parameters.LANGUAGE+ " " + request.getSession().getAttribute(Parameters.LANGUAGE));
 
         //todo ask about cast to String
         // todo IllegalArgumentException
@@ -57,30 +53,22 @@ public class RegistrationCommand implements Command{
                     isMiddleNameCorrect,isLoginCorrect,isPasswordCorrect,language);
             return PagesName.REGISTRATION;
         }
-        // todo change to User entity
-        //RegistrationFormDto registrationForm = new RegistrationFormDto(firstName,lastName,middleName,login,password,language);
-        RegistrationFormDto registrationFormDto = new RegistrationFormDto(firstName,lastName,middleName,login,password);
+
+        RegistrationFormDto registrationFormDto = new RegistrationFormDto.Builder()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setMiddleName(middleName)
+                .setLogin(login)
+                .setPassword(password)
+                .build();
 
         try {
-            //UserService.registerUser(registrationForm);
-
             model.service.UserService.registerUser(registrationFormDto);
-            /*
-            // user will be forward to login page
-            RolesUtility.addRoleAndLoginInSession(request,User.ROLE.USER,login);
-            RolesUtility.addLoginInServletContext(request,login);
-            */
-            System.out.println("WAS REGISTERED");
-            //return CommandConstants.REDIRECT+PagesName.USER_HOME_PAGE;
-            //return CommandConstants.REDIRECT+PagesName.LOGIN_PAGE;
             return PagesName.LOGIN_PAGE;
         }catch (NotUniqueException e) {
-            System.out.println("Not Unique login");
             IOHandler.setLoginAlreadyExistMessageToRequest(request,language);
             return PagesName.REGISTRATION;
         }
-
-
     }
 
     private boolean isInputUncorrect(boolean isFirstNameCorrect, boolean isLastNameCorrect,

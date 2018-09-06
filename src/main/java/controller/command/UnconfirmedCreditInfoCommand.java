@@ -16,7 +16,6 @@ public class UnconfirmedCreditInfoCommand extends AbstractBankAccountInfo{
         int realCreditId = super.decryptBankAccountIdFromRequest(request);
         CreditAccount creditAccount = CreditAccountService.getConfirmedCreditAccount(realCreditId);
         List<DepositAccount> depositAccountList = DepositAccountService.getAllDepositsByUserBankAcountId(realCreditId);
-        System.out.println(" ALL USER`s DEPOSITS !!!!!!!!!!!!!");
         for (DepositAccount depositAccount : depositAccountList) {
             System.out.println(depositAccount.getId());
         }

@@ -22,7 +22,7 @@ public class LogInCommand implements Command {
 
         String login = request.getParameter(Parameters.LOGIN);
         String password = request.getParameter(Parameters.PASSWORD);
-        Languages language = null;
+        Languages language;
         try{
             language = IOHandler.getLanguageFromRequest(request);
         }catch (IllegalArgumentException e){

@@ -34,6 +34,8 @@ public class Servlet extends HttpServlet {
         Command command = CommandManager.getInstance().getCommand(req);
         String page = command.execute(req);
 
+        
+
         Logger.getLogger(Servlet.class.getName()).info(command.getClass().getName());
 
         if(page.contains(CommandConstants.REDIRECT)){
