@@ -7,6 +7,7 @@ import model.dao.extracter.Extracter;
 import model.dao.statement.Statements;
 import model.entity.User;
 import model.exception.NotUniqueException;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,27 +40,14 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             preparedStatement.setString(5, user.getPassword());
             preparedStatement.setInt(6, user.getRole().roleId);
 
-            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getFirstName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getMiddleName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getLastName());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getLogin());
-            System.out.println("IN CREATE METHOD. USER NAME :: "+user.getPassword());
-
-
-            System.out.println("In dao method");
-
             preparedStatement.execute();
 
         } catch (MySQLIntegrityConstraintViolationException e){
-            e.printStackTrace();
-            //todo remove sout
-            System.out.println("Not unique login");
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).debug("not unique",e);
             throw new NotUniqueException(user.getLogin());
         } catch (SQLException e) {
-            e.printStackTrace();
-            //
-            // todo add logger
-            throw new RuntimeException();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("register user",e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -82,10 +70,9 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             if(resultSet.next()){
                 user = userExtracter.extractEntityFromResultSet(resultSet, new User());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find user by bank account id",e);
+            throw new RuntimeException(e);
         }
         return user;
     }
@@ -103,12 +90,9 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
             if(resultSet.next()){
                 optionalUser = Optional.of(userExtracter.extractEntityFromResultSet(resultSet, new User()));
             }
-            // todo throw my exception
         } catch (SQLException | IllegalAccessException e) {
-            e.printStackTrace();
-            //
-            // todo add logger
-            throw new RuntimeException();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find user by login and password",e);
+            throw new RuntimeException(e);
         }
         return optionalUser;
     }
@@ -127,15 +111,4 @@ public class JDBCUserDao extends AbstractJDBCGenericDao<User> implements UserDao
     public void delete(int id) {
 
     }
-    /*
-    private User extractUserFullNameByAccountId(ResultSet resultSet) throws SQLException{
-        User user = new User.Builder()
-                .setId(resultSet.getInt(UserTable.USER_ID))
-                .setFirstName(resultSet.getString(UserTable.USER_FIRST_NAME))
-                .setLastName(resultSet.getString(UserTable.USER_LAST_NAME))
-                .setMiddleName(resultSet.getString(UserTable.USER_MIDDLE_NAME))
-                .build();
-        return user;
-    }
-    */
 }

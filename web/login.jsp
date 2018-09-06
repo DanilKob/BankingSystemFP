@@ -50,7 +50,6 @@
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="<fmt:message key="login.password"/>" value="${param.password}" required>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>
 </body>
 </html>

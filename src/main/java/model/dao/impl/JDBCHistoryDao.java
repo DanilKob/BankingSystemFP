@@ -6,6 +6,7 @@ import model.dao.mapper.Mapper;
 import model.dao.statement.Statements;
 import model.entity.History;
 import model.entity.User;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -63,10 +64,9 @@ public class JDBCHistoryDao extends AbstractJDBCGenericDao<History> implements H
                 history.setUser(user);
                 historyList.add(history);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find all history by bank account id",e);
+            throw new RuntimeException(e);
         }
         return historyList;
     }

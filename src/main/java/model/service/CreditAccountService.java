@@ -8,6 +8,7 @@ import model.entity.CreditAccount;
 import model.entity.CreditTariff;
 import model.entity.Requsition;
 import model.entity.enums.Account;
+import model.exception.BankAccountNotExistException;
 import model.exception.NotUniqueException;
 import model.exception.TariffNotExistException;
 
@@ -62,7 +63,7 @@ public class CreditAccountService {
         }
     }
 
-    public static CreditAccount getConfirmedCreditAccount(int id){
+    public static CreditAccount getConfirmedCreditAccount(int id) throws BankAccountNotExistException {
         try(CreditDao creditDao = DataBaseConfiguration.factory.createCreditDao()){
             CreditAccount creditAccount = creditDao.findById(id);
             creditAccount.setAccountType(Account.CREDIT);

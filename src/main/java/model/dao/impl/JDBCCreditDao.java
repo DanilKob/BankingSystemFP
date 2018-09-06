@@ -6,7 +6,9 @@ import model.dao.statement.Statements;
 import model.dao.statement.TableConstants;
 import model.entity.CreditAccount;
 import model.entity.CreditTariff;
+import model.exception.BankAccountNotExistException;
 import model.exception.TariffNotExistException;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.LinkedList;
@@ -57,22 +59,20 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             PreparedStatement preparedStatement = connection
                     .prepareStatement(Statements.INSER_CREDIT_USER_ID_CREDIT_ID_TYPE_DATE);
             preparedStatement.setInt(1,creditAccount.getUserId());
-            //preparedStatement.setInt(2,entity.getBalance());
             preparedStatement.setInt(2,creditAccount.getCreditTariff().getId());
             preparedStatement.setInt(3,creditAccount.getAccountType().type_id);
-            //preparedStatement.setInt(4,creditAccount.getBalance());
 
             preparedStatement.execute();
 
             connection.commit();
-            // todo add exception
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("register credit",e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public CreditAccount findById(int id) {
+    public CreditAccount findById(int id) throws BankAccountNotExistException {
         // todo add Optional
         CreditAccount creditAccount = null;
         try {
@@ -87,14 +87,12 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
                 creditAccount.setCreditTariff(creditTariffExtracter.extractEntityFromResultSet(resultSet,new CreditTariff()));
                 //creditAccount = creditMapper.extractEntityFromResultSet(resultSet);
             }else{
-                // todo throw my exception
-                System.out.println("Nothing found");
+                throw new BankAccountNotExistException();
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find by id",e);
+            throw new RuntimeException(e);
         }
         return creditAccount;
     }
@@ -116,12 +114,10 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
                         extractEntityFromResultSet(resultSet, new CreditTariff()));
                 creditAccounts.add(creditAccount);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find credit by statement",e);
+            throw new RuntimeException(e);
         }
-        // todo
         return creditAccounts;
     }
 
@@ -146,12 +142,10 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
                         extractEntityFromResultSet(resultSet, new CreditTariff()));
                 creditAccounts.add(creditAccount);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find all unconfirmed credits",e);
+            throw new RuntimeException(e);
         }
-        // todo
         return creditAccounts;
     }
 
@@ -179,29 +173,8 @@ public class JDBCCreditDao extends AbstractJDBCGenericDao<CreditAccount> impleme
             preparedStatement.setInt(1,id);
             preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("delete credit account",e);
+            throw new RuntimeException(e);
         }
     }
-
-    // todo refactor to another class
-
-    /*
-    private CreditAccount extractLazyFromResultSet(ResultSet resultSet) throws SQLException{
-        CreditAccount creditAccount = null;
-        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-
-        int columnCount = resultSetMetaData.getColumnCount();
-
-        for(int index=1;index<=columnCount;++index){
-            String columName = resultSetMetaData.getColumnName(index);
-        }
-
-        if(resultSet.next()){
-            creditAccount.setId(resultSet.getInt(CreditTable.CREDIT_ID));
-            creditAccount.setBalance(resultSet.getInt(BankAccountTable.BANK_ACCOUNT_BALANCE));
-            creditAccount.setName(resultSet.getString(CreditTable.CREDIT_NAME));
-        }
-        return creditAccount;
-    }
-    */
 }

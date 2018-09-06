@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Danila
-  Date: 14.08.2018
-  Time: 2:49
+  Date: 06.09.2018
+  Time: 14:01
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page pageEncoding="UTF-8" %>
@@ -16,15 +15,20 @@
 <html  lang="${language}">
 <head>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <title>Access error</title>
+    <title>Server exception</title>
 </head>
 <body>
-<p class="text-danger text-center font-weight-bold">
-    <c:out value="${sessionScope.role}"/>
-</p>
+
 <div class="container">
     <p class="text-danger font-weight-bold">
-        Access error
+            Something going wrong... Please try again
     </p>
+    <form action="${pageContext.request.contextPath}/servlet" method="get">
+        <input type="hidden" name="command" value="homePage">
+        <button class="btn btn-sm btn-primary " type="submit">Home page</button>
+    </form>
 </div>
+
+
+</body>
 </html>

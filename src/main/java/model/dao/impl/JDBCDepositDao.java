@@ -6,6 +6,7 @@ import model.dao.statement.Statements;
 import model.entity.DepositAccount;
 import model.entity.DepositTariff;
 import model.exception.TariffNotExistException;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,7 +34,8 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             preparedStatement.execute();
             // todo add exception
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("create deposit",e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -56,7 +58,6 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             PreparedStatement preparedStatement = connection
                     .prepareStatement(Statements.INSERT_DEPOSIT_USER_ID_DEPOSIT_ID_TYPE_ID_DEPOSIT_AMOUNT);
             preparedStatement.setInt(1,depositAccount.getUserId());
-            //preparedStatement.setInt(2,entity.getBalance());
             preparedStatement.setInt(2,depositAccount.getDepositTariff().getId());
             preparedStatement.setInt(3,depositAccount.getAccountType().type_id);
             preparedStatement.setInt(4,depositAccount.getDepositAmount());
@@ -66,7 +67,8 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             connection.commit();
             // todo add exception
         } catch (SQLException e) {
-            e.printStackTrace();
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("register deposit",e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -79,37 +81,16 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
                     .prepareStatement(Statements.SELECT_DEPOSIT_BY_BANK_ACCOUNT_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("Search deposit");
             System.out.println(Statements.SELECT_DEPOSIT_BY_BANK_ACCOUNT_ID);
             Extracter<DepositAccount> depositExtracter = new Extracter<>();
             Extracter<DepositTariff> depositTariffExtracter = new Extracter<>();
-            if(resultSet.next()){
-                System.out.println("Result is not empty !!!");
-                depositAccount = depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount());
-                depositAccount.setDepositTariff(depositTariffExtracter.extractEntityFromResultSet(resultSet, new DepositTariff()));
-            }
-            /*
-            DepositMapper depositMapper = new DepositMapper();
+            resultSet.next();
+            depositAccount = depositExtracter.extractEntityFromResultSet(resultSet,new DepositAccount());
+            depositAccount.setDepositTariff(depositTariffExtracter.extractEntityFromResultSet(resultSet, new DepositTariff()));
 
-            if(resultSet.next()){
-                depositAccount = depositMapper.extractEntityFromResultSet(resultSet);
-            }else{
-                System.out.println("No such account");
-                // todo throw my Exception
-            }
-            */
-            /*
-            if(!resultSet.next()){
-                System.out.println("No such account");
-                // todo throw my Exception
-            }
-            */
-
-            //depositAccount = depositMapper.extractEntityFromResultSet(resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find deposit by id",e);
+            throw new RuntimeException(e);
         }
         return depositAccount;
     }
@@ -126,7 +107,6 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
             PreparedStatement preparedStatement = super.getConnection()
                     .prepareStatement(Statements.SELECT_ALL_DEPOSIT_BY_USER_BANK_ACCOUNT_ID);
             preparedStatement.setInt(1,bankAccountId);
-            System.out.println(Statements.SELECT_ALL_DEPOSIT_BY_USER_BANK_ACCOUNT_ID);
             ResultSet resultSet = preparedStatement.executeQuery();
             Extracter<DepositAccount> depositAccountExtracter = new Extracter<>();
             Extracter<DepositTariff> depositTariffExtracter = new Extracter<>();
@@ -135,12 +115,10 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
                 depositAccount = depositAccountExtracter.extractEntityFromResultSet(resultSet, new DepositAccount());
                 depositAccount.setDepositTariff(depositTariffExtracter.extractEntityFromResultSet(resultSet,new DepositTariff()));
                 depositAccountList.add(depositAccount);
-                System.out.println("ONE MORE DEPOSIT!!!!");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find deposits by user bank account",e);
+            throw new RuntimeException(e);
         }
         return depositAccountList;
     }
@@ -162,13 +140,10 @@ public class JDBCDepositDao extends AbstractJDBCGenericDao<DepositAccount> imple
                         .extractEntityFromResultSet(resultSet, new DepositTariff()));
                 depositAccounts.add(depositAccount);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (SQLException | IllegalAccessException e) {
+            Logger.getLogger(JDBCBankAccountDao.class.getName()).error("find deposits by user id",e);
+            throw new RuntimeException(e);
         }
-        // todo
-
         return depositAccounts;
     }
 

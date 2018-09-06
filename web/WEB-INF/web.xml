@@ -52,4 +52,11 @@
         <servlet-name>Servlet</servlet-name>
         <url-pattern>/servlet/*</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/serverException.jsp</location>
+    </error-page>
+
+
 </web-app>

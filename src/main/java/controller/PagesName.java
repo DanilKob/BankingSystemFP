@@ -22,4 +22,6 @@ public interface PagesName {
     String PAYMENT_PAGE = USER_DIRECTORY + "/" + "payment.jsp";
 
     String TARIFF_INFO_PAGE = USER_DIRECTORY + "/" + "tariffs.jsp";
+
+    String SERVER_EXCEPTION_PAGE = "serverException.jsp";
 }
