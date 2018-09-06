@@ -44,17 +44,12 @@
 <c:out value="${user.lastName}"/>
 <c:out value="${sessionScope.role}"/>
 
-<br>
-<form action="${pageContext.request.contextPath}/servlet" method="post">
-    <input type="hidden" name="command" value="logOut">
-    <p><input type="submit" value="<fmt:message key="logout"/>"/></p>
-</form>
 
 <br>
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="allUnconfirmedCredits">
-    <p><input type="submit" value="Unconfirmed credits list"/></p>
+    <p><input type="submit" value="<fmt:message key="user.credits.unconfirmed"/>"/></p>
 </form>
 
 

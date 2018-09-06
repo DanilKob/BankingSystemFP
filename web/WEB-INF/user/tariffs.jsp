@@ -16,7 +16,7 @@
 <html  lang="${language}">
 <head>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <title> Tarif info</title>
+    <title> Tariff info</title>
 </head>
 <body>
 
@@ -43,7 +43,7 @@
 
 <c:if test="${not empty requestScope.creditTariffs}">
     <table class="table table-sm table-bordered table-striped">
-        <caption>Credit tariffs</caption>
+        <caption><fmt:message key="user.tariffs.credit"/></caption>
         <tr>
             <th>
                 #
@@ -93,7 +93,7 @@
                     </c:forEach>
                 </select>
             </p>
-            <button class="btn btn-sm btn-primary " type="submit">Open credit</button>
+            <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="tariff.open.credit"/></button>
         </form>
     </div>
 
@@ -102,7 +102,7 @@
 
 <c:if test="${not empty requestScope.depositTariffs}">
     <table class="table table-sm table-bordered table-striped">
-        <caption>Deposit tariffs</caption>
+        <caption><fmt:message key="user.tariffs.deposit"/></caption>
         <tr>
             <th>
                 #
@@ -156,7 +156,7 @@
                     </c:forEach>
                 </select>
             </p>
-            <button class="btn btn-sm btn-primary " type="submit">Open deposit</button>
+            <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="tarrif.open.deposit"/></button>
         </form>
     </div>
 

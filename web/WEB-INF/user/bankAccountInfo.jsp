@@ -72,14 +72,14 @@
         <label for="price" class="sr-only">Price</label>
         <input type="number" id="price" name="price" class="form-control" placeholder="price"  required>
 
-        <button class="btn btn-sm btn-primary " type="submit">Pay</button>
+        <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="bank.account.pay"/></button>
     </form>
 </div>
 
 <form action="/servlet" method="get">
     <input type="hidden" name="command" value="history">
     <input type="hidden" name="fakeId" value="${fakeId}">
-    <p><input type="submit" value="Account history"/></p>
+    <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="user.history"/></button>
 </form>
 
 <br>

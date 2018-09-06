@@ -88,7 +88,7 @@ public class JDBCBankAccountDao extends AbstractJDBCGenericDao<BankAccount> impl
             ///////////////////////////////////////////////////////////////////////////////////////////
             PreparedStatement getUserIdByAccountIdStatement = connection
                     .prepareStatement(Statements.GET_USER_ID_BY_ACCOUNT_ID);
-            preparedStatement.setInt(1,toAccountId);
+            getUserIdByAccountIdStatement.setInt(1,toAccountId);
             ResultSet resultSet = getUserIdByAccountIdStatement.executeQuery();
             if(!resultSet.next()){
                 throw new BankAccountNotExistException();

@@ -58,18 +58,18 @@
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="creditTariffsInfo">
-    <button class="btn btn-sm btn-primary " type="submit">Credit tariffs</button>
+    <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="user.tariffs.credit"/></button>
 </form>
 
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="depositTariffsInfo">
-    <button class="btn btn-sm btn-primary " type="submit">Deposit tariffs</button>
+    <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="user.tariffs.deposit"/></button>
 </form>
 
 <form action="${pageContext.request.contextPath}/servlet" method="get">
     <input type="hidden" name="command" value="unconfirmedCredits">
-    <button class="btn btn-sm btn-primary " type="submit">Unconfirmed tariffs</button>
+    <button class="btn btn-sm btn-primary " type="submit"><fmt:message key="user.credits.unconfirmed"/></button>
 </form>
 
 <c:if test="${not empty requestScope.paymentSuccess}">
@@ -127,7 +127,7 @@
 
 <c:if test="${not empty requestScope.unconfirmedCredits}">
     <table class="table table-striped">
-        <caption>Unconfirmed credit</caption>
+        <caption><fmt:message key="user.credits.unconfirmed"/></caption>
         <tr>
             <th>
                 #
